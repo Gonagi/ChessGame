@@ -14,6 +14,8 @@ void cursorDraw(int, int);
 void erase(int, int);
 void chessDraw();
 void chessRule();
+void textcolor(int);
+void backcolor(int);
 
 int cursor_x = 13, cursor_y = 8;
 char chessPos[8][8][2] = {"R","N","B","Q","K","B","N","R",
@@ -27,6 +29,7 @@ char chessPos[8][8][2] = {"R","N","B","Q","K","B","N","R",
 
 int main()
 {
+    system("mode con cols=40 lines=15"); //ì½˜ì†”ì°½ í¬ê¸° ì„¤ì • cols :ê°€ë¡œ, lines :ì„¸ë¡œ
 Main:
 	system("cls");
 	titleDraw();
@@ -62,7 +65,7 @@ Main:
 		{
 			system("cls");
 			gotoxy(3, 1);
-			printf("°ÔÀÓÀ» Á¾·áÇÕ´Ï´Ù...\n");
+			printf("ê²Œì„ì„ ì¢…ë£Œí•©ë‹ˆë‹¤...\n");
 			return 0;
 		}
 
@@ -140,10 +143,10 @@ void titleDraw()
 	printf("   #      #  #  #         #     #  \n");
 	printf("    ###   #  #  ####   ###   ###   \n");
 	printf("\n");
-	printf("                 2Á¶    \n");
-	printf("              °ÔÀÓ½ÃÀÛ   \n");
-	printf("              °ÔÀÓ¼³¸í   \n");
-	printf("              °ÔÀÓÁ¾·á   \n");
+	printf("                 2ì¡°    \n");
+	printf("              ê²Œì„ì‹œì‘   \n");
+	printf("              ê²Œì„ì„¤ëª…   \n");
+	printf("              ê²Œì„ì¢…ë£Œ   \n");
 
 }
 
@@ -174,11 +177,9 @@ void erase(int x, int y)
 void chessDraw()
 {
 	int i, j,k;
-	HANDLE hC = GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
-	GetConsoleScreenBufferInfo(hC, &csbi);
 
-	SetConsoleTextAttribute(hC, 112);
+	backcolor(112);
+
 	for (i = 0; i < 8; i++)
 	{
 		for (j = 0; j < 8; j++)
@@ -187,19 +188,35 @@ void chessDraw()
 		printf("\n");
 	}
 
-	SetConsoleTextAttribute(hC, 7);
+	backcolor(7);
+
 	printf("-----------------------------\n");
-	printf(" R : ·è, N : ³ªÀÌÆ®, B : ºñ¼ó\n");
-	printf(" Q : Äı, K : Å·, P : Æù\n");
-	printf(" ¸ŞÀÎÈ­¸éÀ¸·Î µ¹¾Æ°¡±â (Backspace)\n");
+	printf(" R : ë£©, N : ë‚˜ì´íŠ¸, B : ë¹„ìˆ\n");
+	printf(" Q : í€¸, K : í‚¹, P : í°\n");
+	printf(" ë©”ì¸í™”ë©´ìœ¼ë¡œ ëŒì•„ê°€ê¸° (Backspace)\n");
 }
 
 void chessRule()
 {
-	printf("----------------°ÔÀÓ ¹æ¹ı---------------\n");
-	printf("1. ¹é°ú ÈæÀÌ ¹ø°¥¾Æ°¡¸ç ÇÃ·¹ÀÌÇÕ´Ï´Ù.\n");
-	printf("2. ¹éÀÌ ¸ÕÀú °ÔÀÓÀ» ½ÃÀÛÇÕ´Ï´Ù.\n");
-	printf("3.");
+	printf("----------------ê²Œì„ ë°©ë²•---------------\n");
+	printf("1. ë°±ê³¼ í‘ì´ ë²ˆê°ˆì•„ê°€ë©° í”Œë ˆì´í•©ë‹ˆë‹¤.\n");
+	printf("2. ë°±ì´ ë¨¼ì € ê²Œì„ì„ ì‹œì‘í•©ë‹ˆë‹¤.\n");
+	printf("3.  \n");
+	printf("4.  \n");
 	printf("\n");
-	printf("µÚ·Î°¡±â (Backspace)");
+	printf("ë’¤ë¡œê°€ê¸° (Backspace)");
+}
+
+void textcolor(int color_number)
+{
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),color_number);
+}
+
+void backcolor(int color_number)
+{
+    HANDLE hC = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(hC, &csbi);
+
+	SetConsoleTextAttribute(hC, color_number);
 }
