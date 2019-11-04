@@ -18,6 +18,7 @@ void textcolor(int);
 void backcolor(int);
 
 int cursor_x = 13, cursor_y = 8;
+enum color {red=12, yellow=14, white=7, grey=8};
 char chessPos[8][8][2] = {"R","N","B","Q","K","B","N","R",
 						  "P","P","P","P","P","P","P","P",
 						  "*","*","*","*","*","*","*","*",
@@ -31,6 +32,7 @@ int main()
 {
     system("mode con cols=40 lines=15"); //콘솔창 크기 설정 cols :가로, lines :세로
 Main:
+    textcolor(white);
 	system("cls");
 	titleDraw();
 	cursorDraw(cursor_x,cursor_y);
@@ -64,8 +66,9 @@ Main:
 		else if (cursor_y == 10 && key == ENTER)
 		{
 			system("cls");
-			gotoxy(3, 1);
+			gotoxy(3, 5);
 			printf("게임을 종료합니다...\n");
+			gotoxy(0,10);
 			return 0;
 		}
 
@@ -193,6 +196,7 @@ void chessDraw()
 	printf("-----------------------------\n");
 	printf(" R : 룩, N : 나이트, B : 비숍\n");
 	printf(" Q : 퀸, K : 킹, P : 폰\n");
+	textcolor(grey);
 	printf(" 메인화면으로 돌아가기 (Backspace)\n");
 }
 
@@ -204,6 +208,7 @@ void chessRule()
 	printf("3.  \n");
 	printf("4.  \n");
 	printf("\n");
+	textcolor(grey);
 	printf("뒤로가기 (Backspace)");
 }
 
