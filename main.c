@@ -7,6 +7,7 @@
 #define RIGHT 77
 #define ENTER 13
 #define BACK 8
+#define SPACE 32
 
 void titleDraw();
 void gotoxy(int, int);
@@ -16,21 +17,25 @@ void chessDraw();
 void chessRule();
 void textcolor(int);
 void backcolor(int);
+void cursorPosNow(int, int);
+void cursorPosDraw(int, int);
+char invert(int);
 
 int cursor_x = 13, cursor_y = 8;
 enum color {red=12, yellow=14, white=7, grey=8};
-char chessPos[8][8][2] = {"R","N","B","Q","K","B","N","R",
-						  "P","P","P","P","P","P","P","P",
-						  "*","*","*","*","*","*","*","*",
-					  	  "*","*","*","*","*","*","*","*",
-						  "*","*","*","*","*","*","*","*",
-						  "*","*","*","*","*","*","*","*",
-						  "P","P","P","P","P","P","P","P",
-						  "R","N","B","Q","K","B","N","R"};
+char cursorPos;
+char *chessPos[8][8] = {"R","N","B","Q","K","B","N","R",
+                        "P","P","P","P","P","P","P","P",
+                        " "," "," "," "," "," "," "," ",
+                        " "," "," "," "," "," "," "," ",
+                        " "," "," "," "," "," "," "," ",
+                        " "," "," "," "," "," "," "," ",
+                        "P","P","P","P","P","P","P","P",
+                        "R","N","B","Q","K","B","N","R"};
 
 int main()
 {
-    system("mode con cols=40 lines=15"); //콘솔창 크기 설정 cols :가로, lines :세로
+    //system("mode con cols=40 lines=15"); //콘솔창 크기 설정 cols :가로, lines :세로
 Main:
     textcolor(white);
 	system("cls");
@@ -95,6 +100,7 @@ Main:
 	system("cls");
 	chessDraw();
 	cursor_x = 0, cursor_y = 0;
+	cursorPosDraw(cursor_x,cursor_y);
 	gotoxy(cursor_x, cursor_y);
 	while (1)
 	{
@@ -130,9 +136,12 @@ Main:
 			cursor_x = 13, cursor_y = 8;
 			goto Main;
 			break;
+        case SPACE:
+            if(cursor_x)
 		default:
 			continue;
 		}
+		cursorPosDraw(cursor_x,cursor_y);
 	}
 	return 0;
 }
@@ -181,22 +190,37 @@ void chessDraw()
 {
 	int i, j,k;
 
-	backcolor(112);
 
 	for (i = 0; i < 8; i++)
 	{
+	    textcolor(white);
 		for (j = 0; j < 8; j++)
 			for (k = 0; k < 2; k++)
-				printf("%c", chessPos[i][j][k]);
+            {
+                if(j%2==0&&i%2==0)
+                    backcolor(112);
+                else if(j%2!=0&&i%2==0)
+                    backcolor(7);
+                else if(j%2==0&&i%2!=0)
+                    backcolor(7);
+                else
+                    backcolor(112);
+                printf("%c", chessPos[i][j][k]);
+            }
+        textcolor(yellow);
+        printf(" %d",i+1);
 		printf("\n");
 	}
 
 	backcolor(7);
-
+	textcolor(yellow);
+	printf("a b c d e f g h\n");
+	textcolor(white);
 	printf("-----------------------------\n");
 	printf(" R : 룩, N : 나이트, B : 비숍\n");
 	printf(" Q : 퀸, K : 킹, P : 폰\n");
 	textcolor(grey);
+	printf("\n\n");
 	printf(" 메인화면으로 돌아가기 (Backspace)\n");
 }
 
@@ -224,4 +248,42 @@ void backcolor(int color_number)
 	GetConsoleScreenBufferInfo(hC, &csbi);
 
 	SetConsoleTextAttribute(hC, color_number);
+}
+
+void cursorPosNow(int x, int y)
+{
+    cursorPos = chessPos[x][y];
+}
+
+void cursorPosDraw(int x, int y)
+{
+    textcolor(white);
+    char x_pos=invert(x);
+    int y_pos=y+1;
+    gotoxy(20,1);
+    printf("x축 위치 : %c, y축 위치 :%d",x_pos,y_pos);
+    gotoxy(cursor_x,cursor_y);
+}
+
+char invert(int x)
+{
+    switch(x)
+    {
+    case 0:
+        return 'a';
+    case 2:
+        return 'b';
+    case 4:
+        return 'c';
+    case 6:
+        return 'd';
+    case 8:
+        return 'e';
+    case 10:
+        return 'f';
+    case 12:
+        return 'g';
+    case 14:
+        return 'h';
+    }
 }
