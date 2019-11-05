@@ -8,6 +8,7 @@
 #define ENTER 13
 #define BACK 8
 
+
 void titleDraw();
 void gotoxy(int, int);
 void cursorDraw(int, int);
@@ -18,7 +19,6 @@ char invert(int);
 void timecheck();
 
 int cursor_x = 13, cursor_y = 8;
-int time = 600;
 int main()
 {
 Main:
@@ -82,12 +82,13 @@ Main:
 	}
 	system("cls");
 	chessDraw();
-	cursor_x = 0, cursor_y = 0;
-	gotoxy(cursor_x, cursor_y);
+    cursor_x = 0, cursor_y = 0;
 
 	while (1)
 	{
 
+        timecheck();
+        gotoxy(cursor_x, cursor_y);
 		int key;
 		key = _getch();
 		switch (key)
@@ -185,7 +186,6 @@ void chessDraw()
 	printf("-----------------------------\n");
 	printf(" R : 룩, N : 나이트, B : 비숍\n");
 	printf(" Q : 퀸, K : 킹, P : 폰\n");
-	printf(" 남은 시간 : %d분 %d초\n", min, sec);
 }
 
 void chessRule()
@@ -229,25 +229,25 @@ char invert(int a)
 	}
 }
 
-void timecheck() // 타이머 기능
+void timecheck()
 {
-
-    int min = time / 60;
-    int sec = time % 60;
-    while(1)
+    void main()
     {
-        if(min > 0 && sec >0)
+        int time = 30;
+        int min = time / 60;
+        int sec = time % 60;
+        while(time > 0)
         {
-            gotoxy(21, 4);
-            printf("남은시간 : %d분 %d초\n", min, sec);
+            gotoxy(0, 20);
+            printf("남은시간 = %2d:%2d\n", min, sec);
             Sleep(1000);
             time--;
+            for (int i = 20; i<33; i++)
+                erase(0, i);
         }
-        else if(min ==0 && sec ==0)
-        {
-            gotoxy(21, 4);
-            printf("시간초과!!");
-            break;
-        }
+        system("cls");
+        gotoxy(5, 5);
+        printf("시간초과\n");
+
     }
 }
