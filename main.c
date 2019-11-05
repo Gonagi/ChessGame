@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <Windows.h>
 #include <conio.h>
+#include <string.h>
 #define UP 72
 #define DOWN 80
 #define LEFT 75
@@ -19,11 +20,12 @@ void textcolor(int);
 void backcolor(int);
 void cursorPosNow(int, int);
 void cursorPosDraw(int, int);
+void pieceNowDraw();
 char invert(int);
 
 int cursor_x = 13, cursor_y = 8;
 enum color {red=12, yellow=14, white=7, grey=8};
-char cursorPos;
+char cursorPos[2];
 char *chessPos[8][8] = {"R","N","B","Q","K","B","N","R",
                         "P","P","P","P","P","P","P","P",
                         " "," "," "," "," "," "," "," ",
@@ -100,6 +102,8 @@ Main:
 	system("cls");
 	chessDraw();
 	cursor_x = 0, cursor_y = 0;
+	cursorPosNow(cursor_x,cursor_y);
+	pieceNowDraw();
 	cursorPosDraw(cursor_x,cursor_y);
 	gotoxy(cursor_x, cursor_y);
 	while (1)
@@ -141,6 +145,8 @@ Main:
 		default:
 			continue;
 		}
+		cursorPosNow(cursor_x,cursor_y);
+		pieceNowDraw();
 		cursorPosDraw(cursor_x,cursor_y);
 	}
 	return 0;
@@ -252,7 +258,17 @@ void backcolor(int color_number)
 
 void cursorPosNow(int x, int y)
 {
-    cursorPos = chessPos[x][y];
+    int y_pos=x/2;
+    int x_pos=y;
+    strcpy(cursorPos,chessPos[x_pos][y_pos]);
+}
+
+void pieceNowDraw()
+{
+    textcolor(white);
+    gotoxy(20, 4);
+    printf("현재 고른 말 : %s",cursorPos);
+    gotoxy(cursor_x,cursor_y);
 }
 
 void cursorPosDraw(int x, int y)
