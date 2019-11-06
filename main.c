@@ -105,6 +105,7 @@ Main:
 	cursor_x = 0, cursor_y = 0;
 	cursorPosNow(cursor_x,cursor_y);
 	pieceNowDraw();
+    timecheck();
 	cursorPosDraw(cursor_x,cursor_y);
 	gotoxy(cursor_x, cursor_y);
 	while (1)
@@ -148,6 +149,7 @@ Main:
 		}
 		cursorPosNow(cursor_x,cursor_y);
 		pieceNowDraw();
+		timecheck();
 		cursorPosDraw(cursor_x,cursor_y);
 	}
 	return 0;
@@ -306,23 +308,23 @@ char invert(int x)
 }
 void timecheck()
 {
-    void main()
+    int time = 300;
+    int min;
+    int sec;
+    while(1)
     {
-        int time = 30;
-        int min = time / 60;
-        int sec = time % 60;
-        while(time > 0)
+        min = time / 60;
+        sec = time % 60;
+        gotoxy(20, 0);
+        printf("남은시간 = %2d:%2d\n", min, sec);
+        Sleep(1000);
+        time--;
+        gotoxy(cursor_x,cursor_y);
+        if(time ==0)
         {
-            gotoxy(0, 20);
-            printf("남은시간 = %2d:%2d\n", min, sec);
-            Sleep(1000);
-            time--;
-            for (int i = 20; i<33; i++)
-                erase(0, i);
+            system("cls");
+            gotoxy(7,4);
+            printf("시간초과\n");
         }
-        system("cls");
-        gotoxy(5, 5);
-        printf("시간초과\n");
-
     }
 }
