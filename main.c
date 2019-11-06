@@ -9,6 +9,8 @@
 #define ENTER 13
 #define BACK 8
 #define SPACE 32
+#define mainX 16
+#define mainY 9
 
 void titleDraw();
 void gotoxy(int, int);
@@ -19,25 +21,25 @@ void chessRule();
 void textcolor(int);
 void backcolor(int);
 void cursorPosNow(int, int);
-void cursorPosDraw(int, int);
 void pieceNowDraw();
+void timerDraw();
 char invert(int);
 
-int cursor_x = 13, cursor_y = 8;
+int cursor_x = mainX, cursor_y = mainY;
 enum color {red=12, yellow=14, white=7, grey=8};
 char cursorPos[2];
-char *chessPos[8][8] = {"R","N","B","Q","K","B","N","R",
-                        "P","P","P","P","P","P","P","P",
-                        " "," "," "," "," "," "," "," ",
-                        " "," "," "," "," "," "," "," ",
-                        " "," "," "," "," "," "," "," ",
-                        " "," "," "," "," "," "," "," ",
-                        "P","P","P","P","P","P","P","P",
-                        "R","N","B","Q","K","B","N","R"};
+char *chessPos[8][8] = {"BR","BN","BB","BQ","BK","BB","BN","BR",
+                        "BP","BP","BP","BP","BP","BP","BP","BP",
+                        "  ","  ","  ","  ","  ","  ","  ","  ",
+                        "  ","  ","  ","  ","  ","  ","  ","  ",
+                        "  ","  ","  ","  ","  ","  ","  ","  ",
+                        "  ","  ","  ","  ","  ","  ","  ","  ",
+                        "WP","WP","WP","WP","WP","WP","WP","WP",
+                        "WR","WN","WB","WQ","WK","WB","WN","WR"};
 
 int main()
 {
-    //system("mode con cols=40 lines=15"); //콘솔창 크기 설정 cols :가로, lines :세로
+    system("mode con cols=80 lines=20"); //콘솔창 크기 설정 cols :가로, lines :세로
 Main:
     textcolor(white);
 	system("cls");
@@ -49,12 +51,12 @@ Main:
 		int key;
 		key = _getch();
 
-		if (cursor_y == 8 && key==ENTER)
+		if (cursor_y == mainY && key==ENTER)
 		{
 			system("cls");
 			break;
 		}
-		else if (cursor_y == 9 && key == ENTER)
+		else if (cursor_y == mainY+1 && key == ENTER)
 		{
 			system("cls");
 			chessRule();
@@ -70,7 +72,7 @@ Main:
 				}
 			}
 		}
-		else if (cursor_y == 10 && key == ENTER)
+		else if (cursor_y == mainY+2 && key == ENTER)
 		{
 			system("cls");
 			gotoxy(3, 5);
@@ -82,7 +84,7 @@ Main:
 		switch (key)
 		{
 		case UP:
-			if (cursor_y == 8)
+			if (cursor_y == mainY)
 				continue;
 			cursor_y--;
 			erase(cursor_x, cursor_y + 1);
@@ -90,7 +92,7 @@ Main:
 			break;
 
 		case DOWN:
-			if (cursor_y == 10)
+			if (cursor_y == mainY+2)
 				continue;
 			else
 			cursor_y++;
@@ -104,7 +106,6 @@ Main:
 	cursor_x = 0, cursor_y = 0;
 	cursorPosNow(cursor_x,cursor_y);
 	pieceNowDraw();
-	cursorPosDraw(cursor_x,cursor_y);
 	gotoxy(cursor_x, cursor_y);
 	while (1)
 	{
@@ -137,7 +138,7 @@ Main:
 			gotoxy(cursor_x, cursor_y);
 			break;
 		case BACK:
-			cursor_x = 13, cursor_y = 8;
+			cursor_x = mainX, cursor_y = mainY;
 			goto Main;
 			break;
         case SPACE:
@@ -147,24 +148,23 @@ Main:
 		}
 		cursorPosNow(cursor_x,cursor_y);
 		pieceNowDraw();
-		cursorPosDraw(cursor_x,cursor_y);
 	}
 	return 0;
 }
 
 void titleDraw()
 {
+	printf("\n\n");
+	printf("       ####  #  #  ####   ###   ###   \n");
+	printf("      #      #  #  #     #     #      \n");
+	printf("      #      ####  ####   ###   ###   \n");
+	printf("      #      #  #  #         #     #  \n");
+	printf("       ###   #  #  ####   ###   ###   \n");
 	printf("\n");
-	printf("    ####  #  #  ####   ###   ###   \n");
-	printf("   #      #  #  #     #     #      \n");
-	printf("   #      ####  ####   ###   ###   \n");
-	printf("   #      #  #  #         #     #  \n");
-	printf("    ###   #  #  ####   ###   ###   \n");
-	printf("\n");
-	printf("                 2조    \n");
-	printf("              게임시작   \n");
-	printf("              게임설명   \n");
-	printf("              게임종료   \n");
+	printf("                     2조    \n");
+	printf("                  게임시작   \n");
+	printf("                  게임설명   \n");
+	printf("                  게임종료   \n");
 
 }
 
@@ -179,7 +179,7 @@ void gotoxy(int x, int y)
 
 void cursorDraw(int x, int y)
 {
-	if (cursor_x == 13)
+	if (cursor_x == 16)
 	{
 		gotoxy(x, y);
 		printf(">");
@@ -194,33 +194,65 @@ void erase(int x, int y)
 
 void chessDraw()
 {
-	int i, j,k;
+	int i, j;
 
 
 	for (i = 0; i < 8; i++)
 	{
 	    textcolor(white);
 		for (j = 0; j < 8; j++)
-			for (k = 0; k < 2; k++)
-            {
-                if(j%2==0&&i%2==0)
-                    backcolor(112);
-                else if(j%2!=0&&i%2==0)
-                    backcolor(7);
-                else if(j%2==0&&i%2!=0)
-                    backcolor(7);
-                else
-                    backcolor(112);
-                printf("%c", chessPos[i][j][k]);
-            }
-        textcolor(yellow);
-        printf(" %d",i+1);
+        {
+            char piece=chessPos[i][j];
+            if(j%2==0&&i%2==0)
+                backcolor(112);
+            else if(j%2!=0&&i%2==0)
+                backcolor(7);
+            else if(j%2==0&&i%2!=0)
+                backcolor(7);
+            else
+                backcolor(112);
+
+            if(chessPos[i][j]=="BR")
+                printf("R ");
+            else if(chessPos[i][j]=="BN")
+                printf("N ");
+            else if(chessPos[i][j]=="BB")
+                printf("B ");
+            else if(chessPos[i][j]=="BQ")
+                printf("Q ");
+            else if(chessPos[i][j]=="BK")
+                printf("K ");
+            else if(chessPos[i][j]=="BP")
+                printf("P ");
+            else if(chessPos[i][j]=="WR")
+                printf("R ");
+            else if(chessPos[i][j]=="WN")
+                printf("N ");
+            else if(chessPos[i][j]=="WB")
+                printf("B ");
+            else if(chessPos[i][j]=="WQ")
+                printf("Q ");
+            else if(chessPos[i][j]=="WK")
+                printf("K ");
+            else if(chessPos[i][j]=="WP")
+                printf("P ");
+            else if(chessPos[i][j]=="  ")
+                printf("  ");
+        }
 		printf("\n");
 	}
 
+	for(i=0; i<8; i++)
+    {
+        gotoxy(17,i);
+        textcolor(yellow);
+        printf("%d",i+1);
+    }
+
 	backcolor(7);
 	textcolor(yellow);
-	printf("a b c d e f g h\n");
+	printf("\n");
+	printf(" a b c d e f g h\n");
 	textcolor(white);
 	printf("-----------------------------\n");
 	printf(" R : 룩, N : 나이트, B : 비숍\n");
@@ -267,17 +299,8 @@ void pieceNowDraw()
 {
     textcolor(white);
     gotoxy(20, 4);
-    printf("현재 고른 말 : %s",cursorPos);
-    gotoxy(cursor_x,cursor_y);
-}
 
-void cursorPosDraw(int x, int y)
-{
-    textcolor(white);
-    char x_pos=invert(x);
-    int y_pos=y+1;
-    gotoxy(20,1);
-    printf("x축 위치 : %c, y축 위치 :%d",x_pos,y_pos);
+    printf("현재 고른 말 : %s",cursorPos);
     gotoxy(cursor_x,cursor_y);
 }
 
@@ -301,5 +324,30 @@ char invert(int x)
         return 'g';
     case 14:
         return 'h';
+    }
+}
+
+void timerDraw()
+{
+    int time = 300;
+    int min=time/60;
+    int sec=time%60;
+    while(1)
+    {
+        min=time/60;
+        sec=time%60;
+        gotoxy(20,0);
+        printf("남은시간 = %2d:%2d",min,sec);
+        gotoxy(cursor_x,cursor_y);
+        Sleep(1000);
+        time--;
+
+        if(time<=0)
+        {
+        system("cls");
+        gotoxy(7,4);
+        printf("시간초과");
+        break;
+        }
     }
 }
