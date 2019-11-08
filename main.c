@@ -61,6 +61,8 @@ char *chessPos[8][8] = {{"BR","BN","BB","BQ","BK","BB","BN","BR"},
                         {"  ","  ","  ","  ","  ","  ","  ","  "},
                         {"WP","WP","WP","WP","WP","WP","WP","WP"},
                         {"WR","WN","WB","WQ","WK","WB","WN","WR"}};
+char *chessPiece[13]={"  ","BR","BN","BB","BQ","BK","BP","WR","WN","WB","WQ","WK","WP"};
+
 
 int main()
 {
@@ -185,7 +187,7 @@ Rule:
 	    orderDraw();
         sooDraw();
         CursorView(1);
-        
+
 	    //gotoxy(20,6);
 	    //printf("Test %d %d %d %c",pieceSel_check,sel_x,sel_y,sel_color);  //변수값 확인용 (지울 것)
         gotoxy(cursor_x,cursor_y);
@@ -231,7 +233,7 @@ Rule:
 			goto Main;
 			break;
         case SPACE:
-            if(pieceSel_check==0&&chessPos[x_pos][y_pos]!="  ")
+            if(pieceSel_check==0&&chessPos[x_pos][y_pos]!=chessPiece[0])
         {
             if(chessPos[x_pos][y_pos][0]=='B')
                 sel_color=BLACK;
@@ -252,7 +254,7 @@ Rule:
             sel_x=x_pos, sel_y=y_pos;
             }
         }
-        else if(pieceSel_check==0&&chessPos[x_pos][y_pos]=="  ")
+        else if(pieceSel_check==0&&chessPos[x_pos][y_pos]==chessPiece[0])
         {
             gotoxy(1,10);
             printf("                        ");
@@ -260,7 +262,7 @@ Rule:
             pieceSel_check=0;
             pieceNowDraw();
         }
-        else if(pieceSel_check==1&&chessPos[x_pos][y_pos]!="  ")
+        else if(pieceSel_check==1&&chessPos[x_pos][y_pos]!=chessPiece[0])
         {
             if (sel_color!=chessPos[x_pos][y_pos][0])
             {
@@ -283,7 +285,7 @@ Rule:
                 pieceSel_check=0;
             }
         }
-        else if(pieceSel_check==1&&chessPos[x_pos][y_pos]=="  ")
+        else if(pieceSel_check==1&&chessPos[x_pos][y_pos]==chessPiece[0])
         {
             gotoxy(1,10);
             printf("                        ");
@@ -354,31 +356,31 @@ void chessDraw()
             else
                 backcolor(112);
 
-            if(chessPos[i][j]=="BR")
+            if(chessPos[i][j]==chessPiece[1])
                 printf("■");
-            else if(chessPos[i][j]=="BN")
+            else if(chessPos[i][j]==chessPiece[2])
                 printf("◆");
-            else if(chessPos[i][j]=="BB")
+            else if(chessPos[i][j]==chessPiece[3])
                 printf("♠");
-            else if(chessPos[i][j]=="BQ")
+            else if(chessPos[i][j]==chessPiece[4])
                 printf("♥");
-            else if(chessPos[i][j]=="BK")
+            else if(chessPos[i][j]==chessPiece[5])
                 printf("★");
-            else if(chessPos[i][j]=="BP")
+            else if(chessPos[i][j]==chessPiece[6])
                 printf("●");
-            else if(chessPos[i][j]=="WR")
+            else if(chessPos[i][j]==chessPiece[7])
                 printf("□");
-            else if(chessPos[i][j]=="WN")
+            else if(chessPos[i][j]==chessPiece[8])
                 printf("◇");
-            else if(chessPos[i][j]=="WB")
+            else if(chessPos[i][j]==chessPiece[9])
                 printf("♤");
-            else if(chessPos[i][j]=="WQ")
+            else if(chessPos[i][j]==chessPiece[10])
                 printf("♡");
-            else if(chessPos[i][j]=="WK")
+            else if(chessPos[i][j]==chessPiece[11])
                 printf("☆");
-            else if(chessPos[i][j]=="WP")
+            else if(chessPos[i][j]==chessPiece[12])
                 printf("○");
-            else if(chessPos[i][j]=="  ")
+            else if(chessPos[i][j]==chessPiece[0])
                 printf("  ");
         }
 		printf("\n");
@@ -469,29 +471,29 @@ void pieceNowDraw(int x, int y)
     gotoxy(20, 2);
     printf("                         ");
     gotoxy(20,2);
-    if(chessPos[x_pos][y_pos]=="BR")
+    if(chessPos[x_pos][y_pos]==chessPiece[1])
         printf("현재 고른 말 : 흑색 룩");
-    else if(chessPos[x_pos][y_pos]=="BN")
+    else if(chessPos[x_pos][y_pos]==chessPiece[2])
         printf("현재 고른 말 : 흑색 나이트");
-    else if(chessPos[x_pos][y_pos]=="BB")
+    else if(chessPos[x_pos][y_pos]==chessPiece[3])
         printf("현재 고른 말 : 흑색 비숍");
-    else if(chessPos[x_pos][y_pos]=="BQ")
+    else if(chessPos[x_pos][y_pos]==chessPiece[4])
         printf("현재 고른 말 : 흑색 퀸");
-    else if(chessPos[x_pos][y_pos]=="BK")
+    else if(chessPos[x_pos][y_pos]==chessPiece[5])
         printf("현재 고른 말 : 흑색 킹");
-    else if(chessPos[x_pos][y_pos]=="BP")
+    else if(chessPos[x_pos][y_pos]==chessPiece[6])
         printf("현재 고른 말 : 흑색 폰");
-    else if(chessPos[x_pos][y_pos]=="WR")
+    else if(chessPos[x_pos][y_pos]==chessPiece[7])
         printf("현재 고른 말 : 백색 룩");
-    else if(chessPos[x_pos][y_pos]=="WN")
+    else if(chessPos[x_pos][y_pos]==chessPiece[8])
         printf("현재 고른 말 : 백색 나이트");
-    else if(chessPos[x_pos][y_pos]=="WB")
+    else if(chessPos[x_pos][y_pos]==chessPiece[9])
         printf("현재 고른 말 : 백색 비숍");
-    else if(chessPos[x_pos][y_pos]=="WQ")
+    else if(chessPos[x_pos][y_pos]==chessPiece[10])
         printf("현재 고른 말 : 백색 퀸");
-    else if(chessPos[x_pos][y_pos]=="WK")
+    else if(chessPos[x_pos][y_pos]==chessPiece[11])
         printf("현재 고른 말 : 백색 킹");
-    else if(chessPos[x_pos][y_pos]=="WP")
+    else if(chessPos[x_pos][y_pos]==chessPiece[12])
         printf("현재 고른 말 : 백색 폰");
     else
         printf("현재 고른 말 : 없음");
