@@ -599,6 +599,9 @@ void gameInit()
 	textcolor(white);
 	cursor_x = 4, cursor_y = 4;
 	pieceSel_check = 0;
+	check_gameend=0;
+	order=0;
+	soo=1;
 	time=SET_TIME;
 	gotoxy(20, 2);
 	printf("현재 고른 말 : 없음");
