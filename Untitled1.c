@@ -1234,64 +1234,113 @@ void blackPawn(int x, int y)
 }
 void whiteNight(int x, int y)   // 백색 나이트
 {
+    int a = 0;
 
-        if(((chessPos[x-2][y-1] == chessPiece[0]) || (chessPos[x-2][y-1][0] == BLACK)) && (2 <= x <= 7) && (1 <= y <= 7))
-                movable[x-2][y-1] = 1;
+    if(((chessPos[x-2][y-1] == chessPiece[0]) || (chessPos[x-2][y-1][0] == BLACK)) && (2 <= x <= 7) && (1 <= y <= 7))
+    {
+        a++;
+        movable[x-2][y-1] = 1;
+    }
 
-        else if(((chessPos[x-1][y-2] == chessPiece[0]) || (chessPos[x-1][y-2][0] == BLACK)) && (1 <= x <= 7) && (2 <= y <= 7))
-                movable[x-1][y-2] = 1;
+    if(((chessPos[x-1][y-2] == chessPiece[0]) || (chessPos[x-1][y-2][0] == BLACK)) && (1 <= x <= 7) && (2 <= y <= 7))
+    {
+        a++;
+        movable[x-1][y-2] = 1;
+    }
 
-        else if(((chessPos[x+1][y-2] == chessPiece[0]) || (chessPos[x+1][y-2][0] == BLACK)) && (0 <= x <= 6) && (2 <= y <= 7))
-                movable[x+1][y-2] = 1;
+    if(((chessPos[x+1][y-2] == chessPiece[0]) || (chessPos[x+1][y-2][0] == BLACK)) && (0 <= x <= 6) && (2 <= y <= 7))
+    {
+        a++;
+        movable[x+1][y-2] = 1;
+    }
 
-        else if(((chessPos[x+2][y-1] == chessPiece[0]) || (chessPos[x+2][y-1][0] == BLACK)) && (0 <= x <= 5) && (1 <= y <= 7))
-                movable[x+2][y-1] = 1;
+    if(((chessPos[x+2][y-1] == chessPiece[0]) || (chessPos[x+2][y-1][0] == BLACK)) && (0 <= x <= 5) && (1 <= y <= 7))
+    {
+        a++;
+        movable[x+2][y-1] = 1;
+    }
 
-        else if(((chessPos[x+2][y+1] == chessPiece[0]) || (chessPos[x+2][y+1][0] == BLACK)) && (0 <= x <= 5) && (0 <= y <= 6))
-                movable[x+2][y+1] = 1;
+    if(((chessPos[x+2][y+1] == chessPiece[0]) || (chessPos[x+2][y+1][0] == BLACK)) && (0 <= x <= 5) && (0 <= y <= 6))
+    {
+        a++;
+        movable[x+2][y+1] = 1;
+    }
 
-        else if(((chessPos[x+1][y+2] == chessPiece[0]) || (chessPos[x+1][y+2][0] == BLACK)) && (0 <= x <= 6) && (0 <= y <= 5))
-                movable[x+1][y+2] = 1;
+    if(((chessPos[x+1][y+2] == chessPiece[0]) || (chessPos[x+1][y+2][0] == BLACK)) && (0 <= x <= 6) && (0 <= y <= 5))
+    {
+        a++;
+        movable[x+1][y+2] = 1;
+    }
 
-        else if(((chessPos[x-1][y+2] == chessPiece[0]) || (chessPos[x-1][y+2][0] == BLACK)) && (1 <= x <= 7) && (0 <= y <= 5))
-                movable[x-1][y+2] = 1;
+    if(((chessPos[x-1][y+2] == chessPiece[0]) || (chessPos[x-1][y+2][0] == BLACK)) && (1 <= x <= 7) && (0 <= y <= 5))
+    {
+        a++;
+        movable[x-1][y+2] = 1;
+    }
 
-        else if(((chessPos[x-2][y+1] == chessPiece[0]) || (chessPos[x-2][y+1][0] == BLACK)) && (2 <= x <= 7) && (0 <= y <= 6))
-                movable[x-2][y+1] = 1;
-        else
-            wrongMove_Alert();
+    if(((chessPos[x-2][y+1] == chessPiece[0]) || (chessPos[x-2][y+1][0] == BLACK)) && (2 <= x <= 7) && (0 <= y <= 6))
+    {
+        a++;
+        movable[x-2][y+1] = 1;
+    }
+    else if(a == 0)
+        wrongMove_Alert();
 
 }
 
 void blackNight(int x, int y)
 {
+    int a = 0;
 
-        if(((chessPos[x-2][y-1] == chessPiece[0]) || (chessPos[x-2][y-1][0] == WHITE)) && (2 <= x <= 7) &&(1 <= y <= 7))
-                movable[x-2][y-1] = 1;
+    if(((chessPos[x-2][y-1] == chessPiece[0]) || (chessPos[x-2][y-1][0] == WHITE)) && (2 <= x <= 7) &&(1 <= y <= 7))
+    {
+        a++;
+        movable[x-2][y-1] = 1;
+    }
 
-        else if(((chessPos[x-1][y-2] == chessPiece[0]) || (chessPos[x-1][y-2][0] == WHITE)) && (1 <= x <= 7) && (2 <= y <= 7))
-                movable[x-1][y-2] = 1;
+    if(((chessPos[x-1][y-2] == chessPiece[0]) || (chessPos[x-1][y-2][0] == WHITE)) && (1 <= x <= 7) && (2 <= y <= 7))
+    {
+        a++;
+        movable[x-1][y-2] = 1;
+    }
 
-        else if(((chessPos[x+1][y-2] == chessPiece[0]) || (chessPos[x+1][y-2][0] == WHITE)) && (0 <= x <= 6) && (2 <= y <= 7))
-                movable[x+1][y-2] = 1;
+    if(((chessPos[x+1][y-2] == chessPiece[0]) || (chessPos[x+1][y-2][0] == WHITE)) && (0 <= x <= 6) && (2 <= y <= 7))
+    {
+        a++;
+        movable[x+1][y-2] = 1;
+    }
 
-        else if(((chessPos[x+2][y-1] == chessPiece[0]) || (chessPos[x+2][y-1][0] == WHITE)) && (0 <= x <= 5) && (1 <= y <= 7))
-                movable[x+2][y-1] = 1;
+    if(((chessPos[x+2][y-1] == chessPiece[0]) || (chessPos[x+2][y-1][0] == WHITE)) && (0 <= x <= 5) && (1 <= y <= 7))
+    {
+        a++;
+        movable[x+2][y-1] = 1;
+    }
 
-        else if(((chessPos[x+2][y+1] == chessPiece[0]) || (chessPos[x+2][y+1][0] == WHITE)) && (0 <= x <= 5) && (0 <= y <= 6))
-                movable[x+2][y+1] = 1;
+    if(((chessPos[x+2][y+1] == chessPiece[0]) || (chessPos[x+2][y+1][0] == WHITE)) && (0 <= x <= 5) && (0 <= y <= 6))
+    {
+        a++;
+        movable[x+2][y+1] = 1;
+    }
 
-        else if(((chessPos[x+1][y+2] == chessPiece[0]) || (chessPos[x+1][y+2][0] == WHITE)) && (0 <= x <= 6) && (0 <= y <= 5))
-                movable[x+1][y+2] = 1;
+    if(((chessPos[x+1][y+2] == chessPiece[0]) || (chessPos[x+1][y+2][0] == WHITE)) && (0 <= x <= 6) && (0 <= y <= 5))
+    {
+        a++;
+        movable[x+1][y+2] = 1;
+    }
 
-        else if(((chessPos[x-1][y+2] == chessPiece[0]) || (chessPos[x-1][y+2][0] == WHITE)) && (1 <= x <= 7) && (0 <= y <= 5))
-                movable[x-1][y+2] = 1;
+    if(((chessPos[x-1][y+2] == chessPiece[0]) || (chessPos[x-1][y+2][0] == WHITE)) && (1 <= x <= 7) && (0 <= y <= 5))
+    {
+        a++;
+        movable[x-1][y+2] = 1;
+    }
 
-        else if(((chessPos[x-2][y+1] == chessPiece[0]) || (chessPos[x-2][y+1][0] == WHITE)) && (2 <= x <= 7) && (0 <= y <= 6))
-                movable[x-2][y+1] = 1;
-
-        else
-            wrongMove_Alert();
+    if(((chessPos[x-2][y+1] == chessPiece[0]) || (chessPos[x-2][y+1][0] == WHITE)) && (2 <= x <= 7) && (0 <= y <= 6))
+    {
+        a++;
+        movable[x-2][y+1] = 1;
+    }
+    else if(a == 0)
+        wrongMove_Alert();
 
 }
 
