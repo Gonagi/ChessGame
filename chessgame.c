@@ -18,66 +18,72 @@
 #define NONE 'N'
 #define SET_TIME (300 + 1)
 
-void titleDraw();   //타이틀 화면 출력
-void chessDraw();   //체스판 출력
-void pieceNowDraw();    //선택된 말 표시
-void pieceDeadDraw();   //죽은 말 표시
+void titleDraw();        //타이틀 화면 출력
+void chessDraw();        //체스판 출력
+void pieceNowDraw();     //선택된 말 표시
+void pieceDeadDraw();    //죽은 말 표시
 void cursorDraw(int, int);  //커서 '>' 출력
-void pieceDraw(int, int);
+void pieceDraw(int, int);   //체스판에 말 표시 함수
 void orderDraw();   //순서 표시
 void sooDraw();     //몇 수인지 표시
 void chessRule();   //체스 규칙 설명내용 출력
 void controlRule(); //조작 설명내용 출력
 unsigned _stdcall timerDraw(void *);  //스레드를 이용한 타이머 함수
 
-void pieceMove(int, int);   //말 이동 함수
-void pieceSelect(int, int);
+void pieceMove(int, int);       //말 이동 함수
+void pieceSelect(int, int);     //말 선택해서 전역 변수에 값 저장하는 함수
 void gameInit();    //게임 초기화
 void gameCheck();   //게임 내 체크 사항 확인
-void turnPiece(int, int);
+void turnPiece(int, int);   //움직인 후 뒤에 0 넣는 함수
 
+void whiteKing(int, int);
+void blackKing(int, int);
 void whitePawn(int, int);   // 백색 폰
 void blackPawn(int, int);   // 흑색 폰
 void whiteNight(int, int);  // 백색 나이트
 void blackNight(int, int);  // 흑색 나이트
+void whiteRook(int, int);   // 백색 룩
+void blackRook(int, int);   // 흑색 룩
 
-void whitePromotion(int);
-void blackPromotion(int);
+void whitePromotion(int);   //백색팀 프로모션 룰
+void blackPromotion(int);   //흑색팀 프로모션 룰
 
-void wrongMove_Alert(); //잘못된 움직임 경고
+void wrongMove_Alert();     //잘못된 움직임 경고
 void wrongOrder_Alert();    //순서 경고
-void whiteWin_Alert();
-void blackWin_Alert();
-void timer_Alert();
+void whiteWin_Alert();      //백색 승 알림
+void blackWin_Alert();      //흑색 승 알림
+void timer_Alert();         //시간 초과 경고
+void whiteSur_Alert();
+void blackSur_Alert();
 
-void CursorView(char); //커서 투명 함수
+void CursorView(char);  //커서 투명 함수
 void gotoxy(int, int);  //콘솔내 좌표 이동
 void erase(int, int);   //해당 좌표 지우기
-char invert(int);
+char invert(int);       //1~8을 a~h로 바꾸는 함수
 void textcolor(int);    //콘솔내 글씨 색깔 변경
 void backcolor(int);    //콘솔내 바탕 색깔 변경
 
-int cursor_x = mainX, cursor_y = mainY;
-int sel_x, sel_y;   //스페이스바로 골랐을 당시의 x y 좌표
-char sel_color = NONE;
-char *sel_piece;
-int sel_check = 0;
-int order = 0;    //짝수면 백, 홀수면 흑
-int soo = 1;
-int time = SET_TIME;
-int check_error = 0;
-int check_winner = 0;  //1이면 백팀 승, 2면 흑팀 승
-int check_rule = 0;
-int temp;   //매 시작 초기화
-int w_order;
-int b_order;
+int cursor_x = mainX, cursor_y = mainY; //메인화면에서의 x, y 좌표
+int sel_x, sel_y;       //스페이스바로 골랐을 당시의 x y 좌표
+char sel_color = NONE;  //스페이스바로 고른 말의 색깔
+char *sel_piece;        //스페이스바로 고른 말의 종류
+int sel_check = 0;      //선택했는 지의 여부
+int order = 0;          //짝수면 백, 홀수면 흑
+int soo = 1;            //현재 몇 수
+int time = SET_TIME;    //타이머 시간 설정
+int check_error = 0;    //에러 발생 여부
+int check_winner = 0;   //1이면 백팀 승, 2면 흑팀 승
+int check_rule = 0;     //게임 설명에서 뒤로가기 구현하기 위한 변수
+int temp;               //매 시작 초기화
+int w_order;            //앙파상 구현을 위한 순서 저장 변수
+int b_order;            // ""
 
-int check_whitePromotion = 0;
-int check_blackPromotion = 0;
-int check_whiteAng = 0;
-int check_blackAng = 0;
+int check_whitePromotion = 0;       //백색팀 프로모션 여부 확인
+int check_blackPromotion = 0;       //흑색팀 프로모션 여부 확인
+int check_whiteAng = 0;             //백색팀 앙파상 여부 확인
+int check_blackAng = 0;             //흑색팀 앙파상 여부 확인
 
-int check_wpPr = 0;
+int check_wpPr = 0;                 //프로모션을 통해 바뀐 목숨 관리 변수
 int check_bpPr = 0;
 int check_wqPr = 0;
 int check_bqPr = 0;
@@ -87,14 +93,14 @@ int check_wnPr = 0;
 int check_bnPr = 0;
 int check_wrPr = 0;
 int check_brPr = 0;
-int bk_live = 0, wk_live = 0;
+int bk_live = 0, wk_live = 0;       //죽은 말 표시를 위한 생사 확인 변수
 int bq_live = 0, wq_live = 0;
 int br_live = 0, wr_live = 0;
 int bn_live = 0, wn_live = 0;
 int bb_live = 0, wb_live = 0;
 int bp_live = 0, wp_live = 0;
 
-enum color { red = 12, yellow = 14, white = 7, grey = 8 };
+enum color { red = 12, yellow = 14, white = 7, grey = 8 };      //textcolor에서 쓰일 enum 선언
 char *chessPos[8][8] = { {"BR1","BN1","BB1","BQ1","BK1","BB1","BN1","BR1"}, //1은 한번도 움직이지 않은 말, 0은 한번 이상 움직인 말
 						{"BP1","BP1","BP1","BP1","BP1","BP1","BP1","BP1"},
 						{"  ","  ","  ","  ","  ","  ","  ","  "},
@@ -104,9 +110,18 @@ char *chessPos[8][8] = { {"BR1","BN1","BB1","BQ1","BK1","BB1","BN1","BR1"}, //1�
 						{"WP1","WP1","WP1","WP1","WP1","WP1","WP1","WP1"},
 						{"WR1","WN1","WB1","WQ1","WK1","WB1","WN1","WR1"} };
 
-char *chessPiece[13] = { "  ","BR","BN","BB","BQ","BK","BP","WR","WN","WB","WQ","WK","WP" };
+char *chessPiece[13] = { "  ","BR","BN","BB","BQ","BK","BP","WR","WN","WB","WQ","WK","WP" };    //포인터끼리 비교 안헀다고 경고 나올 때 쓰일 포인터 배열
 
-int movable[8][8] = {{0,0,0,0,0,0,0,0},     //0은 이동 불가 1은 이동 가능
+int movable[8][8] = {{0,0,0,0,0,0,0,0},     //체스말들의 이동 및 상태 표시 배열 -1은 현재 선택 중 0은 이동 불가 1은 이동 가능 2는 앙파상 3은 특수 이동
+                      {0,0,0,0,0,0,0,0},
+                      {0,0,0,0,0,0,0,0},
+                      {0,0,0,0,0,0,0,0},
+                      {0,0,0,0,0,0,0,0},
+                      {0,0,0,0,0,0,0,0},
+                      {0,0,0,0,0,0,0,0},
+                      {0,0,0,0,0,0,0,0} };
+
+int check[8][8] = {{0,0,0,0,0,0,0,0},     //체스말 체크 판별 0은 기본 타일 1은 말 이동 거리
                       {0,0,0,0,0,0,0,0},
                       {0,0,0,0,0,0,0,0},
                       {0,0,0,0,0,0,0,0},
@@ -231,7 +246,7 @@ Main:
 
 	gameInit();
 	gameCheck();
-	while (1)
+	while (1)   //게임 메인 while문
 	{
 		CursorView(0);
 		gameCheck();
@@ -260,8 +275,8 @@ Main:
 		sooDraw();
 		CursorView(1);
 
-		gotoxy(20,7);
-		printf("Test M%d %d %d C[2]%c ",movable[cursor_y][cursor_x/2],check_wpPr,check_wqPr,chessPos[cursor_y][cursor_x/2][2]);  //변수값 확인용 (지울 것)
+		//gotoxy(20,7);
+		//printf("Test M%d %d %d C[2]%c ",movable[cursor_y][cursor_x/2],check_wpPr,check_wqPr,chessPos[cursor_y][cursor_x/2][2]);  //변수값 확인용 (지울 것)
 		gotoxy(cursor_x, cursor_y);
 
         int x_pos = cursor_y;
@@ -274,6 +289,18 @@ Main:
 
 		switch (key)
 		{
+        case 's':
+            if (order%2 == 0)
+               whiteSur_Alert();
+
+            else
+                blackSur_Alert();
+        case 'S':
+            if (order%2 == 0)
+               whiteSur_Alert();
+
+            else
+                blackSur_Alert();
 		case UP:
 			if (cursor_y == 0)
 				continue;
@@ -343,9 +370,9 @@ Main:
                 }
 			}
 
-			else if (sel_check == 1)    //말 선택을 했을 경우
+			else if (sel_check == 1)    //2.말 선택을 했을 경우
 			{
-                if (movable[x_pos][y_pos] == 1)
+                if (movable[x_pos][y_pos] == 1)     //2-1. 이동하고자 하는 위치가 movable = 1이면
                         pieceMove(x_pos, y_pos);
 
                 else if (movable[x_pos][y_pos] == 2) //앙파상 적용
@@ -365,7 +392,7 @@ Main:
                     }
                 else if (movable[x_pos][y_pos] == 3)    //특수 룰
                 {
-                    if (sel_piece == "WP")
+                    if (sel_piece == "WP")              //앙파상
                     {
                         chessPos[x_pos+1][y_pos] = chessPiece[0];
                         pieceMove(x_pos, y_pos);
@@ -375,31 +402,58 @@ Main:
                         chessPos[x_pos-1][y_pos] = chessPiece[0];
                         pieceMove(x_pos, y_pos);
                     }
+                    else if (sel_piece == "WK")         //캐슬링
+                    {
+                        if (y_pos == 6)
+                        {
+                            chessPos[x_pos][y_pos-1] = "WR1";
+                            chessPos[x_pos][y_pos+1] = chessPiece[0];
+                            pieceMove(x_pos, y_pos);
+                        }
+                        else
+                        {
+                            chessPos[x_pos][y_pos+1] = "WR1";
+                            chessPos[x_pos][y_pos-2] = chessPiece[0];
+                            pieceMove(x_pos, y_pos);
+                        }
+                    }
+                    else if (sel_piece == "BK")
+                    {
+                        if (y_pos == 6)
+                        {
+                            chessPos[x_pos][y_pos-1] = "BR1";
+                            chessPos[x_pos][y_pos+1] = chessPiece[0];
+                            pieceMove(x_pos, y_pos);
+                        }
+                        else
+                        {
+                            chessPos[x_pos][y_pos+1] = "BR1";
+                            chessPos[x_pos][y_pos-2] = chessPiece[0];
+                            pieceMove(x_pos, y_pos);
+                        }
+                    }
+                }
+                else if (movable[x_pos][y_pos] == -1)
+                {
+                    gotoxy(1, 10);
+                    printf("                        ");
+                    for(int i=0; i<=7; i++)
+                        for(int j=0; j<=7; j++)
+                            movable[i][j]=0;
+                    chessDraw();
+                    gotoxy(20, 2);
+                    printf("현재 고른 말 : 없음       ");
+                    gotoxy(cursor_x, cursor_y);
+                    sel_check = 0;
                 }
 
-                else if (movable[x_pos][y_pos] == 0)
+                else if (movable[x_pos][y_pos] == 0)        //이동하고자 하는 위치가 movable = 0이면
                 {
-                    if (sel_x == x_pos && sel_y == y_pos)
-                    {
-                        gotoxy(1, 10);
-                        printf("                        ");
-                        for(int i=0; i<=7; i++)
-                            for(int j=0; j<=7; j++)
-                                movable[i][j]=0;
-                        chessDraw();
-                        gotoxy(20, 2);
-                        printf("현재 고른 말 : 없음       ");
-                        gotoxy(cursor_x, cursor_y);
-                        sel_check = 0;
-                    }
-                    else
-                    {
-                        wrongMove_Alert();
-                        chessDraw();
-                        gotoxy(20, 2);
-                        printf("현재 고른 말 : 없음       ");
-                        sel_check = 0;
-                    }
+                    wrongMove_Alert();
+                    chessDraw();
+                    gotoxy(20, 2);
+                    printf("현재 고른 말 : 없음       ");
+                    sel_check = 0;
                 }
             }
 
@@ -462,6 +516,13 @@ void chessDraw()
             else if (movable[i][j] == 3)
             {
                 backcolor(144);
+                printf("\b\b");
+                pieceDraw(i,j);
+                textcolor(white);
+            }
+            else if (movable[i][j] == -1)
+            {
+                backcolor(224);
                 printf("\b\b");
                 pieceDraw(i,j);
                 textcolor(white);
@@ -726,10 +787,16 @@ void pieceMove(int x, int y)
 void pieceSelect(int x_pos, int y_pos)
 {
 	if (chessPos[x_pos][y_pos][0] == 'B' && chessPos[x_pos][y_pos][1] == 'R')
+    {
         sel_piece = "BR";
+        movable[x_pos][y_pos] = -1;
+        blackRook(x_pos, y_pos);
+        chessDraw();
+    }
 	else if (chessPos[x_pos][y_pos][0] == 'B' && chessPos[x_pos][y_pos][1] == 'N')
     {
 		sel_piece = "BN";
+		movable[x_pos][y_pos] = -1;
 		blackNight(x_pos, y_pos);
 		chessDraw();
     }
@@ -738,18 +805,30 @@ void pieceSelect(int x_pos, int y_pos)
 	else if (chessPos[x_pos][y_pos][0] == 'B' && chessPos[x_pos][y_pos][1] == 'Q')
 		sel_piece = "BQ";
 	else if (chessPos[x_pos][y_pos][0] == 'B' && chessPos[x_pos][y_pos][1] == 'K')
-		sel_piece = "BK";
+    {
+        sel_piece = "BK";
+        movable[x_pos][y_pos] = -1;
+        blackKing(x_pos, y_pos);
+        chessDraw();
+    }
 	else if (chessPos[x_pos][y_pos][0] == 'B' && chessPos[x_pos][y_pos][1] == 'P')
     {
         sel_piece = "BP";
+        movable[x_pos][y_pos] = -1;
         blackPawn(x_pos, y_pos);
         chessDraw();
     }
 	else if (chessPos[x_pos][y_pos][0] == 'W' && chessPos[x_pos][y_pos][1] == 'R')
-		sel_piece = "WR";
+    {
+        sel_piece = "WR";
+        movable[x_pos][y_pos] = -1;
+        whiteRook(x_pos, y_pos);
+        chessDraw();
+    }
 	else if (chessPos[x_pos][y_pos][0] == 'W' && chessPos[x_pos][y_pos][1] == 'N')
     {
 		sel_piece = "WN";
+		movable[x_pos][y_pos] = -1;
 		whiteNight(x_pos, y_pos);
 		chessDraw();
     }
@@ -758,10 +837,16 @@ void pieceSelect(int x_pos, int y_pos)
 	else if (chessPos[x_pos][y_pos][0] == 'W' && chessPos[x_pos][y_pos][1] == 'Q')
 		sel_piece = "WQ";
 	else if (chessPos[x_pos][y_pos][0] == 'W' && chessPos[x_pos][y_pos][1] == 'K')
-		sel_piece = "WK";
+    {
+        sel_piece = "WK";
+        movable[x_pos][y_pos] = -1;
+        whiteKing(x_pos, y_pos);
+        chessDraw();
+    }
 	else if (chessPos[x_pos][y_pos][0] == 'W' && chessPos[x_pos][y_pos][1] == 'P')
     {
         sel_piece = "WP";
+        movable[x_pos][y_pos] = -1;
         whitePawn(x_pos, y_pos);
         chessDraw();
     }
@@ -773,7 +858,7 @@ void pieceSelect(int x_pos, int y_pos)
 void gameInit()
 {
     time=SET_TIME;
-    //_beginthreadex(NULL,0,timerDraw,0,0,NULL);
+    //_beginthreadex(NULL,0,timerDraw,0,0,NULL);      //타이머 표시
 	int i,j;
 	system("cls");
 	chessDraw();
@@ -822,7 +907,7 @@ void gameInit()
 	chessPos[7][2] = "WB1";
 	chessPos[7][3] = "WQ1";
 	chessPos[7][4] = "WK1";
-	chessPos[7][5] = "WB1";
+    chessPos[7][5] = "WB1";
 	chessPos[7][6] = "WN1";
 	chessPos[7][7] = "WR1";
 
@@ -1065,6 +1150,96 @@ void timer_Alert()
 	gotoxy(cursor_x, cursor_y);
 }
 
+void whiteSur_Alert()
+{
+    int check = 1;
+    while(check)
+    {
+        char answer;
+        gotoxy(1, 10);
+        printf("                        ");
+        gotoxy(1, 10);
+        textcolor(red);
+        printf("백팀이 기권했습니다.");
+        textcolor(white);
+        gotoxy(1, 11);
+        printf("승낙하려면 y, 아니면 n을 입력 : ");
+        scanf("%c",&answer);
+        switch(answer)
+        {
+        case 'y':
+            check_winner = 2;
+            check = 0;
+            break;
+        case 'n':
+            check = 0;
+            break;
+        case 'Y':
+            check_winner = 2;
+            check = 0;
+            break;
+        case 'N':
+            check = 0;
+            break;
+        default:
+            gotoxy(1, 11);
+            printf("승낙하려면 y, 아니면 n을 입력 :      ");
+            continue;
+        }
+    }
+    gotoxy(1, 10);
+    printf("                                          ");
+    gotoxy(1, 11);
+    printf("                                          ");
+    chessDraw();
+    gotoxy(cursor_x, cursor_y);
+}
+
+void blackSur_Alert()
+{
+    int check = 1;
+    while(check)
+    {
+        char answer;
+        gotoxy(1, 10);
+        printf("                        ");
+        gotoxy(1, 10);
+        textcolor(red);
+        printf("흑팀이 기권했습니다.");
+        textcolor(white);
+        gotoxy(1, 11);
+        printf("승낙하려면 y, 아니면 n을 입력 : ");
+        scanf("%c",&answer);
+        switch(answer)
+        {
+        case 'y':
+            check_winner = 1;
+            check = 0;
+            break;
+        case 'n':
+            check = 0;
+            break;
+        case 'Y':
+            check_winner = 1;
+            check = 0;
+            break;
+        case 'N':
+            check = 0;
+            break;
+        default:
+            gotoxy(1, 11);
+            printf("승낙하려면 y, 아니면 n을 입력 :      ");
+            continue;
+        }
+    }
+    gotoxy(1, 10);
+    printf("                                          ");
+    gotoxy(1, 11);
+    printf("                                          ");
+    chessDraw();
+    gotoxy(cursor_x, cursor_y);
+}
+
 void whitePromotion(int x)
 {
     int check = 1;
@@ -1185,6 +1360,126 @@ void blackPromotion(int x)
     printf("                                          ");
     chessDraw();
     gotoxy(cursor_x, cursor_y);
+}
+
+void whiteKing(int x, int y)
+{
+    if (x-1 >= 0)
+    {
+        if (y-1 >= 0)
+        {
+            if (chessPos[x-1][y-1] == chessPiece[0] || chessPos[x-1][y-1][0] == BLACK)
+                movable[x-1][y-1] = 1;
+        }
+
+        if (y+1 <= 7)
+        {
+            if (chessPos[x-1][y+1] == chessPiece[0] || chessPos[x-1][y+1][0] == BLACK)
+                movable[x-1][y+1] = 1;
+        }
+
+        if (chessPos[x-1][y] == chessPiece[0] || chessPos[x-1][y][0] == BLACK)
+            movable[x-1][y] = 1;
+    }
+
+    if (x+1 <= 7)
+    {
+        if (y-1 >= 0)
+        {
+            if (chessPos[x+1][y-1] == chessPiece[0] || chessPos[x+1][y-1][0] == BLACK)
+                movable[x+1][y-1] = 1;
+        }
+
+        if (y+1 <= 7)
+        {
+            if (chessPos[x+1][y+1] == chessPiece[0] || chessPos[x+1][y+1][0] == BLACK)
+                movable[x+1][y+1] = 1;
+        }
+
+        if (chessPos[x+1][y] == chessPiece[0] || chessPos[x+1][y][0] == BLACK)
+            movable[x+1][y] = 1;
+    }
+
+    if (y-1 >= 0)
+    {
+        if (chessPos[x][y-1] == chessPiece[0] || chessPos[x][y-1][0] == BLACK)
+            movable[x][y-1] = 1;
+    }
+
+    if (y+1 <= 7)
+    {
+        if (chessPos[x][y+1] == chessPiece[0] || chessPos[x][y+1][0] == BLACK)
+            movable[x][y+1] = 1;
+    }
+
+    if (chessPos[x][y] == "WK1")        //캐슬링
+    {
+        if (chessPos[7][5] == chessPiece[0] && chessPos[7][6] == chessPiece[0] && chessPos[7][7] == "WR1")
+            movable[x][y+2] = 3;
+
+        if (chessPos[7][3] == chessPiece[0] && chessPos[7][2] == chessPiece[0] && chessPos[7][1] == chessPiece[0] && chessPos[7][0] == "WR1")
+            movable [x][y-2] = 3;
+    }
+}
+
+void blackKing(int x, int y)
+{
+    if (x-1 >= 0)
+    {
+        if (y-1 >= 0)
+        {
+            if (chessPos[x-1][y-1] == chessPiece[0] || chessPos[x-1][y-1][0] == WHITE)
+                movable[x-1][y-1] = 1;
+        }
+
+        if (y+1 <= 7)
+        {
+            if (chessPos[x-1][y+1] == chessPiece[0] || chessPos[x-1][y+1][0] == WHITE)
+                movable[x-1][y+1] = 1;
+        }
+
+        if (chessPos[x-1][y] == chessPiece[0] || chessPos[x-1][y][0] == WHITE)
+            movable[x-1][y] = 1;
+    }
+
+    if (x+1 <= 7)
+    {
+        if (y-1 >= 0)
+        {
+            if (chessPos[x+1][y-1] == chessPiece[0] || chessPos[x+1][y-1][0] == WHITE)
+                movable[x+1][y-1] = 1;
+        }
+
+        if (y+1 <= 7)
+        {
+            if (chessPos[x+1][y+1] == chessPiece[0] || chessPos[x+1][y+1][0] == WHITE)
+                movable[x+1][y+1] = 1;
+        }
+
+        if (chessPos[x+1][y] == chessPiece[0] || chessPos[x+1][y][0] == WHITE)
+            movable[x+1][y] = 1;
+    }
+
+    if (y-1 >= 0)
+    {
+        if (chessPos[x][y-1] == chessPiece[0] || chessPos[x][y-1][0] == WHITE)
+            movable[x][y-1] = 1;
+    }
+
+    if (y+1 <= 7)
+    {
+        if (chessPos[x][y+1] == chessPiece[0] || chessPos[x][y+1][0] == WHITE)
+            movable[x][y+1] = 1;
+    }
+
+    if (chessPos[x][y] == "BK1")
+    {
+        if (chessPos[0][5] == chessPiece[0] && chessPos[0][6] == chessPiece[0] && chessPos[0][7] == "BR1")
+            movable[x][y+2] = 3;
+
+        if (chessPos[0][3] == chessPiece[0] && chessPos[0][2] == chessPiece[0] && chessPos[0][1] == chessPiece[0] && chessPos[0][0] == "BR1")
+            movable [x][y-2] = 3;
+    }
 }
 
 void whitePawn(int x, int y)
@@ -1357,7 +1652,108 @@ void blackNight(int x, int y)
         }
     }
 }
+void whiteRook(int x, int y){
 
+    if(x!=0){
+        for(int i=1;i<=x;i++){
+            if(chessPos[x-i][y][0] == WHITE){
+                break;
+            }
+            if(chessPos[x-i][y] == chessPiece[0]||chessPos[x-i][y][0] == BLACK){
+                movable[x-i][y]=1;
+                if(chessPos[x-i][y][0] == BLACK)
+                    break;
+            }
+        }
+    }
+    if(x!=7){
+        for(int i=1;i<8-x;i++){
+            if(chessPos[x+i][y][0] == WHITE){
+                break;
+            }
+            if(chessPos[x+i][y] == chessPiece[0]||chessPos[x+i][y][0] == BLACK){
+                movable[x+i][y]=1;
+            if(chessPos[x+i][y][0] == BLACK)
+                break;
+            }
+        }
+    }
+    if(y!=0){
+        for(int i=1;i<=y;i++){
+            if(chessPos[x][y-i][0] == WHITE){
+                break;
+            }
+            if(chessPos[x][y-i] == chessPiece[0]||chessPos[x][y-i][0] == BLACK){
+                movable[x][y-i]=1;
+            if(chessPos[x][y-i][0] == BLACK)
+                break;
+            }
+        }
+    }
+    if(y!=7){
+        for(int i=1;i<8-y;i++){
+            if(chessPos[x][y+i][0] == WHITE){
+                break;
+            }
+            if(chessPos[x][y+i] == chessPiece[0]||chessPos[x][y+i][0] == BLACK){
+                movable[x][y+i]=1;
+                if(chessPos[x][y+i][0] == BLACK)
+                    break;
+            }
+        }
+    }
+}
+void blackRook(int x, int y){
+
+    if(x!=0){
+        for(int i=1;i<=x;i++){
+            if(chessPos[x-i][y][0] == BLACK){
+                break;
+            }
+            if(chessPos[x-i][y] == chessPiece[0]||chessPos[x-i][y][0] == WHITE){
+                movable[x-i][y]=1;
+                if(chessPos[x-i][y][0] == WHITE)
+                    break;
+            }
+        }
+    }
+    if(x!=7){
+        for(int i=1;i<8-x;i++){
+            if(chessPos[x+i][y][0] == BLACK){
+                break;
+            }
+            if(chessPos[x+i][y] == chessPiece[0]||chessPos[x+i][y][0] == WHITE){
+                movable[x+i][y]=1;
+            if(chessPos[x+i][y][0] == WHITE)
+                break;
+            }
+        }
+    }
+    if(y!=0){
+        for(int i=1;i<=y;i++){
+            if(chessPos[x][y-i][0] == BLACK){
+                break;
+            }
+            if(chessPos[x][y-i] == chessPiece[0]||chessPos[x][y-i][0] == WHITE){
+                movable[x][y-i]=1;
+            if(chessPos[x][y-i][0] == WHITE)
+                break;
+            }
+        }
+    }
+    if(y!=7){
+        for(int i=1;i<8-y;i++){
+            if(chessPos[x][y+i][0] == BLACK){
+                break;
+            }
+            if(chessPos[x][y+i] == chessPiece[0]||chessPos[x][y+i][0] == WHITE){
+                movable[x][y+i]=1;
+                if(chessPos[x][y+i][0] == WHITE)
+                    break;
+            }
+        }
+    }
+}
 void gotoxy(int x, int y)
 {
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
