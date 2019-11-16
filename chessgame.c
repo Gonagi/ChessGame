@@ -36,12 +36,16 @@ void gameInit();    //게임 초기화
 void gameCheck();   //게임 내 체크 사항 확인
 void turnPiece(int, int);   //움직인 후 뒤에 0 넣는 함수
 
-void whiteKing(int, int);
-void blackKing(int, int);
+void whiteKing(int, int);   //백색 킹
+void blackKing(int, int);   //흑색 킹
+void whiteQueen(int, int);  //백색 퀸
+void blackQueen(int, int);  //흑색 퀸
 void whitePawn(int, int);   // 백색 폰
 void blackPawn(int, int);   // 흑색 폰
 void whiteNight(int, int);  // 백색 나이트
 void blackNight(int, int);  // 흑색 나이트
+void whiteBishop(int, int); // 백색 비숍
+void blackBishop(int, int); // 흑색 비숍
 void whiteRook(int, int);   // 백색 룩
 void blackRook(int, int);   // 흑색 룩
 
@@ -53,8 +57,8 @@ void wrongOrder_Alert();    //순서 경고
 void whiteWin_Alert();      //백색 승 알림
 void blackWin_Alert();      //흑색 승 알림
 void timer_Alert();         //시간 초과 경고
-void whiteSur_Alert();
-void blackSur_Alert();
+void whiteSur_Alert();      //백색 기권 알림
+void blackSur_Alert();      //흑색 기권 알림
 
 void CursorView(char);  //커서 투명 함수
 void gotoxy(int, int);  //콘솔내 좌표 이동
@@ -110,7 +114,7 @@ char *chessPos[8][8] = { {"BR1","BN1","BB1","BQ1","BK1","BB1","BN1","BR1"}, //1�
 						{"WP1","WP1","WP1","WP1","WP1","WP1","WP1","WP1"},
 						{"WR1","WN1","WB1","WQ1","WK1","WB1","WN1","WR1"} };
 
-char *chessPiece[13] = { "  ","BR","BN","BB","BQ","BK","BP","WR","WN","WB","WQ","WK","WP" };    //포인터끼리 비교 안헀다고 경고 나올 때 쓰일 포인터 배열
+char *chessPiece[13] = { "  ","BR","BN","BB","BQ","BK","BP","WR","WN","WB","WQ","WK","WP" };    //포인터끼리 비교 안된다고 경고 나올 때 쓰일 포인터 배열
 
 int movable[8][8] = {{0,0,0,0,0,0,0,0},     //체스말들의 이동 및 상태 표시 배열 -1은 현재 선택 중 0은 이동 불가 1은 이동 가능 2는 앙파상 3은 특수 이동
                       {0,0,0,0,0,0,0,0},
@@ -801,9 +805,19 @@ void pieceSelect(int x_pos, int y_pos)
 		chessDraw();
     }
 	else if (chessPos[x_pos][y_pos][0] == 'B' && chessPos[x_pos][y_pos][1] == 'B')
-		sel_piece = "BB";
+    {
+        sel_piece = "BB";
+        movable[x_pos][y_pos] = -1;
+        blackBishop(x_pos, y_pos);
+        chessDraw();
+    }
 	else if (chessPos[x_pos][y_pos][0] == 'B' && chessPos[x_pos][y_pos][1] == 'Q')
-		sel_piece = "BQ";
+    {
+        sel_piece = "BQ";
+        movable[x_pos][y_pos] = -1;
+        blackQueen(x_pos, y_pos);
+        chessDraw();
+    }
 	else if (chessPos[x_pos][y_pos][0] == 'B' && chessPos[x_pos][y_pos][1] == 'K')
     {
         sel_piece = "BK";
@@ -833,9 +847,19 @@ void pieceSelect(int x_pos, int y_pos)
 		chessDraw();
     }
 	else if (chessPos[x_pos][y_pos][0] == 'W' && chessPos[x_pos][y_pos][1] == 'B')
+    {
 		sel_piece = "WB";
+		movable[x_pos][y_pos] = -1;
+		whiteBishop(x_pos, y_pos);
+		chessDraw();
+    }
 	else if (chessPos[x_pos][y_pos][0] == 'W' && chessPos[x_pos][y_pos][1] == 'Q')
-		sel_piece = "WQ";
+    {
+        sel_piece = "WQ";
+        movable[x_pos][y_pos] = -1;
+        whiteQueen(x_pos, y_pos);
+        chessDraw();
+    }
 	else if (chessPos[x_pos][y_pos][0] == 'W' && chessPos[x_pos][y_pos][1] == 'K')
     {
         sel_piece = "WK";
@@ -1482,6 +1506,18 @@ void blackKing(int x, int y)
     }
 }
 
+void whiteQueen(int x, int y)
+{
+    whiteRook(x, y);
+    whiteBishop(x, y);
+}
+
+void blackQueen(int x, int y)
+{
+    blackRook(x, y);
+    blackBishop(x, y);
+}
+
 void whitePawn(int x, int y)
 {
     if (chessPos[x][y][2] == '1')   //한번도 안 움직였으면
@@ -1754,6 +1790,80 @@ void blackRook(int x, int y){
         }
     }
 }
+
+void blackBishop(int x,int y){
+    int i;
+    for(i=1;i<8;i++){
+        if((x-i)<0||(y-i)<0) break;
+        else if(chessPos[x-i][y-i][0]==BLACK)
+            break;
+        movable[x-i][y-i]=1;
+        if(chessPos[x-i][y-i][0]==WHITE)
+            break;
+
+    }
+    for(i=1;i<8;i++){
+        if((x-i)<0||(y+i)>7) break;
+        else if(chessPos[x-i][y+i][0]==BLACK)
+            break;
+        movable[x-i][y+i]=1;
+        if(chessPos[x-i][y+i][0]==WHITE)
+            break;
+    }
+    for(i=1;i<8;i++){
+        if((x+i)>7||(y-i)<0) break;
+        else if(chessPos[x+i][y-i][0]==BLACK)
+            break;
+        movable[x+i][y-i]=1;
+        if(chessPos[x+i][y-i][0]==WHITE)
+            break;
+    }
+    for(i=1;i<8;i++){
+        if((x+i)>7||(y+i)>7) break;
+        else if(chessPos[x+i][y+i][0]==BLACK)
+            break;
+        movable[x+i][y+i]=1;
+        if(chessPos[x+i][y+i][0]==WHITE)
+            break;
+    }
+}
+void whiteBishop(int x,int y){
+    int i;
+    for(i=1;i<8;i++){
+        if((x-i)<0||(y-i)<0) break;
+        else if(chessPos[x-i][y-i][0]==WHITE)
+            break;
+        movable[x-i][y-i]=1;
+        if(chessPos[x-i][y-i][0]==BLACK)
+            break;
+
+    }
+    for(i=1;i<8;i++){
+        if((x-i)<0||(y+i)>7) break;
+        else if(chessPos[x-i][y+i][0]==WHITE)
+            break;
+        movable[x-i][y+i]=1;
+        if(chessPos[x-i][y+i][0]==BLACK)
+            break;
+    }
+    for(i=1;i<8;i++){
+        if((x+i)>7||(y-i)<0) break;
+        else if(chessPos[x+i][y-i][0]==WHITE)
+            break;
+        movable[x+i][y-i]=1;
+        if(chessPos[x+i][y-i][0]==BLACK)
+            break;
+    }
+    for(i=1;i<8;i++){
+        if((x+i)>7||(y+i)>7) break;
+        else if(chessPos[x+i][y+i][0]==WHITE)
+            break;
+        movable[x+i][y+i]=1;
+        if(chessPos[x+i][y+i][0]==BLACK)
+            break;
+    }
+}
+
 void gotoxy(int x, int y)
 {
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
