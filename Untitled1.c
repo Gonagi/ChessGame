@@ -18,74 +18,84 @@
 #define NONE 'N'
 #define SET_TIME (300 + 1)
 
-void titleDraw();        //íƒ€ì´í‹€ í™”ë©´ ì¶œë ¥
-void chessDraw();        //ì²´ìŠ¤íŒ ì¶œë ¥
-void pieceNowDraw();     //ì„ íƒëœ ë§ í‘œì‹œ
-void pieceDeadDraw();    //ì£½ì€ ë§ í‘œì‹œ
-void cursorDraw(int, int);  //ì»¤ì„œ '>' ì¶œë ¥
-void pieceDraw(int, int);   //ì²´ìŠ¤íŒì— ë§ í‘œì‹œ í•¨ìˆ˜
-void orderDraw();   //ìˆœì„œ í‘œì‹œ
-void sooDraw();     //ëª‡ ìˆ˜ì¸ì§€ í‘œì‹œ
-void chessRule();   //ì²´ìŠ¤ ê·œì¹™ ì„¤ëª…ë‚´ìš© ì¶œë ¥
-void controlRule(); //ì¡°ì‘ ì„¤ëª…ë‚´ìš© ì¶œë ¥
-unsigned _stdcall timerDraw(void *);  //ìŠ¤ë ˆë“œë¥¼ ì´ìš©í•œ íƒ€ì´ë¨¸ í•¨ìˆ˜
+void DrawTitle();                   //Å¸ÀÌÆ² È­¸é Ãâ·Â
+void DrawChess();                   //Ã¼½ºÆÇ Ãâ·Â
+void DrawNowPiece();                //¼±ÅÃµÈ ¸» Ç¥½Ã
+void DrawDeadPiece();               //Á×Àº ¸» Ç¥½Ã
+void DrawCursor(int, int);          //Ä¿¼­ '>' Ãâ·Â
+void DrawPiece(int, int);           //Ã¼½ºÆÇ¿¡ ¸» Ç¥½Ã ÇÔ¼ö
+void DrawOrder();                   //¼ø¼­ Ç¥½Ã
+void DrawSoo();                     //¸î ¼öÀÎÁö Ç¥½Ã
+void ChessRule();                   //Ã¼½º ±ÔÄ¢ ¼³¸í³»¿ë Ãâ·Â
+void ControlRule();                 //Á¶ÀÛ ¼³¸í³»¿ë Ãâ·Â
+unsigned _stdcall timerDraw(void *);//½º·¹µå¸¦ ÀÌ¿ëÇÑ Å¸ÀÌ¸Ó ÇÔ¼ö
 
-void pieceMove(int, int);       //ë§ ì´ë™ í•¨ìˆ˜
-void pieceSelect(int, int);     //ë§ ì„ íƒí•´ì„œ ì „ì—­ ë³€ìˆ˜ì— ê°’ ì €ì¥í•˜ëŠ” í•¨ìˆ˜
-void gameInit();    //ê²Œì„ ì´ˆê¸°í™”
-void gameCheck();   //ê²Œì„ ë‚´ ì²´í¬ ì‚¬í•­ í™•ì¸
-void turnPiece(int, int);   //ì›€ì§ì¸ í›„ ë’¤ì— 0 ë„£ëŠ” í•¨ìˆ˜
+void MovePiece(int, int);           //¸» ÀÌµ¿ ÇÔ¼ö
+void SelectPiece(int, int);         //¸» ¼±ÅÃÇØ¼­ Àü¿ª º¯¼ö¿¡ °ª ÀúÀåÇÏ´Â ÇÔ¼ö
+void InitializeGame();                    //°ÔÀÓ ÃÊ±âÈ­
+void CheckGame();                   //°ÔÀÓ ³» Ã¼Å© »çÇ× È®ÀÎ
+void TurnPiece(int, int);           //¿òÁ÷ÀÎ ÈÄ µÚ¿¡ 0 ³Ö´Â ÇÔ¼ö
+void WhiteCheck();
+void BlackCheck();
+void CheckCheck();
 
-void whiteKing(int, int);
-void blackKing(int, int);
-void whitePawn(int, int);   // ë°±ìƒ‰ í°
-void blackPawn(int, int);   // í‘ìƒ‰ í°
-void whiteNight(int, int);  // ë°±ìƒ‰ ë‚˜ì´íŠ¸
-void blackNight(int, int);  // í‘ìƒ‰ ë‚˜ì´íŠ¸
-void whiteBishop(int, int); // ë°±ìƒ‰ ë¹„ìˆ
-void blackBishop(int, int); // í‘ìƒ‰ ë¹„ìˆ
-void whiteRook(int, int);   // ë°±ìƒ‰ ë£©
-void blackRook(int, int);   // í‘ìƒ‰ ë£©
+void WhiteKing(int, int);           //¹é»ö Å·
+void BlackKing(int, int);           //Èæ»ö Å·
+void WhiteQueen(int, int);          //¹é»ö Äı
+void BlackQueen(int, int);          //Èæ»ö Äı
+void WhitePawn(int, int);           // ¹é»ö Æù
+void BlackPawn(int, int);           // Èæ»ö Æù
+void WhiteNight(int, int);          // ¹é»ö ³ªÀÌÆ®
+void BlackNight(int, int);          // Èæ»ö ³ªÀÌÆ®
+void WhiteBishop(int, int);         // ¹é»ö ºñ¼ó
+void BlackBishop(int, int);         // Èæ»ö ºñ¼ó
+void WhiteRook(int, int);           // ¹é»ö ·è
+void BlackRook(int, int);           // Èæ»ö ·è
 
-void whitePromotion(int);   //ë°±ìƒ‰íŒ€ í”„ë¡œëª¨ì…˜ ë£°
-void blackPromotion(int);   //í‘ìƒ‰íŒ€ í”„ë¡œëª¨ì…˜ ë£°
+void WhitePromotion(int);           //¹é»öÆÀ ÇÁ·Î¸ğ¼Ç ·ê
+void BlackPromotion(int);           //Èæ»öÆÀ ÇÁ·Î¸ğ¼Ç ·ê
 
-void wrongMove_Alert();     //ì˜ëª»ëœ ì›€ì§ì„ ê²½ê³ 
-void wrongOrder_Alert();    //ìˆœì„œ ê²½ê³ 
-void whiteWin_Alert();      //ë°±ìƒ‰ ìŠ¹ ì•Œë¦¼
-void blackWin_Alert();      //í‘ìƒ‰ ìŠ¹ ì•Œë¦¼
-void timer_Alert();         //ì‹œê°„ ì´ˆê³¼ ê²½ê³ 
-void whiteSur_Alert();
-void blackSur_Alert();
+void WrongMove_Alert();             //Àß¸øµÈ ¿òÁ÷ÀÓ °æ°í
+void WrongOrder_Alert();            //¼ø¼­ °æ°í
+void WhiteWin_Alert();              //¹é»ö ½Â ¾Ë¸²
+void BlackWin_Alert();              //Èæ»ö ½Â ¾Ë¸²
+void TImer_Alert();                 //½Ã°£ ÃÊ°ú °æ°í
+void WhiteSur_Alert();              //¹é»ö ±â±Ç ¾Ë¸²
+void BlackSur_Alert();              //Èæ»ö ±â±Ç ¾Ë¸²
+void WhiteCheck_Alert();
+void WhiteCheckmate_Alert();
+void BlackCheck_Alert();
+void BlackCheckmate_Alert();
 
-void CursorView(char);  //ì»¤ì„œ íˆ¬ëª… í•¨ìˆ˜
-void gotoxy(int, int);  //ì½˜ì†”ë‚´ ì¢Œí‘œ ì´ë™
-void erase(int, int);   //í•´ë‹¹ ì¢Œí‘œ ì§€ìš°ê¸°
-char invert(int);       //1~8ì„ a~hë¡œ ë°”ê¾¸ëŠ” í•¨ìˆ˜
-void textcolor(int);    //ì½˜ì†”ë‚´ ê¸€ì”¨ ìƒ‰ê¹” ë³€ê²½
-void backcolor(int);    //ì½˜ì†”ë‚´ ë°”íƒ• ìƒ‰ê¹” ë³€ê²½
+void ViewCursor(char);              //Ä¿¼­ Åõ¸í ÇÔ¼ö
+void Gotoxy(int, int);              //ÄÜ¼Ö³» ÁÂÇ¥ ÀÌµ¿
+void Erase(int, int);               //ÇØ´ç ÁÂÇ¥ Áö¿ì±â
+char Invert(int);                   //1~8À» a~h·Î ¹Ù²Ù´Â ÇÔ¼ö
+void TextColor(int);                //ÄÜ¼Ö³» ±Û¾¾ »ö±ò º¯°æ
+void BackColor(int);                //ÄÜ¼Ö³» ¹ÙÅÁ »ö±ò º¯°æ
 
-int cursor_x = mainX, cursor_y = mainY; //ë©”ì¸í™”ë©´ì—ì„œì˜ x, y ì¢Œí‘œ
-int sel_x, sel_y;       //ìŠ¤í˜ì´ìŠ¤ë°”ë¡œ ê³¨ëì„ ë‹¹ì‹œì˜ x y ì¢Œí‘œ
-char sel_color = NONE;  //ìŠ¤í˜ì´ìŠ¤ë°”ë¡œ ê³ ë¥¸ ë§ì˜ ìƒ‰ê¹”
-char *sel_piece;        //ìŠ¤í˜ì´ìŠ¤ë°”ë¡œ ê³ ë¥¸ ë§ì˜ ì¢…ë¥˜
-int sel_check = 0;      //ì„ íƒí–ˆëŠ” ì§€ì˜ ì—¬ë¶€
-int order = 0;          //ì§ìˆ˜ë©´ ë°±, í™€ìˆ˜ë©´ í‘
-int soo = 1;            //í˜„ì¬ ëª‡ ìˆ˜
-int time = SET_TIME;    //íƒ€ì´ë¨¸ ì‹œê°„ ì„¤ì •
-int check_error = 0;    //ì—ëŸ¬ ë°œìƒ ì—¬ë¶€
-int check_winner = 0;   //1ì´ë©´ ë°±íŒ€ ìŠ¹, 2ë©´ í‘íŒ€ ìŠ¹
-int check_rule = 0;     //ê²Œì„ ì„¤ëª…ì—ì„œ ë’¤ë¡œê°€ê¸° êµ¬í˜„í•˜ê¸° ìœ„í•œ ë³€ìˆ˜
-int temp;               //ë§¤ ì‹œì‘ ì´ˆê¸°í™”
-int w_order;            //ì•™íŒŒìƒ êµ¬í˜„ì„ ìœ„í•œ ìˆœì„œ ì €ì¥ ë³€ìˆ˜
-int b_order;            // ""
+int cursor_x = mainX, cursor_y = mainY; //¸ŞÀÎÈ­¸é¿¡¼­ÀÇ x, y ÁÂÇ¥
+int sel_x, sel_y;                   //½ºÆäÀÌ½º¹Ù·Î °ñ¶úÀ» ´ç½ÃÀÇ x y ÁÂÇ¥
+char sel_color = NONE;              //½ºÆäÀÌ½º¹Ù·Î °í¸¥ ¸»ÀÇ »ö±ò
+char *sel_piece;                    //½ºÆäÀÌ½º¹Ù·Î °í¸¥ ¸»ÀÇ Á¾·ù
+int sel_check = 0;                  //¼±ÅÃÇß´Â ÁöÀÇ ¿©ºÎ
+int order = 0;                      //Â¦¼ö¸é ¹é, È¦¼ö¸é Èæ
+int soo = 1;                        //ÇöÀç ¸î ¼ö
+int time = SET_TIME;                //Å¸ÀÌ¸Ó ½Ã°£ ¼³Á¤
+int check_error = 0;                //¿¡·¯ ¹ß»ı ¿©ºÎ
+int check_winner = 0;               //1ÀÌ¸é ¹éÆÀ ½Â, 2¸é ÈæÆÀ ½Â
+int check_rule = 0;                 //°ÔÀÓ ¼³¸í¿¡¼­ µÚ·Î°¡±â ±¸ÇöÇÏ±â À§ÇÑ º¯¼ö
+int temp;                           //¸Å ½ÃÀÛ ÃÊ±âÈ­
+int w_order;                        //¾ÓÆÄ»ó ±¸ÇöÀ» À§ÇÑ ¼ø¼­ ÀúÀå º¯¼ö
+int b_order;                        // ""
+int check_check = 0;
 
-int check_whitePromotion = 0;       //ë°±ìƒ‰íŒ€ í”„ë¡œëª¨ì…˜ ì—¬ë¶€ í™•ì¸
-int check_blackPromotion = 0;       //í‘ìƒ‰íŒ€ í”„ë¡œëª¨ì…˜ ì—¬ë¶€ í™•ì¸
-int check_whiteAng = 0;             //ë°±ìƒ‰íŒ€ ì•™íŒŒìƒ ì—¬ë¶€ í™•ì¸
-int check_blackAng = 0;             //í‘ìƒ‰íŒ€ ì•™íŒŒìƒ ì—¬ë¶€ í™•ì¸
+int check_WhitePromotion = 0;       //¹é»öÆÀ ÇÁ·Î¸ğ¼Ç ¿©ºÎ È®ÀÎ
+int check_BlackPromotion = 0;       //Èæ»öÆÀ ÇÁ·Î¸ğ¼Ç ¿©ºÎ È®ÀÎ
+int check_whiteAng = 0;             //¹é»öÆÀ ¾ÓÆÄ»ó ¿©ºÎ È®ÀÎ
+int check_blackAng = 0;             //Èæ»öÆÀ ¾ÓÆÄ»ó ¿©ºÎ È®ÀÎ
 
-int check_wpPr = 0;                 //í”„ë¡œëª¨ì…˜ì„ í†µí•´ ë°”ë€ ëª©ìˆ¨ ê´€ë¦¬ ë³€ìˆ˜
+int check_wpPr = 0;                 //ÇÁ·Î¸ğ¼ÇÀ» ÅëÇØ ¹Ù²ï ¸ñ¼û °ü¸® º¯¼ö
 int check_bpPr = 0;
 int check_wqPr = 0;
 int check_bqPr = 0;
@@ -95,15 +105,19 @@ int check_wnPr = 0;
 int check_bnPr = 0;
 int check_wrPr = 0;
 int check_brPr = 0;
-int bk_live = 0, wk_live = 0;       //ì£½ì€ ë§ í‘œì‹œë¥¼ ìœ„í•œ ìƒì‚¬ í™•ì¸ ë³€ìˆ˜
+int bk_live = 0, wk_live = 0;       //Á×Àº ¸» Ç¥½Ã¸¦ À§ÇÑ »ı»ç È®ÀÎ º¯¼ö
 int bq_live = 0, wq_live = 0;
 int br_live = 0, wr_live = 0;
 int bn_live = 0, wn_live = 0;
 int bb_live = 0, wb_live = 0;
 int bp_live = 0, wp_live = 0;
+int wk_x, wk_y;
+int bk_x, bk_y;
+int wking_check=0;
+int bking_check=0;
 
-enum color { red = 12, yellow = 14, white = 7, grey = 8 };      //textcolorì—ì„œ ì“°ì¼ enum ì„ ì–¸
-char *chessPos[8][8] = { {"BR1","BN1","BB1","BQ1","BK1","BB1","BN1","BR1"}, //1ì€ í•œë²ˆë„ ì›€ì§ì´ì§€ ì•Šì€ ë§, 0ì€ í•œë²ˆ ì´ìƒ ì›€ì§ì¸ ë§
+enum color { red = 12, yellow = 14, white = 7, grey = 8 };      //TextColor¿¡¼­ ¾²ÀÏ enum ¼±¾ğ
+char *chessPos[8][8] = { {"BR1","BN1","BB1","BQ1","BK1","BB1","BN1","BR1"}, //1Àº ÇÑ¹øµµ ¿òÁ÷ÀÌÁö ¾ÊÀº ¸», 0Àº ÇÑ¹ø ÀÌ»ó ¿òÁ÷ÀÎ ¸»
 						{"BP1","BP1","BP1","BP1","BP1","BP1","BP1","BP1"},
 						{"  ","  ","  ","  ","  ","  ","  ","  "},
 						{"  ","  ","  ","  ","  ","  ","  ","  "},
@@ -112,9 +126,9 @@ char *chessPos[8][8] = { {"BR1","BN1","BB1","BQ1","BK1","BB1","BN1","BR1"}, //1ì
 						{"WP1","WP1","WP1","WP1","WP1","WP1","WP1","WP1"},
 						{"WR1","WN1","WB1","WQ1","WK1","WB1","WN1","WR1"} };
 
-char *chessPiece[13] = { "  ","BR","BN","BB","BQ","BK","BP","WR","WN","WB","WQ","WK","WP" };    //í¬ì¸í„°ë¼ë¦¬ ë¹„êµ ì•ˆëœë‹¤ê³  ê²½ê³  ë‚˜ì˜¬ ë•Œ ì“°ì¼ í¬ì¸í„° ë°°ì—´
+char *chessPiece[13] = { "  ","BR","BN","BB","BQ","BK","BP","WR","WN","WB","WQ","WK","WP" };    //Æ÷ÀÎÅÍ³¢¸® ºñ±³ ¾ÈµÈ´Ù°í °æ°í ³ª¿Ã ¶§ ¾²ÀÏ Æ÷ÀÎÅÍ ¹è¿­
 
-int movable[8][8] = {{0,0,0,0,0,0,0,0},     //ì²´ìŠ¤ë§ë“¤ì˜ ì´ë™ ë° ìƒíƒœ í‘œì‹œ ë°°ì—´ -1ì€ í˜„ì¬ ì„ íƒ ì¤‘ 0ì€ ì´ë™ ë¶ˆê°€ 1ì€ ì´ë™ ê°€ëŠ¥ 2ëŠ” ì•™íŒŒìƒ 3ì€ íŠ¹ìˆ˜ ì´ë™
+int movable[8][8] = {{0,0,0,0,0,0,0,0},     //Ã¼½º¸»µéÀÇ ÀÌµ¿ ¹× »óÅÂ Ç¥½Ã ¹è¿­ -1Àº ÇöÀç ¼±ÅÃ Áß 0Àº ÀÌµ¿ ºÒ°¡ 1Àº ÀÌµ¿ °¡´É 2´Â ¾ÓÆÄ»ó 3Àº Æ¯¼ö ÀÌµ¿
                       {0,0,0,0,0,0,0,0},
                       {0,0,0,0,0,0,0,0},
                       {0,0,0,0,0,0,0,0},
@@ -123,7 +137,7 @@ int movable[8][8] = {{0,0,0,0,0,0,0,0},     //ì²´ìŠ¤ë§ë“¤ì˜ ì´ë™ ë° ìƒíƒœ 
                       {0,0,0,0,0,0,0,0},
                       {0,0,0,0,0,0,0,0} };
 
-int check[8][8] = {{0,0,0,0,0,0,0,0},     //ì²´ìŠ¤ë§ ì²´í¬ íŒë³„ 0ì€ ê¸°ë³¸ íƒ€ì¼ 1ì€ ë§ ì´ë™ ê±°ë¦¬
+int check[8][8] = {{0,0,0,0,0,0,0,0},       //Ã¼½º¸» Ã¼Å© ÆÇº° 0Àº ±âº» Å¸ÀÏ 1Àº ¸» ÀÌµ¿ °Å¸®
                       {0,0,0,0,0,0,0,0},
                       {0,0,0,0,0,0,0,0},
                       {0,0,0,0,0,0,0,0},
@@ -137,11 +151,11 @@ int main()
 	system("mode con cols=67 lines=18 | title ChessGame_Team2");
 Main:
     time=-2;
-	CursorView(0);
-	textcolor(white);
+	ViewCursor(0);
+	TextColor(white);
 	system("cls");
-	titleDraw();
-	cursorDraw(cursor_x, cursor_y);
+	DrawTitle();
+	DrawCursor(cursor_x, cursor_y);
 
 	while (1)
 	{
@@ -153,136 +167,156 @@ Main:
 			system("cls");
 			break;
 		}
+
 		else if (cursor_y == mainY + 1 && key == ENTER)
 		{
+			cursor_x = 18, cursor_y = 6;
 		Rule:
 			system("cls");
-			cursor_x = 18, cursor_y = 6;
 			check_rule = 0;
-			gotoxy(18, 4);
-			printf("ì–´ë–¤ ì„¤ëª…ì„ ë“¤ìœ¼ì‹œê² ìŠµë‹ˆê¹Œ?");
-			gotoxy(20, 6);
-			printf("ê²Œì„ ì¡°ì‘ ê·œì¹™");
-			gotoxy(20, 7);
-			printf("ì²´ìŠ¤ ê·œì¹™");
-			textcolor(grey);
-			gotoxy(0, 16);
-			printf("ë©”ì¸í™”ë©´ìœ¼ë¡œ ê°€ê¸° (Backspace)");
-			textcolor(white);
-			cursorDraw(cursor_x, cursor_y);
+			Gotoxy(18, 4);
+			printf("¾î¶² ¼³¸íÀ» µéÀ¸½Ã°Ú½À´Ï±î?");
+			Gotoxy(20, 6);
+			printf("°ÔÀÓ Á¶ÀÛ ±ÔÄ¢");
+			Gotoxy(20, 7);
+			printf("Ã¼½º ±ÔÄ¢");
+			TextColor(grey);
+			Gotoxy(0, 16);
+			printf("¸ŞÀÎÈ­¸éÀ¸·Î °¡±â (Backspace)");
+			TextColor(white);
+			DrawCursor(cursor_x, cursor_y);
+
 			while (1) {
 				key = _getch();
 
 				if (cursor_y == 6 && key == ENTER)
 				{
 					system("cls");
-					controlRule();
+					ControlRule();
 				}
+
 				else if (cursor_y == 7 && key == ENTER)
 				{
 					system("cls");
-					chessRule();
+					ChessRule();
 				}
+
 				switch (key)
 				{
 				case UP:
 					if (cursor_y == 6)
 						continue;
+
 					else if (check_rule == 1)
 						continue;
+
 					cursor_y--;
-					erase(cursor_x, cursor_y + 1);
-					cursorDraw(cursor_x, cursor_y);
+					Erase(cursor_x, cursor_y + 1);
+					DrawCursor(cursor_x, cursor_y);
 					break;
 
 				case DOWN:
+
 					if (cursor_y == 7)
 						continue;
+
 					else if (check_rule == 1)
 						continue;
+
 					else
 						cursor_y++;
-					erase(cursor_x, cursor_y - 1);
-					cursorDraw(cursor_x, cursor_y);
+
+					Erase(cursor_x, cursor_y - 1);
+					DrawCursor(cursor_x, cursor_y);
 					break;
+
 				case BACK:
+
 					if (check_rule == 1)
 						goto Rule;
+
 					cursor_x = mainX, cursor_y = mainY + 1;
 					goto Main;
 					break;
+
 				default:
 					continue;
 				}
 			}
 		}
+
 		else if (cursor_y == mainY + 2 && key == ENTER)
 		{
 			system("cls");
-			gotoxy(10, 10);
-			printf("ê²Œì„ì„ ì¢…ë£Œí•©ë‹ˆë‹¤...\n");
-			gotoxy(0, 17);
+			Gotoxy(10, 10);
+			printf("°ÔÀÓÀ» Á¾·áÇÕ´Ï´Ù...\n");
+			Gotoxy(0, 17);
 			return 0;
 		}
 
 		switch (key)
 		{
 		case UP:
+
 			if (cursor_y == mainY)
 				continue;
+
 			cursor_y--;
-			erase(cursor_x, cursor_y + 1);
-			cursorDraw(cursor_x, cursor_y);
+			Erase(cursor_x, cursor_y + 1);
+			DrawCursor(cursor_x, cursor_y);
 			break;
 
 		case DOWN:
+
 			if (cursor_y == mainY + 2)
 				continue;
+
 			else
 				cursor_y++;
-			erase(cursor_x, cursor_y - 1);
-			cursorDraw(cursor_x, cursor_y);
+
+			Erase(cursor_x, cursor_y - 1);
+			DrawCursor(cursor_x, cursor_y);
 			break;
 		}
 	}
+	InitializeGame();
+	CheckGame();
 
-	gameInit();
-	gameCheck();
-	while (1)   //ê²Œì„ ë©”ì¸ whileë¬¸
+	while (1)   //°ÔÀÓ ¸ŞÀÎ while¹®
 	{
-		CursorView(0);
-		gameCheck();
+		ViewCursor(0);
+		CheckGame();
+        CheckCheck();
 
-        if(check_winner==1)
+        if(check_winner == 1)
         {
-            whiteWin_Alert();
+            WhiteWin_Alert();
             Sleep(1000);
             break;
         }
-        else if(check_winner==2)
+
+        else if(check_winner == 2)
         {
-            blackWin_Alert();
+            BlackWin_Alert();
             Sleep(1000);
             break;
         }
-        else if (check_whitePromotion == 1)
-            whitePromotion(temp);
 
-        else if (check_blackPromotion == 1)
-            blackPromotion(temp);
+        else if (check_WhitePromotion == 1)
+            WhitePromotion(temp);
 
+        else if (check_BlackPromotion == 1)
+            BlackPromotion(temp);
 
-        pieceDeadDraw();
-		orderDraw();
-		sooDraw();
-		CursorView(1);
-
-		//gotoxy(20,7);
-		//printf("Test M%d %d %d C[2]%c ",movable[cursor_y][cursor_x/2],check_wpPr,check_wqPr,chessPos[cursor_y][cursor_x/2][2]);  //ë³€ìˆ˜ê°’ í™•ì¸ìš© (ì§€ìš¸ ê²ƒ)
-		gotoxy(cursor_x, cursor_y);
-
-        int x_pos = cursor_y;
-		int y_pos = cursor_x / 2;   //ì»¤ì„œ ìœ„ì¹˜ë¥¼ ë°°ì—´ í–‰ ì—´ë¡œ ë³€í™˜
+        DrawDeadPiece();
+		DrawOrder();
+		DrawSoo();
+		ViewCursor(1);
+		Gotoxy(20,7);
+		printf("%d %d %d,%d",wking_check, check[cursor_y][cursor_x/2], wk_x, wk_y);  //º¯¼ö°ª È®ÀÎ¿ë (Áö¿ï °Í)
+		Gotoxy(cursor_x, cursor_y);
+		int x_pos = cursor_y;
+		int y_pos = cursor_x / 2;   //Ä¿¼­ À§Ä¡¸¦ ¹è¿­ Çà ¿­·Î º¯È¯
 		int key;
 		key = _getch();
 
@@ -292,169 +326,199 @@ Main:
 		switch (key)
 		{
         case 's':
+
             if (order%2 == 0)
-               whiteSur_Alert();
+               WhiteSur_Alert();
 
             else
-                blackSur_Alert();
+                BlackSur_Alert();
+
         case 'S':
+
             if (order%2 == 0)
-               whiteSur_Alert();
+               WhiteSur_Alert();
 
             else
-                blackSur_Alert();
+                BlackSur_Alert();
+
 		case UP:
+
 			if (cursor_y == 0)
 				continue;
+
 			cursor_y--;
-			gotoxy(cursor_x, cursor_y);
+			Gotoxy(cursor_x, cursor_y);
 			break;
+
 		case DOWN:
+
 			if (cursor_y == 7)
 				continue;
+
 			cursor_y++;
-			gotoxy(cursor_x, cursor_y);
+			Gotoxy(cursor_x, cursor_y);
 			break;
+
 		case LEFT:
+
 			if (cursor_x == 0)
 				continue;
+
 			cursor_x -= 2;
-			gotoxy(cursor_x, cursor_y);
+			Gotoxy(cursor_x, cursor_y);
 			break;
+
 		case RIGHT:
+
 			if (cursor_x == 14)
 				continue;
+
 			cursor_x += 2;
-			gotoxy(cursor_x, cursor_y);
+			Gotoxy(cursor_x, cursor_y);
 			break;
+
 		case BACK:
 			cursor_x = mainX, cursor_y = mainY;
-			gameInit();
+			InitializeGame();
 			cursor_x = mainX, cursor_y = mainY;
 			goto Main;
 			break;
+
 		case SPACE:
-			if (sel_check == 0) //1. ë§ ì„ íƒì„ ì•ˆí–ˆì„ ê²½ìš°
+
+			if (sel_check == 0) //1. ¸» ¼±ÅÃÀ» ¾ÈÇßÀ» °æ¿ì
 			{
-			    if (chessPos[x_pos][y_pos] != chessPiece[0])    //1-1. ì„ íƒí•œ ì¹¸ì— ë§ì´ ìˆì„ ë•Œ
+			    if (chessPos[x_pos][y_pos] != chessPiece[0])    //1-1. ¼±ÅÃÇÑ Ä­¿¡ ¸»ÀÌ ÀÖÀ» ¶§
 				{
 				    if (chessPos[x_pos][y_pos][0] == BLACK)
-					sel_color = BLACK;
-                    else
-					sel_color = WHITE;
+                        sel_color = BLACK;
 
-                    if ((order % 2 == 0 && sel_color == BLACK) || (order % 2 != 0 && sel_color == WHITE))   //ì°¨ë¡€ê°€ ë°±ì¸ë° ê²€ì€ ë§ì„ ê³ ë¥¸ ê²½ìš°, ì°¨ë¡€ê°€ ê²€ì¸ë° í° ë§ì„ ê³ ë¥¸ ê²½ìš°
+                    else
+                        sel_color = WHITE;
+
+                    if ((order % 2 == 0 && sel_color == BLACK) || (order % 2 != 0 && sel_color == WHITE))   //Â÷·Ê°¡ ¹éÀÎµ¥ °ËÀº ¸»À» °í¸¥ °æ¿ì, Â÷·Ê°¡ °ËÀÎµ¥ Èò ¸»À» °í¸¥ °æ¿ì
                     {
 
-                        wrongOrder_Alert();
-                        gotoxy(20, 2);
-                        printf("í˜„ì¬ ê³ ë¥¸ ë§ : ì—†ìŒ       ");
-                        chessDraw();
+                        WrongOrder_Alert();
+                        Gotoxy(20, 2);
+                        printf("ÇöÀç °í¸¥ ¸» : ¾øÀ½       ");
+                        DrawChess();
                     }
+
                     else
                     {
-                        pieceSelect(x_pos, y_pos);
-                        pieceNowDraw();
-                        gotoxy(1, 10);
+                        SelectPiece(x_pos, y_pos);
+                        DrawNowPiece();
+                        Gotoxy(1, 10);
                         printf("                        ");
                         sel_check = 1;
                         sel_x = x_pos, sel_y = y_pos;
                     }
 				}
-				else if (chessPos[x_pos][y_pos] == chessPiece[0])    //1-2. ì„ íƒí•œ ì¹¸ì´ ë¹ˆì¹¸ì¼ ë•Œ
+
+				else if (chessPos[x_pos][y_pos] == chessPiece[0])    //1-2. ¼±ÅÃÇÑ Ä­ÀÌ ºóÄ­ÀÏ ¶§
                 {
-                    gotoxy(1, 10);
+                    Gotoxy(1, 10);
                     printf("                        ");
-                    gotoxy(cursor_x, cursor_y);
+                    Gotoxy(cursor_x, cursor_y);
                     sel_check = 0;
-                    pieceSelect(x_pos, y_pos);
-                    pieceNowDraw();
+                    SelectPiece(x_pos, y_pos);
+                    DrawNowPiece();
                 }
 			}
 
-			else if (sel_check == 1)    //2.ë§ ì„ íƒì„ í–ˆì„ ê²½ìš°
+			else if (sel_check == 1)    //2.¸» ¼±ÅÃÀ» ÇßÀ» °æ¿ì
 			{
-                if (movable[x_pos][y_pos] == 1)     //2-1. ì´ë™í•˜ê³ ì í•˜ëŠ” ìœ„ì¹˜ê°€ movable = 1ì´ë©´
-                        pieceMove(x_pos, y_pos);
+                if (movable[x_pos][y_pos] == 1)     //2-1. ÀÌµ¿ÇÏ°íÀÚ ÇÏ´Â À§Ä¡°¡ movable = 1ÀÌ¸é
+                        MovePiece(x_pos, y_pos);
 
-                else if (movable[x_pos][y_pos] == 2) //ì•™íŒŒìƒ ì ìš©
-                    {
-                        if (order%2 == 0)
-                        {
-                            check_whiteAng = 1;
-                            w_order = order;
-                            pieceMove(x_pos, y_pos);
-                        }
-                        else
-                        {
-                            check_blackAng = 1;
-                            b_order = order;
-                            pieceMove(x_pos, y_pos);
-                        }
-                    }
-                else if (movable[x_pos][y_pos] == 3)    //íŠ¹ìˆ˜ ë£°
+                else if (movable[x_pos][y_pos] == 2) //¾ÓÆÄ»ó Àû¿ë
                 {
-                    if (sel_piece == "WP")              //ì•™íŒŒìƒ
+                    if (order%2 == 0)
+                    {
+                        check_whiteAng = 1;
+                        w_order = order;
+                        MovePiece(x_pos, y_pos);
+                    }
+
+                    else
+                    {
+                        check_blackAng = 1;
+                        b_order = order;
+                        MovePiece(x_pos, y_pos);
+                    }
+                }
+
+                else if (movable[x_pos][y_pos] == 3)    //Æ¯¼ö ·ê
+                {
+                    if (sel_piece == "WP")              //¾ÓÆÄ»ó
                     {
                         chessPos[x_pos+1][y_pos] = chessPiece[0];
-                        pieceMove(x_pos, y_pos);
+                        MovePiece(x_pos, y_pos);
                     }
+
                     else if (sel_piece == "BP")
                     {
                         chessPos[x_pos-1][y_pos] = chessPiece[0];
-                        pieceMove(x_pos, y_pos);
+                        MovePiece(x_pos, y_pos);
                     }
-                    else if (sel_piece == "WK")         //ìºìŠ¬ë§
+
+                    else if (sel_piece == "WK")         //Ä³½½¸µ
                     {
                         if (y_pos == 6)
                         {
                             chessPos[x_pos][y_pos-1] = "WR1";
                             chessPos[x_pos][y_pos+1] = chessPiece[0];
-                            pieceMove(x_pos, y_pos);
+                            MovePiece(x_pos, y_pos);
                         }
+
                         else
                         {
                             chessPos[x_pos][y_pos+1] = "WR1";
                             chessPos[x_pos][y_pos-2] = chessPiece[0];
-                            pieceMove(x_pos, y_pos);
+                            MovePiece(x_pos, y_pos);
                         }
                     }
+
                     else if (sel_piece == "BK")
                     {
                         if (y_pos == 6)
                         {
                             chessPos[x_pos][y_pos-1] = "BR1";
                             chessPos[x_pos][y_pos+1] = chessPiece[0];
-                            pieceMove(x_pos, y_pos);
+                            MovePiece(x_pos, y_pos);
                         }
+
                         else
                         {
                             chessPos[x_pos][y_pos+1] = "BR1";
                             chessPos[x_pos][y_pos-2] = chessPiece[0];
-                            pieceMove(x_pos, y_pos);
+                            MovePiece(x_pos, y_pos);
                         }
                     }
                 }
                 else if (movable[x_pos][y_pos] == -1)
                 {
-                    gotoxy(1, 10);
+                    Gotoxy(1, 10);
                     printf("                        ");
+
                     for(int i=0; i<=7; i++)
                         for(int j=0; j<=7; j++)
                             movable[i][j]=0;
-                    chessDraw();
-                    gotoxy(20, 2);
-                    printf("í˜„ì¬ ê³ ë¥¸ ë§ : ì—†ìŒ       ");
-                    gotoxy(cursor_x, cursor_y);
+
+                    DrawChess();
+                    Gotoxy(20, 2);
+                    printf("ÇöÀç °í¸¥ ¸» : ¾øÀ½       ");
+                    Gotoxy(cursor_x, cursor_y);
                     sel_check = 0;
                 }
 
-                else if (movable[x_pos][y_pos] == 0)        //ì´ë™í•˜ê³ ì í•˜ëŠ” ìœ„ì¹˜ê°€ movable = 0ì´ë©´
+                else if (movable[x_pos][y_pos] == 0)        //ÀÌµ¿ÇÏ°íÀÚ ÇÏ´Â À§Ä¡°¡ movable = 0ÀÌ¸é
                 {
-                    wrongMove_Alert();
-                    chessDraw();
-                    gotoxy(20, 2);
-                    printf("í˜„ì¬ ê³ ë¥¸ ë§ : ì—†ìŒ       ");
+                    WrongMove_Alert();
+                    DrawChess();
+                    Gotoxy(20, 2);
+                    printf("ÇöÀç °í¸¥ ¸» : ¾øÀ½       ");
                     sel_check = 0;
                 }
             }
@@ -463,11 +527,12 @@ Main:
 			continue;
 		}
 	}
-	gotoxy(0, 17);
+	Gotoxy(0, 17);
 	return 0;
 }
 
-void titleDraw()
+
+void DrawTitle()
 {
 	printf("\n\n\n");
 	printf("                ####  #  #  ####   ###   ###   \n");
@@ -476,58 +541,65 @@ void titleDraw()
 	printf("               #      #  #  #         #     #  \n");
 	printf("                ###   #  #  ####   ###   ###   \n");
 	printf("\n");
-	printf("                             2ì¡°    \n");
-	printf("                          ê²Œì„ì‹œì‘   \n");
-	printf("                          ê²Œì„ì„¤ëª…   \n");
-	printf("                          ê²Œì„ì¢…ë£Œ   \n");
+	printf("                             2Á¶    \n");
+	printf("                          °ÔÀÓ½ÃÀÛ   \n");
+	printf("                          °ÔÀÓ¼³¸í   \n");
+	printf("                          °ÔÀÓÁ¾·á   \n");
 
 }
 
-void chessDraw()
+
+void DrawChess()
 {
 	int i, j;
+	Gotoxy(0,0);
 
-    gotoxy(0,0);
 	for (i = 0; i < 8; i++)
 	{
 		for (j = 0; j < 8; j++)
 		{
 			if (j % 2 == 0 && i % 2 == 0)
-				backcolor(112);
-			else if (j % 2 != 0 && i % 2 == 0)
-				backcolor(128);
-			else if (j % 2 == 0 && i % 2 != 0)
-				backcolor(128);
-			else
-				backcolor(112);
+				BackColor(112);
 
-			pieceDraw(i,j);
+			else if (j % 2 != 0 && i % 2 == 0)
+				BackColor(128);
+
+			else if (j % 2 == 0 && i % 2 != 0)
+				BackColor(128);
+
+			else
+				BackColor(112);
+
+			DrawPiece(i,j);
 
             if (movable[i][j] == 1 || movable[i][j] == 2)
             {
                 if (chessPos[i][j] == chessPiece[0])
-                    printf("\b\bÂ·");
+                    printf("\b\b¡¤");
+
                 else if (chessPos[i][j] != chessPiece[0])
                 {
-                    backcolor(192);
+                    BackColor(192);
                     printf("\b\b");
-                    pieceDraw(i,j);
-                    textcolor(white);
+                    DrawPiece(i,j);
+                    TextColor(white);
                 }
             }
+
             else if (movable[i][j] == 3)
             {
-                backcolor(144);
+                BackColor(144);
                 printf("\b\b");
-                pieceDraw(i,j);
-                textcolor(white);
+                DrawPiece(i,j);
+                TextColor(white);
             }
+
             else if (movable[i][j] == -1)
             {
-                backcolor(224);
+                BackColor(224);
                 printf("\b\b");
-                pieceDraw(i,j);
-                textcolor(white);
+                DrawPiece(i,j);
+                TextColor(white);
             }
 		}
 		printf("\n");
@@ -535,352 +607,442 @@ void chessDraw()
 
 	for (i = 0; i < 8; i++)
 	{
-		gotoxy(17, i);
-		textcolor(yellow);
+		Gotoxy(17, i);
+		TextColor(yellow);
 		printf("%d", 8 - i);
-		textcolor(white);
+		TextColor(white);
 	}
 
-	backcolor(7);
-	textcolor(yellow);
+	BackColor(7);
+	TextColor(yellow);
 	printf("\n");
 	printf(" a b c d e f g h\n");
-	textcolor(white);
-	printf("------------ê²½ê³ ì°½---------------------\n");
+	TextColor(white);
+	printf("------------°æ°íÃ¢---------------------\n");
 	printf("\n\n");
 	printf("---------------------------------------\n");
-	printf(" â–  : ë£©, â—† : ë‚˜ì´íŠ¸, â™  : ë¹„ìˆ\n");
-	printf(" â™¥ : í€¸, â˜… : í‚¹, â— : í°\n");
-	textcolor(grey);
-	gotoxy(0, 16);
-	printf("ë©”ì¸í™”ë©´ìœ¼ë¡œ ëŒì•„ê°€ê¸° (Backspace)\n");
-	textcolor(white);
+	printf(" ¡á : ·è, ¡ß : ³ªÀÌÆ®, ¢¼ : ºñ¼ó\n");
+	printf(" ¢¾ : Äı, ¡Ú : Å·, ¡Ü : Æù\n");
+	TextColor(grey);
+	Gotoxy(0, 16);
+	printf("¸ŞÀÎÈ­¸éÀ¸·Î µ¹¾Æ°¡±â (Backspace)\n");
+	TextColor(white);
 
 	for (i = 0; i < 14; i++)
 	{
-		gotoxy(49, i);
+		Gotoxy(49, i);
 		printf("|");
 	}
 }
 
-void pieceNowDraw()
+void DrawNowPiece()
 {
-	gotoxy(20, 2);
+	Gotoxy(20, 2);
 	printf("                         ");
-	gotoxy(20, 2);
+	Gotoxy(20, 2);
 	if (sel_piece == chessPiece[1])
-		printf("í˜„ì¬ ê³ ë¥¸ ë§ : í‘ìƒ‰ ë£©");
-	else if (sel_piece == chessPiece[2])
-		printf("í˜„ì¬ ê³ ë¥¸ ë§ : í‘ìƒ‰ ë‚˜ì´íŠ¸");
-	else if (sel_piece == chessPiece[3])
-		printf("í˜„ì¬ ê³ ë¥¸ ë§ : í‘ìƒ‰ ë¹„ìˆ");
-	else if (sel_piece == chessPiece[4])
-		printf("í˜„ì¬ ê³ ë¥¸ ë§ : í‘ìƒ‰ í€¸");
-	else if (sel_piece == chessPiece[5])
-		printf("í˜„ì¬ ê³ ë¥¸ ë§ : í‘ìƒ‰ í‚¹");
-	else if (sel_piece == chessPiece[6])
-		printf("í˜„ì¬ ê³ ë¥¸ ë§ : í‘ìƒ‰ í°");
-	else if (sel_piece == chessPiece[7])
-		printf("í˜„ì¬ ê³ ë¥¸ ë§ : ë°±ìƒ‰ ë£©");
-	else if (sel_piece == chessPiece[8])
-		printf("í˜„ì¬ ê³ ë¥¸ ë§ : ë°±ìƒ‰ ë‚˜ì´íŠ¸");
-	else if (sel_piece == chessPiece[9])
-		printf("í˜„ì¬ ê³ ë¥¸ ë§ : ë°±ìƒ‰ ë¹„ìˆ");
-	else if (sel_piece == chessPiece[10])
-		printf("í˜„ì¬ ê³ ë¥¸ ë§ : ë°±ìƒ‰ í€¸");
-	else if (sel_piece == chessPiece[11])
-		printf("í˜„ì¬ ê³ ë¥¸ ë§ : ë°±ìƒ‰ í‚¹");
-	else if (sel_piece == chessPiece[12])
-		printf("í˜„ì¬ ê³ ë¥¸ ë§ : ë°±ìƒ‰ í°");
-	else
-		printf("í˜„ì¬ ê³ ë¥¸ ë§ : ì—†ìŒ");
+		printf("ÇöÀç °í¸¥ ¸» : Èæ»ö ·è");
 
-	gotoxy(cursor_x, cursor_y);
+	else if (sel_piece == chessPiece[2])
+		printf("ÇöÀç °í¸¥ ¸» : Èæ»ö ³ªÀÌÆ®");
+
+	else if (sel_piece == chessPiece[3])
+		printf("ÇöÀç °í¸¥ ¸» : Èæ»ö ºñ¼ó");
+
+	else if (sel_piece == chessPiece[4])
+		printf("ÇöÀç °í¸¥ ¸» : Èæ»ö Äı");
+
+	else if (sel_piece == chessPiece[5])
+		printf("ÇöÀç °í¸¥ ¸» : Èæ»ö Å·");
+
+	else if (sel_piece == chessPiece[6])
+		printf("ÇöÀç °í¸¥ ¸» : Èæ»ö Æù");
+
+	else if (sel_piece == chessPiece[7])
+		printf("ÇöÀç °í¸¥ ¸» : ¹é»ö ·è");
+
+	else if (sel_piece == chessPiece[8])
+		printf("ÇöÀç °í¸¥ ¸» : ¹é»ö ³ªÀÌÆ®");
+
+	else if (sel_piece == chessPiece[9])
+		printf("ÇöÀç °í¸¥ ¸» : ¹é»ö ºñ¼ó");
+
+	else if (sel_piece == chessPiece[10])
+		printf("ÇöÀç °í¸¥ ¸» : ¹é»ö Äı");
+
+	else if (sel_piece == chessPiece[11])
+		printf("ÇöÀç °í¸¥ ¸» : ¹é»ö Å·");
+
+	else if (sel_piece == chessPiece[12])
+		printf("ÇöÀç °í¸¥ ¸» : ¹é»ö Æù");
+
+	else
+		printf("ÇöÀç °í¸¥ ¸» : ¾øÀ½");
+
+	Gotoxy(cursor_x, cursor_y);
 }
 
-void pieceDeadDraw()
+
+void DrawDeadPiece()
 {
 	int i;
+	Gotoxy(50, 0);
+	printf("     Á×Àº ¸»");
+	Gotoxy(50, 1);
+	printf("------¹éÆÀ------");
+	Gotoxy(51, 2);
 
-	gotoxy(50, 0);
-	printf("     ì£½ì€ ë§");
-	gotoxy(50, 1);
-	printf("------ë°±íŒ€------");
-	gotoxy(51, 2);
 	for (i = 0; i < 8 - wp_live; i++)
-		printf("â—");
-	gotoxy(51, 3);
+		printf("¡Ü");
+
+	Gotoxy(51, 3);
+
 	for (i = 0; i < 2 - wr_live; i++)
-		printf("â– ");
-	gotoxy(56, 3);
+		printf("¡á");
+
+	Gotoxy(56, 3);
+
 	for (i = 0; i < 2 - wn_live; i++)
-		printf("â—†");
-	gotoxy(61, 3);
+		printf("¡ß");
+
+	Gotoxy(61, 3);
+
 	for (i = 0; i < 2 - wb_live; i++)
-		printf("â™ ");
-	gotoxy(51, 4);
+		printf("¢¼");
+
+	Gotoxy(51, 4);
+
 	if (wq_live == 0)
-		printf("â™¥");
-	gotoxy(54, 4);
+		printf("¢¾");
+
+	Gotoxy(54, 4);
+
 	if (wk_live == 0)
-		printf("â˜…");
+		printf("¡Ú");
 
-	gotoxy(50, 7);
-	printf("------í‘íŒ€------");
-	gotoxy(51, 8);
+	Gotoxy(50, 7);
+	printf("------ÈæÆÀ------");
+	Gotoxy(51, 8);
+
 	for (i = 0; i < 8 - bp_live; i++)
-		printf("â—‹");
-	gotoxy(51, 9);
-	for (i = 0; i < 2 - br_live; i++)
-		printf("â–¡");
-	gotoxy(56, 9);
-	for (i = 0; i < 2 - bn_live; i++)
-		printf("â—‡");
-	gotoxy(61, 9);
-	for (i = 0; i < 2 - bb_live; i++)
-		printf("â™¤");
-	gotoxy(51, 10);
-	if (bq_live == 0)
-		printf("â™¡");
-	gotoxy(54, 10);
-	if (bk_live == 0)
-		printf("â˜†");
+		printf("¡Û");
 
-    gotoxy(cursor_x,cursor_y);
+	Gotoxy(51, 9);
+
+	for (i = 0; i < 2 - br_live; i++)
+		printf("¡à");
+
+	Gotoxy(56, 9);
+
+	for (i = 0; i < 2 - bn_live; i++)
+		printf("¡Ş");
+
+	Gotoxy(61, 9);
+
+	for (i = 0; i < 2 - bb_live; i++)
+		printf("¢»");
+
+	Gotoxy(51, 10);
+
+	if (bq_live == 0)
+		printf("¢½");
+
+	Gotoxy(54, 10);
+
+	if (bk_live == 0)
+		printf("¡Ù");
+
+    Gotoxy(cursor_x,cursor_y);
 }
 
-void cursorDraw(int x, int y)
+
+void DrawCursor(int x, int y)
 {
-	gotoxy(x, y);
+	Gotoxy(x, y);
 	printf(">");
 }
 
-void pieceDraw(int i, int j)
+
+void DrawPiece(int i, int j)
 {
     if (chessPos[i][j][0] == BLACK && chessPos[i][j][1] == 'R')
-				printf("â– ");
+				printf("¡á");
+
     else if (chessPos[i][j][0] == BLACK && chessPos[i][j][1] == 'N')
-				printf("â—†");
+				printf("¡ß");
+
     else if (chessPos[i][j][0] == BLACK && chessPos[i][j][1] == 'B')
-				printf("â™ ");
+				printf("¢¼");
+
     else if (chessPos[i][j][0] == BLACK && chessPos[i][j][1] == 'Q')
-				printf("â™¥");
+				printf("¢¾");
+
     else if (chessPos[i][j][0] == BLACK && chessPos[i][j][1] == 'K')
-				printf("â˜…");
+				printf("¡Ú");
+
     else if (chessPos[i][j][0] == BLACK && chessPos[i][j][1] == 'P')
-				printf("â—");
+				printf("¡Ü");
+
     else if (chessPos[i][j][0] == WHITE && chessPos[i][j][1] == 'R')
-				printf("â–¡");
+				printf("¡à");
+
     else if (chessPos[i][j][0] == WHITE && chessPos[i][j][1] == 'N')
-				printf("â—‡");
+				printf("¡Ş");
+
     else if (chessPos[i][j][0] == WHITE && chessPos[i][j][1] == 'B')
-				printf("â™¤");
+				printf("¢»");
+
     else if (chessPos[i][j][0] == WHITE && chessPos[i][j][1] == 'Q')
-				printf("â™¡");
+				printf("¢½");
+
     else if (chessPos[i][j][0] == WHITE && chessPos[i][j][1] == 'K')
-				printf("â˜†");
+				printf("¡Ù");
+
     else if (chessPos[i][j][0] == WHITE && chessPos[i][j][1] == 'P')
-				printf("â—‹");
+				printf("¡Û");
+
     else if (chessPos[i][j] == chessPiece[0])
 				printf("  ");
+
 }
 
-void orderDraw()
+
+void DrawOrder()
 {
 	char *order_str;
+
 	if (order % 2 == 0)
-		order_str = "ë°±";
+		order_str = "¹é";
+
 	else
-		order_str = "í‘";
-	gotoxy(20, 0);
-	printf("í˜„ì¬ ì°¨ë¡€ : %s", order_str);
-	gotoxy(cursor_x, cursor_y);
+		order_str = "Èæ";
+
+	Gotoxy(20, 0);
+	printf("ÇöÀç Â÷·Ê : %s", order_str);
+	Gotoxy(cursor_x, cursor_y);
 }
 
-void sooDraw()
+
+void DrawSoo()
 {
-	gotoxy(20, 4);
-	printf("ì œ %dìˆ˜", soo);
-	gotoxy(cursor_x, cursor_y);
+	Gotoxy(20, 4);
+	printf("Á¦ %d¼ö", soo);
+	Gotoxy(cursor_x, cursor_y);
 }
 
-void chessRule()
+
+void ChessRule()
 {
 	check_rule = 1;
-	textcolor(white);
-	printf("----------------ê²Œì„ ë°©ë²•---------------\n");
-	printf("1. ë°±ê³¼ í‘ì´ ë²ˆê°ˆì•„ê°€ë©° í”Œë ˆì´í•©ë‹ˆë‹¤.\n");
-	printf("2. ë°±ì´ ë¨¼ì € ê²Œì„ì„ ì‹œì‘í•©ë‹ˆë‹¤.\n");
+	TextColor(white);
+	printf("----------------°ÔÀÓ ¹æ¹ı---------------\n");
+	printf("1. ¹é°ú ÈæÀÌ ¹ø°¥¾Æ°¡¸ç ÇÃ·¹ÀÌÇÕ´Ï´Ù.\n");
+	printf("2. ¹éÀÌ ¸ÕÀú °ÔÀÓÀ» ½ÃÀÛÇÕ´Ï´Ù.\n");
 	printf("3.  \n");
 	printf("4.  \n");
 	printf("\n");
-	textcolor(grey);
-	gotoxy(0, 16);
-	printf("ëŒì•„ê°€ê¸° (Backspace)");
-	textcolor(white);
+	TextColor(grey);
+	Gotoxy(0, 16);
+	printf("µ¹¾Æ°¡±â (Backspace)");
+	TextColor(white);
 }
 
-void controlRule()
+
+void ControlRule()
 {
 	check_rule = 1;
-	textcolor(white);
-	printf("-------------------ì¡°ì‘ ë°©ë²•------------------\n\n");
-	printf("1. í‚¤ë³´ë“œ ë°©í–¥í‚¤ë¥¼ ì¡°ì‘í•˜ì—¬ ì»¤ì„œë¥¼ ì´ë™í•©ë‹ˆë‹¤.\n\n");
-	printf("2. ì´ë™í•˜ê³ ì í•˜ëŠ” ë§ì— ì»¤ì„œë¥¼ ì´ë™ì‹œí‚¨ í›„\n");
-	printf("   ìŠ¤í˜ì´ìŠ¤ ë°”ë¥¼ ì…ë ¥í•˜ì—¬ ë§ì„ ì„ íƒí•©ë‹ˆë‹¤.\n\n");
-	printf("3. ì„ íƒëœ ë§ì„ ì›í•˜ëŠ” ìœ„ì¹˜ë¡œ ì»¤ì„œë¥¼ ì´ë™ì‹œí‚¨\n");
-	printf("   í›„ ìŠ¤í˜ì´ìŠ¤ ë°”ë¥¼ ì…ë ¥ í•˜ì—¬ ì´ë™ì‹œí‚µë‹ˆë‹¤.\n\n");
-	printf("4. ë§ ì„ íƒì„ ì·¨ì†Œí•˜ê³  ì‹¶ì„ ê²½ìš° í•´ë‹¹ ë§ì— \n");
-	printf("   ì»¤ì„œë¥¼ ì˜¬ë¦¬ê³  ìŠ¤í˜ì´ìŠ¤ ë°”ë¥¼ í•œë²ˆ ë” ëˆŒëŸ¬ì„œ\n");
-	printf("   ì·¨ì†Œí•©ë‹ˆë‹¤.\n\n");
-	textcolor(grey);
-	gotoxy(0, 16);
-	printf("ëŒì•„ê°€ê¸° (Backspace)");
-	textcolor(white);
+	TextColor(white);
+	printf("-------------------Á¶ÀÛ ¹æ¹ı------------------\n\n");
+	printf("1. Å°º¸µå ¹æÇâÅ°¸¦ Á¶ÀÛÇÏ¿© Ä¿¼­¸¦ ÀÌµ¿ÇÕ´Ï´Ù.\n\n");
+	printf("2. ÀÌµ¿ÇÏ°íÀÚ ÇÏ´Â ¸»¿¡ Ä¿¼­¸¦ ÀÌµ¿½ÃÅ² ÈÄ\n");
+	printf("   ½ºÆäÀÌ½º ¹Ù¸¦ ÀÔ·ÂÇÏ¿© ¸»À» ¼±ÅÃÇÕ´Ï´Ù.\n\n");
+	printf("3. ¼±ÅÃµÈ ¸»À» ¿øÇÏ´Â À§Ä¡·Î Ä¿¼­¸¦ ÀÌµ¿½ÃÅ²\n");
+	printf("   ÈÄ ½ºÆäÀÌ½º ¹Ù¸¦ ÀÔ·Â ÇÏ¿© ÀÌµ¿½ÃÅµ´Ï´Ù.\n\n");
+	printf("4. ¸» ¼±ÅÃÀ» Ãë¼ÒÇÏ°í ½ÍÀ» °æ¿ì ÇØ´ç ¸»¿¡ \n");
+	printf("   Ä¿¼­¸¦ ¿Ã¸®°í ½ºÆäÀÌ½º ¹Ù¸¦ ÇÑ¹ø ´õ ´­·¯¼­\n");
+	printf("   Ãë¼ÒÇÕ´Ï´Ù.\n\n");
+	TextColor(grey);
+	Gotoxy(0, 16);
+	printf("µ¹¾Æ°¡±â (Backspace)");
+	TextColor(white);
 }
+
 
 unsigned _stdcall timerDraw(void *arg)
 {
 	int min, sec;
+
 	while(1)
 	{
 		min=time/60;
 		sec=time%60;
-		CursorView(0);
-		gotoxy(20,6);
-		printf("ë‚¨ì€ì‹œê°„ = %2d:%2d",min,sec);
-		gotoxy(cursor_x,cursor_y);
-		CursorView(1);
+		ViewCursor(0);
+		Gotoxy(20,6);
+		printf("³²Àº½Ã°£ = %2d:%2d",min,sec);
+		Gotoxy(cursor_x,cursor_y);
+		ViewCursor(1);
 		Sleep(1000);
 		time--;
+
 		if(time==-1)
         {
-        timer_Alert();
+        TImer_Alert();
         break;
         }
+
         else if(time<-1)
-        break;
+            break;
 	}
+
 	_endthreadex(0);
 	return 0;
 }
 
-void pieceMove(int x, int y)
+
+void MovePiece(int x, int y)
 {
     int i,j;
 	chessPos[x][y] = chessPos[sel_x][sel_y];
 	chessPos[sel_x][sel_y] = "  ";
-	turnPiece(x, y);    //ë°”ë€œ
+	TurnPiece(x, y);    //¹Ù²ñ
 	system("cls");
 	sel_check = 0;
+
 	if (order % 2 != 0)
 		soo++;
+
 	order++;
 	sel_color = NONE;
 	time=SET_TIME;
+
 	for(i=0; i<=7; i++)
         for(j=0; j<=7; j++)
             movable[i][j]=0;
-    chessDraw();
-	gotoxy(20, 2);
-	printf("í˜„ì¬ ê³ ë¥¸ ë§ : ì—†ìŒ");
+
+    DrawChess();
+	Gotoxy(20, 2);
+	printf("ÇöÀç °í¸¥ ¸» : ¾øÀ½");
 }
 
-void pieceSelect(int x_pos, int y_pos)
+
+void SelectPiece(int x_pos, int y_pos)
 {
 	if (chessPos[x_pos][y_pos][0] == 'B' && chessPos[x_pos][y_pos][1] == 'R')
     {
         sel_piece = "BR";
         movable[x_pos][y_pos] = -1;
-        blackRook(x_pos, y_pos);
-        chessDraw();
+        BlackRook(x_pos, y_pos);
+        DrawChess();
     }
+
 	else if (chessPos[x_pos][y_pos][0] == 'B' && chessPos[x_pos][y_pos][1] == 'N')
     {
 		sel_piece = "BN";
 		movable[x_pos][y_pos] = -1;
-		blackNight(x_pos, y_pos);
-		chessDraw();
+		BlackNight(x_pos, y_pos);
+		DrawChess();
     }
+
 	else if (chessPos[x_pos][y_pos][0] == 'B' && chessPos[x_pos][y_pos][1] == 'B')
     {
         sel_piece = "BB";
         movable[x_pos][y_pos] = -1;
-        blackBishop(x_pos, y_pos);
-        chessDraw();
+        BlackBishop(x_pos, y_pos);
+        DrawChess();
     }
+
 	else if (chessPos[x_pos][y_pos][0] == 'B' && chessPos[x_pos][y_pos][1] == 'Q')
-		sel_piece = "BQ";
+    {
+        sel_piece = "BQ";
+        movable[x_pos][y_pos] = -1;
+        BlackQueen(x_pos, y_pos);
+        DrawChess();
+    }
+
 	else if (chessPos[x_pos][y_pos][0] == 'B' && chessPos[x_pos][y_pos][1] == 'K')
     {
         sel_piece = "BK";
         movable[x_pos][y_pos] = -1;
-        blackKing(x_pos, y_pos);
-        chessDraw();
+        BlackKing(x_pos, y_pos);
+        DrawChess();
     }
+
 	else if (chessPos[x_pos][y_pos][0] == 'B' && chessPos[x_pos][y_pos][1] == 'P')
     {
         sel_piece = "BP";
         movable[x_pos][y_pos] = -1;
-        blackPawn(x_pos, y_pos);
-        chessDraw();
+        BlackPawn(x_pos, y_pos);
+        DrawChess();
     }
+
 	else if (chessPos[x_pos][y_pos][0] == 'W' && chessPos[x_pos][y_pos][1] == 'R')
     {
         sel_piece = "WR";
         movable[x_pos][y_pos] = -1;
-        whiteRook(x_pos, y_pos);
-        chessDraw();
+        WhiteRook(x_pos, y_pos);
+        DrawChess();
     }
+
 	else if (chessPos[x_pos][y_pos][0] == 'W' && chessPos[x_pos][y_pos][1] == 'N')
     {
 		sel_piece = "WN";
 		movable[x_pos][y_pos] = -1;
-		whiteNight(x_pos, y_pos);
-		chessDraw();
+		WhiteNight(x_pos, y_pos);
+		DrawChess();
     }
+
 	else if (chessPos[x_pos][y_pos][0] == 'W' && chessPos[x_pos][y_pos][1] == 'B')
     {
 		sel_piece = "WB";
 		movable[x_pos][y_pos] = -1;
-		whiteBishop(x_pos, y_pos);
-		chessDraw();
+		WhiteBishop(x_pos, y_pos);
+		DrawChess();
     }
+
 	else if (chessPos[x_pos][y_pos][0] == 'W' && chessPos[x_pos][y_pos][1] == 'Q')
-		sel_piece = "WQ";
+    {
+        sel_piece = "WQ";
+        movable[x_pos][y_pos] = -1;
+        WhiteQueen(x_pos, y_pos);
+        DrawChess();
+    }
+
 	else if (chessPos[x_pos][y_pos][0] == 'W' && chessPos[x_pos][y_pos][1] == 'K')
     {
         sel_piece = "WK";
         movable[x_pos][y_pos] = -1;
-        whiteKing(x_pos, y_pos);
-        chessDraw();
+        WhiteKing(x_pos, y_pos);
+        DrawChess();
     }
+
 	else if (chessPos[x_pos][y_pos][0] == 'W' && chessPos[x_pos][y_pos][1] == 'P')
     {
         sel_piece = "WP";
         movable[x_pos][y_pos] = -1;
-        whitePawn(x_pos, y_pos);
-        chessDraw();
+        WhitePawn(x_pos, y_pos);
+        DrawChess();
     }
+
 	else
 		sel_piece = "  ";
 
 }
 
-void gameInit()
+
+void InitializeGame()
 {
     time=SET_TIME;
-    //_beginthreadex(NULL,0,timerDraw,0,0,NULL);      //íƒ€ì´ë¨¸ í‘œì‹œ
+    //_beginthreadex(NULL,0,timerDraw,0,0,NULL);      //Å¸ÀÌ¸Ó Ç¥½Ã
 	int i,j;
 	system("cls");
-	chessDraw();
-	textcolor(white);
+	DrawChess();
+	TextColor(white);
 	cursor_x = 4, cursor_y = 4;
 	temp = 0;
 	sel_check = 0;
 	check_winner=0;
-	check_blackPromotion=0;
-	check_whitePromotion=0;
+	check_BlackPromotion=0;
+	check_WhitePromotion=0;
 	check_blackAng=0;
 	check_whiteAng=0;
 	check_wpPr = 0;
@@ -895,8 +1057,8 @@ void gameInit()
     check_brPr = 0;
 	order=0;
 	soo=1;
-	gotoxy(20, 2);
-	printf("í˜„ì¬ ê³ ë¥¸ ë§ : ì—†ìŒ");
+	Gotoxy(20, 2);
+	printf("ÇöÀç °í¸¥ ¸» : ¾øÀ½");
 	chessPos[0][0] = "BR1";
 	chessPos[0][1] = "BN1";
 	chessPos[0][2] = "BB1";
@@ -905,6 +1067,7 @@ void gameInit()
 	chessPos[0][5] = "BB1";
 	chessPos[0][6] = "BN1";
 	chessPos[0][7] = "BR1";
+
 	for (i = 0; i <= 7; i++)
 	{
         chessPos[1][i] = "BP1";
@@ -914,6 +1077,7 @@ void gameInit()
 		chessPos[5][i] = "  ";
 		chessPos[6][i] = "WP1";
 	}
+
 	chessPos[7][0] = "WR1";
 	chessPos[7][1] = "WN1";
 	chessPos[7][2] = "WB1";
@@ -927,10 +1091,11 @@ void gameInit()
         for(j=0; j<=7; j++)
             movable[i][j]=0;
 
-	gotoxy(cursor_x, cursor_y);
+	Gotoxy(cursor_x, cursor_y);
 }
 
-void gameCheck()
+
+void CheckGame()
 {
 	bk_live = 0, wk_live = 0;
 	bq_live = 0, wq_live = 0;
@@ -941,22 +1106,31 @@ void gameCheck()
 
 	if (check_wpPr != 0)
         wp_live+= check_wpPr;
+
     else if (check_bqPr != 0)
         bp_live+= check_bpPr;
+
     else if (check_wqPr != 0)
         wq_live-= check_wqPr;
+
     else if (check_bqPr != 0)
         bq_live-= check_bqPr;
+
     else if (check_wbPr != 0)
         wb_live-= check_wbPr;
+
     else if (check_bbPr != 0)
         bb_live-= check_bbPr;
+
     else if (check_wrPr != 0)
         wr_live-= check_wrPr;
+
     else if (check_brPr != 0)
         br_live-= check_brPr;
+
     else if (check_wnPr != 0)
         wn_live-= check_wnPr;
+
     else if (check_bnPr != 0)
         bn_live-= check_bnPr;
 
@@ -969,14 +1143,47 @@ void gameCheck()
                 chessPos[i][j] = "WP0";
         }
     }
+
     else if (order - b_order == 2)
     {
         for (int i=0; i<8; i++)
             for(int j=0; j<8; j++)
+            {
+                if (chessPos[i][j] == "BP2")
+                    chessPos[i][j] = "BP0";
+            }
+    }
+
+    for (int i=0; i<8; i++)
+    {
+        for (int j=0; j<8; j++)
         {
-            if (chessPos[i][j] == "BP2")
-                chessPos[i][j] = "BP0";
+            if (chessPos[i][j][0] == WHITE && chessPos[i][j][1] == 'K')
+            {
+                wk_x = i;
+                wk_y = j;
+            }
+
+            if (chessPos[i][j][0] == BLACK && chessPos[i][j][1] == 'K')
+            {
+                bk_x = i;
+                bk_y = j;
+            }
         }
+    }
+
+    if (order%2==0)
+    {
+        check_check=1;
+        WhiteCheck();
+        check_check=0;
+    }
+
+    else
+    {
+        check_check=1;
+        BlackCheck();
+        check_check=0;
     }
 
 	int i, j;
@@ -986,75 +1193,89 @@ void gameCheck()
 		{
 			if (chessPos[i][j][0] == 'W' && chessPos[i][j][1] == 'K')
 				wk_live++;
+
 			else if (chessPos[i][j][0] == 'B' && chessPos[i][j][1] == 'K')
 				bk_live++;
+
 			else if (chessPos[i][j][0] == 'W' && chessPos[i][j][1] == 'Q')
 				wq_live++;
+
 			else if (chessPos[i][j][0] == 'B' && chessPos[i][j][1] == 'Q')
 				bq_live++;
+
 			else if (chessPos[i][j][0] == 'W' && chessPos[i][j][1] == 'R')
 				wr_live++;
+
 			else if (chessPos[i][j][0] == 'B' && chessPos[i][j][1] == 'R')
 				br_live++;
+
 			else if (chessPos[i][j][0] == 'W' && chessPos[i][j][1] == 'N')
 				wn_live++;
+
 			else if (chessPos[i][j][0] == 'B' && chessPos[i][j][1] == 'N')
 				bn_live++;
+
 			else if (chessPos[i][j][0] == 'W' && chessPos[i][j][1] == 'B')
 				wb_live++;
+
 			else if (chessPos[i][j][0] == 'B' && chessPos[i][j][1] == 'B')
 				bb_live++;
+
 			else if (chessPos[i][j][0] == 'W' && chessPos[i][j][1] == 'P')
 				wp_live++;
+
 			else if (chessPos[i][j][0] == 'B' && chessPos[i][j][1] == 'P')
 				bp_live++;
 
             if (chessPos[0][j] == "WP0")
             {
                 temp = j;
-                check_whitePromotion = 1;
+                check_WhitePromotion = 1;
             }
+
             else if (chessPos[7][j] == "BP0")
             {
                 temp = j;
-                check_blackPromotion = 1;
+                check_BlackPromotion = 1;
             }
-
 		}
 
 	if (bk_live == 0 && wk_live == 1)
-	{
 		check_winner=1;
-	}
+
 	else if (bk_live == 1 && wk_live == 0)
-	{
 		check_winner=2;
-	}
+
 	else if (bk_live == 0 && wk_live == 0)
 	{
-		gotoxy(1, 10);
+		Gotoxy(1, 10);
 		printf("                        ");
-		gotoxy(1, 10);
-		textcolor(red);
-		printf("ì¹˜ëª…ì  ì˜¤ë¥˜ ë°œìƒ");
+		Gotoxy(1, 10);
+		TextColor(red);
+		printf("Ä¡¸íÀû ¿À·ù ¹ß»ı");
 		check_error = 1;
-		textcolor(white);
+		TextColor(white);
 	}
-
 }
 
-void turnPiece(int x, int y)
+
+void TurnPiece(int x, int y)
 {
     if (sel_piece == chessPiece[1])
 		chessPos[x][y] = "BR0";
+
 	else if (sel_piece == chessPiece[2])
 		chessPos[x][y] = "BN0";
+
 	else if (sel_piece == chessPiece[3])
 		chessPos[x][y] = "BB0";
+
 	else if (sel_piece == chessPiece[4])
 		chessPos[x][y] = "BQ0";
+
 	else if (sel_piece == chessPiece[5])
 		chessPos[x][y] = "BK0";
+
 	else if (sel_piece == chessPiece[6])
 	{
         if (check_blackAng == 1)
@@ -1062,19 +1283,26 @@ void turnPiece(int x, int y)
             chessPos[x][y] = "BP2";
             check_blackAng = 0;
         }
+
         else
             chessPos[x][y] = "BP0";
     }
+
 	else if (sel_piece == chessPiece[7])
 		chessPos[x][y] = "WR0";
+
 	else if (sel_piece == chessPiece[8])
 		chessPos[x][y] = "WN0";
+
 	else if (sel_piece == chessPiece[9])
 		chessPos[x][y] = "WB0";
+
 	else if (sel_piece == chessPiece[10])
 		chessPos[x][y] = "WQ0";
+
 	else if (sel_piece == chessPiece[11])
 		chessPos[x][y] = "WK0";
+
 	else if (sel_piece == chessPiece[12])
     {
         if (check_whiteAng == 1)
@@ -1082,316 +1310,426 @@ void turnPiece(int x, int y)
             chessPos[x][y] = "WP2";
             check_whiteAng = 0;
         }
+
         else
             chessPos[x][y] = "WP0";
     }
 }
 
-void wrongMove_Alert()
+
+void WrongMove_Alert()
 {
     int i,j;
-	gotoxy(1, 10);
+	Gotoxy(1, 10);
 	printf("                        ");
-	gotoxy(1, 10);
-	textcolor(red);
-	printf("ì´ë™í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+	Gotoxy(1, 10);
+	TextColor(red);
+	printf("ÀÌµ¿ÇÒ ¼ö ¾ø½À´Ï´Ù.");
 	sel_color = NONE;
-	textcolor(white);
+	TextColor(white);
+
 	for(i=0; i<=7; i++)
         for(j=0; j<=7; j++)
             movable[i][j]=0;
-	gotoxy(cursor_x, cursor_y);
+
+	Gotoxy(cursor_x, cursor_y);
 }
 
-void wrongOrder_Alert()
+
+void WrongOrder_Alert()
 {
     int i,j;
-	gotoxy(1, 10);
+	Gotoxy(1, 10);
 	printf("                        ");
-	gotoxy(1, 10);
-	textcolor(red);
-	printf("ì°¨ë¡€ê°€ ì•„ë‹™ë‹ˆë‹¤.");
+	Gotoxy(1, 10);
+	TextColor(red);
+	printf("Â÷·Ê°¡ ¾Æ´Õ´Ï´Ù.");
 	sel_color = NONE;
-	textcolor(white);
+	TextColor(white);
+
 	for(i=0; i<=7; i++)
         for(j=0; j<=7; j++)
             movable[i][j]=0;
-	gotoxy(cursor_x, cursor_y);
+
+	Gotoxy(cursor_x, cursor_y);
 }
 
-void whiteWin_Alert()
+
+void WhiteWin_Alert()
 {
-    gotoxy(1, 10);
+    Gotoxy(1, 10);
     printf("                        ");
-    gotoxy(1, 10);
-    textcolor(red);
-    printf("ë°±íŒ€ ìŠ¹ë¦¬!");
-    textcolor(white);
+    Gotoxy(1, 10);
+    TextColor(red);
+    printf("¹éÆÀ ½Â¸®!");
+    TextColor(white);
 }
 
-void blackWin_Alert()
+
+void WhiteCheck_Alert()
 {
-    gotoxy(1, 10);
+    Gotoxy(1, 10);
     printf("                        ");
-    gotoxy(1, 10);
-    textcolor(red);
-    printf("í‘íŒ€ ìŠ¹ë¦¬!");
-    textcolor(white);
+    Gotoxy(1, 10);
+    TextColor(red);
+    printf("¹éÆÀ Ã¼Å©");
+    TextColor(white);
 }
-void timer_Alert()
+
+
+void WhiteCheckmate_Alert()
 {
-    gotoxy(1, 10);
+    Gotoxy(1, 10);
+    printf("                        ");
+    Gotoxy(1, 10);
+    TextColor(red);
+    printf("¹éÆÀ Ã¼Å©¸ŞÀÌÆ®!");
+    Sleep(3000);
+    TextColor(white);
+    check_winner = 2;
+}
+
+
+void BlackWin_Alert()
+{
+    Gotoxy(1, 10);
+    printf("                        ");
+    Gotoxy(1, 10);
+    TextColor(red);
+    printf("ÈæÆÀ ½Â¸®!");
+    TextColor(white);
+}
+
+
+void BlackCheck_Alert()
+{
+    Gotoxy(1, 10);
+    printf("                        ");
+    Gotoxy(1, 10);
+    TextColor(red);
+    printf("ÈæÆÀ Ã¼Å©");
+    TextColor(white);
+}
+
+
+void BlackCheckmate_Alert()
+{
+    Gotoxy(1, 10);
+    printf("                        ");
+    Gotoxy(1, 10);
+    TextColor(red);
+    printf("ÈæÆÀ Ã¼Å©¸ŞÀÌÆ®!");
+    Sleep(3000);
+    TextColor(white);
+    check_winner = 1;
+}
+
+
+void TImer_Alert()
+{
+    Gotoxy(1, 10);
 	printf("                        ");
-	gotoxy(1, 10);
-	textcolor(red);
+	Gotoxy(1, 10);
+	TextColor(red);
+
 	if(order%2==0)
     {
-        printf("ë°±íŒ€ ì‹œê°„ì´ˆê³¼.");
-        textcolor(white);
+        printf("¹éÆÀ ½Ã°£ÃÊ°ú.");
+        TextColor(white);
         Sleep(2000);
         check_winner = 2;
     }
+
     else
     {
-        printf("í‘íŒ€ ì‹œê°„ì´ˆê³¼.");
-        textcolor(white);
+        printf("ÈæÆÀ ½Ã°£ÃÊ°ú.");
+        TextColor(white);
         Sleep(2000);
         check_winner = 1;
     }
-	textcolor(white);
-	gotoxy(cursor_x, cursor_y);
+
+	TextColor(white);
+	Gotoxy(cursor_x, cursor_y);
 }
 
-void whiteSur_Alert()
+
+void WhiteSur_Alert()
 {
     int check = 1;
+
     while(check)
     {
         char answer;
-        gotoxy(1, 10);
+        Gotoxy(1, 10);
         printf("                        ");
-        gotoxy(1, 10);
-        textcolor(red);
-        printf("ë°±íŒ€ì´ ê¸°ê¶Œí–ˆìŠµë‹ˆë‹¤.");
-        textcolor(white);
-        gotoxy(1, 11);
-        printf("ìŠ¹ë‚™í•˜ë ¤ë©´ y, ì•„ë‹ˆë©´ nì„ ì…ë ¥ : ");
+        Gotoxy(1, 10);
+        TextColor(red);
+        printf("¹éÆÀÀÌ ±â±ÇÇß½À´Ï´Ù.");
+        TextColor(white);
+        Gotoxy(1, 11);
+        printf("½Â³«ÇÏ·Á¸é y, ¾Æ´Ï¸é nÀ» ÀÔ·Â : ");
         scanf("%c",&answer);
+
         switch(answer)
         {
         case 'y':
             check_winner = 2;
             check = 0;
             break;
+
         case 'n':
             check = 0;
             break;
+
         case 'Y':
             check_winner = 2;
             check = 0;
             break;
+
         case 'N':
             check = 0;
             break;
+
         default:
-            gotoxy(1, 11);
-            printf("ìŠ¹ë‚™í•˜ë ¤ë©´ y, ì•„ë‹ˆë©´ nì„ ì…ë ¥ :      ");
+            Gotoxy(1, 11);
+            printf("½Â³«ÇÏ·Á¸é y, ¾Æ´Ï¸é nÀ» ÀÔ·Â :      ");
             continue;
         }
     }
-    gotoxy(1, 10);
+
+    Gotoxy(1, 10);
     printf("                                          ");
-    gotoxy(1, 11);
+    Gotoxy(1, 11);
     printf("                                          ");
-    chessDraw();
-    gotoxy(cursor_x, cursor_y);
+    DrawChess();
+    Gotoxy(cursor_x, cursor_y);
 }
 
-void blackSur_Alert()
+
+void BlackSur_Alert()
 {
     int check = 1;
+
     while(check)
     {
         char answer;
-        gotoxy(1, 10);
+        Gotoxy(1, 10);
         printf("                        ");
-        gotoxy(1, 10);
-        textcolor(red);
-        printf("í‘íŒ€ì´ ê¸°ê¶Œí–ˆìŠµë‹ˆë‹¤.");
-        textcolor(white);
-        gotoxy(1, 11);
-        printf("ìŠ¹ë‚™í•˜ë ¤ë©´ y, ì•„ë‹ˆë©´ nì„ ì…ë ¥ : ");
+        Gotoxy(1, 10);
+        TextColor(red);
+        printf("ÈæÆÀÀÌ ±â±ÇÇß½À´Ï´Ù.");
+        TextColor(white);
+        Gotoxy(1, 11);
+        printf("½Â³«ÇÏ·Á¸é y, ¾Æ´Ï¸é nÀ» ÀÔ·Â : ");
         scanf("%c",&answer);
+
         switch(answer)
         {
         case 'y':
             check_winner = 1;
             check = 0;
             break;
+
         case 'n':
             check = 0;
             break;
+
         case 'Y':
             check_winner = 1;
             check = 0;
             break;
+
         case 'N':
             check = 0;
             break;
+
         default:
-            gotoxy(1, 11);
-            printf("ìŠ¹ë‚™í•˜ë ¤ë©´ y, ì•„ë‹ˆë©´ nì„ ì…ë ¥ :      ");
+            Gotoxy(1, 11);
+            printf("½Â³«ÇÏ·Á¸é y, ¾Æ´Ï¸é nÀ» ÀÔ·Â :      ");
             continue;
         }
     }
-    gotoxy(1, 10);
+    Gotoxy(1, 10);
     printf("                                          ");
-    gotoxy(1, 11);
+    Gotoxy(1, 11);
     printf("                                          ");
-    chessDraw();
-    gotoxy(cursor_x, cursor_y);
+    DrawChess();
+    Gotoxy(cursor_x, cursor_y);
 }
 
-void whitePromotion(int x)
+
+void WhitePromotion(int x)
 {
     int check = 1;
-    char a = invert(x*2);
+    char a = Invert(x*2);
+
     while(check)
     {
         int promotion = 0;
-
-        gotoxy(1, 10);
+        Gotoxy(1, 10);
         printf("                        ");
-        gotoxy(1, 10);
-        textcolor(red);
-        printf("%c8ì¹¸ í”„ë¡œëª¨ì…˜ 1 í€¸ 2 ë¹„ìˆ 3 ë‚˜ì´íŠ¸ 4 ë£©\n",a);
-        textcolor(white);
-        gotoxy(1, 11);
-        printf("ì…ë ¥í•˜ì„¸ìš” : ");
+        Gotoxy(1, 10);
+        TextColor(red);
+        printf("%c8Ä­ ÇÁ·Î¸ğ¼Ç 1 Äı 2 ºñ¼ó 3 ³ªÀÌÆ® 4 ·è\n",a);
+        TextColor(white);
+        Gotoxy(1, 11);
+        printf("ÀÔ·ÂÇÏ¼¼¿ä : ");
         scanf("%d",&promotion);
+
         switch(promotion)
         {
         case 1:
             chessPos[0][x] = "WQ0";
             check = 0;
-            check_whitePromotion = 0;
+            check_WhitePromotion = 0;
             check_wpPr++;
             check_wqPr++;
             break;
+
         case 2:
             chessPos[0][x] = "WB0";
             check = 0;
-            check_whitePromotion = 0;
+            check_WhitePromotion = 0;
             check_wpPr++;
             check_wbPr++;
             break;
+
         case 3:
             chessPos[0][x] = "WN0";
             check = 0;
-            check_whitePromotion = 0;
+            check_WhitePromotion = 0;
             check_wpPr++;
             check_wnPr++;
             break;
+
         case 4:
             chessPos[0][x] = "WR0";
             check = 0;
-            check_whitePromotion = 0;
+            check_WhitePromotion = 0;
             check_wpPr++;
             check_wrPr++;
             break;
+
         default:
-            gotoxy(1, 11);
-            printf("ì…ë ¥í•˜ì„¸ìš” :             ");
+            Gotoxy(1, 11);
+            printf("ÀÔ·ÂÇÏ¼¼¿ä :             ");
             continue;
         }
     }
-    gotoxy(1, 10);
+
+    Gotoxy(1, 10);
     printf("                                          ");
-    gotoxy(1, 11);
+    Gotoxy(1, 11);
     printf("                                          ");
-    chessDraw();
-    gotoxy(cursor_x, cursor_y);
+    DrawChess();
+    Gotoxy(cursor_x, cursor_y);
 }
 
-void blackPromotion(int x)
+
+void BlackPromotion(int x)
 {
     int check = 1;
-    char a = invert(x*2);
+    char a = Invert(x*2);
+
     while(check)
     {
         int promotion = 0;
-
-        gotoxy(1, 10);
+        Gotoxy(1, 10);
         printf("                        ");
-        gotoxy(1, 10);
-        textcolor(red);
-        printf("%c1ì¹¸ í”„ë¡œëª¨ì…˜ 1 í€¸ 2 ë¹„ìˆ 3 ë‚˜ì´íŠ¸ 4 ë£©\n",a);
-        textcolor(white);
-        gotoxy(1, 11);
-        printf("ì…ë ¥í•˜ì„¸ìš” : ");
+        Gotoxy(1, 10);
+        TextColor(red);
+        printf("%c1Ä­ ÇÁ·Î¸ğ¼Ç 1 Äı 2 ºñ¼ó 3 ³ªÀÌÆ® 4 ·è\n",a);
+        TextColor(white);
+        Gotoxy(1, 11);
+        printf("ÀÔ·ÂÇÏ¼¼¿ä : ");
         scanf("%d",&promotion);
+
         switch(promotion)
         {
         case 1:
             chessPos[7][x] = "BQ0";
             check = 0;
-            check_blackPromotion = 0;
+            check_BlackPromotion = 0;
             check_bpPr++;
             check_bqPr++;
             break;
+
         case 2:
             chessPos[7][x] = "BB0";
             check = 0;
-            check_blackPromotion = 0;
+            check_BlackPromotion = 0;
             check_bpPr++;
             check_bbPr++;
             break;
+
         case 3:
             chessPos[7][x] = "BN0";
             check = 0;
-            check_blackPromotion = 0;
+            check_BlackPromotion = 0;
             check_bpPr++;
             check_bnPr++;
             break;
+
         case 4:
             chessPos[7][x] = "BR0";
             check = 0;
-            check_blackPromotion = 0;
+            check_BlackPromotion = 0;
             check_bpPr++;
             check_brPr++;
             break;
+
         default:
-            gotoxy(1, 11);
-            printf("ì…ë ¥í•˜ì„¸ìš” :           ");
+            Gotoxy(1, 11);
+            printf("ÀÔ·ÂÇÏ¼¼¿ä :           ");
             continue;
         }
     }
-    gotoxy(1, 10);
+
+    Gotoxy(1, 10);
     printf("                                          ");
-    gotoxy(1, 11);
+    Gotoxy(1, 11);
     printf("                                          ");
-    chessDraw();
-    gotoxy(cursor_x, cursor_y);
+    DrawChess();
+    Gotoxy(cursor_x, cursor_y);
 }
 
-void whiteKing(int x, int y)
+
+void WhiteKing(int x, int y)
 {
     if (x-1 >= 0)
     {
         if (y-1 >= 0)
         {
             if (chessPos[x-1][y-1] == chessPiece[0] || chessPos[x-1][y-1][0] == BLACK)
-                movable[x-1][y-1] = 1;
+            {
+                if (check_check == 1)
+                    check[x-1][y-1] = 1;
+
+                else
+                    movable[x-1][y-1] = 1;
+            }
         }
 
         if (y+1 <= 7)
         {
             if (chessPos[x-1][y+1] == chessPiece[0] || chessPos[x-1][y+1][0] == BLACK)
-                movable[x-1][y+1] = 1;
+            {
+                if (check_check == 1)
+                    check[x-1][y+1] = 1;
+
+                else
+                    movable[x-1][y+1] = 1;
+            }
         }
 
         if (chessPos[x-1][y] == chessPiece[0] || chessPos[x-1][y][0] == BLACK)
-            movable[x-1][y] = 1;
+        {
+                if (check_check == 1)
+                    check[x-1][y] = 1;
+
+                else
+                    movable[x-1][y] = 1;
+            }
     }
 
     if (x+1 <= 7)
@@ -1399,32 +1737,68 @@ void whiteKing(int x, int y)
         if (y-1 >= 0)
         {
             if (chessPos[x+1][y-1] == chessPiece[0] || chessPos[x+1][y-1][0] == BLACK)
-                movable[x+1][y-1] = 1;
+            {
+                if (check_check == 1)
+                    check[x+1][y-1] = 1;
+
+                else
+                    movable[x+1][y-1] = 1;
+            }
         }
 
         if (y+1 <= 7)
         {
             if (chessPos[x+1][y+1] == chessPiece[0] || chessPos[x+1][y+1][0] == BLACK)
-                movable[x+1][y+1] = 1;
+            {
+                if (check_check == 1)
+                    check[x+1][y+1] = 1;
+
+                else
+                    movable[x+1][y+1] = 1;
+            }
         }
 
         if (chessPos[x+1][y] == chessPiece[0] || chessPos[x+1][y][0] == BLACK)
-            movable[x+1][y] = 1;
+        {
+                if (check_check == 1)
+                    check[x+1][y] = 1;
+
+                else
+                    movable[x+1][y] = 1;
+            }
     }
 
     if (y-1 >= 0)
     {
         if (chessPos[x][y-1] == chessPiece[0] || chessPos[x][y-1][0] == BLACK)
-            movable[x][y-1] = 1;
+        {
+                if (check_check == 1)
+                    check[x][y-1] = 1;
+
+                else
+                    movable[x][y-1] = 1;
+            }
     }
 
     if (y+1 <= 7)
     {
         if (chessPos[x][y+1] == chessPiece[0] || chessPos[x][y+1][0] == BLACK)
-            movable[x][y+1] = 1;
+        {
+                if (check_check == 1)
+                    check[x][y+1] = 1;
+
+                else
+                    movable[x][y+1] = 1;
+            }
     }
 
-    if (chessPos[x][y] == "WK1")        //ìºìŠ¬ë§
+    if (check_check == 0)
+        for (int i=0; i<8; i++)
+            for (int j=0; j<8; j++)
+                if (check[i][j] == 1)
+                    movable[i][j] = 0;
+
+    if (chessPos[x][y] == "WK1")        //Ä³½½¸µ
     {
         if (chessPos[7][5] == chessPiece[0] && chessPos[7][6] == chessPiece[0] && chessPos[7][7] == "WR1")
             movable[x][y+2] = 3;
@@ -1434,24 +1808,43 @@ void whiteKing(int x, int y)
     }
 }
 
-void blackKing(int x, int y)
+
+void BlackKing(int x, int y)
 {
     if (x-1 >= 0)
     {
         if (y-1 >= 0)
         {
             if (chessPos[x-1][y-1] == chessPiece[0] || chessPos[x-1][y-1][0] == WHITE)
-                movable[x-1][y-1] = 1;
+            {
+                if (check_check == 1)
+                    check[x-1][y-1] = 1;
+
+                else
+                    movable[x-1][y-1] = 1;
+            }
         }
 
         if (y+1 <= 7)
         {
             if (chessPos[x-1][y+1] == chessPiece[0] || chessPos[x-1][y+1][0] == WHITE)
-                movable[x-1][y+1] = 1;
+            {
+                if (check_check == 1)
+                    check[x-1][y+1] = 1;
+
+                else
+                    movable[x-1][y+1] = 1;
+            }
         }
 
         if (chessPos[x-1][y] == chessPiece[0] || chessPos[x-1][y][0] == WHITE)
-            movable[x-1][y] = 1;
+        {
+                if (check_check == 1)
+                    check[x-1][y] = 1;
+
+                else
+                    movable[x-1][y] = 1;
+            }
     }
 
     if (x+1 <= 7)
@@ -1459,30 +1852,66 @@ void blackKing(int x, int y)
         if (y-1 >= 0)
         {
             if (chessPos[x+1][y-1] == chessPiece[0] || chessPos[x+1][y-1][0] == WHITE)
-                movable[x+1][y-1] = 1;
+            {
+                if (check_check == 1)
+                    check[x+1][y-1] = 1;
+
+                else
+                    movable[x+1][y-1] = 1;
+            }
         }
 
         if (y+1 <= 7)
         {
             if (chessPos[x+1][y+1] == chessPiece[0] || chessPos[x+1][y+1][0] == WHITE)
-                movable[x+1][y+1] = 1;
+            {
+                if (check_check == 1)
+                    check[x+1][y+1] = 1;
+
+                else
+                    movable[x+1][y+1] = 1;
+            }
         }
 
         if (chessPos[x+1][y] == chessPiece[0] || chessPos[x+1][y][0] == WHITE)
-            movable[x+1][y] = 1;
+        {
+                if (check_check == 1)
+                    check[x+1][y] = 1;
+
+                else
+                    movable[x+1][y] = 1;
+            }
     }
 
     if (y-1 >= 0)
     {
         if (chessPos[x][y-1] == chessPiece[0] || chessPos[x][y-1][0] == WHITE)
-            movable[x][y-1] = 1;
+        {
+                if (check_check == 1)
+                    check[x][y-1] = 1;
+
+                else
+                    movable[x][y-1] = 1;
+            }
     }
 
     if (y+1 <= 7)
     {
         if (chessPos[x][y+1] == chessPiece[0] || chessPos[x][y+1][0] == WHITE)
-            movable[x][y+1] = 1;
+        {
+                if (check_check == 1)
+                    check[x][y+1] = 1;
+
+                else
+                    movable[x][y+1] = 1;
+            }
     }
+
+    if (check_check == 0)
+        for (int i=0; i<8; i++)
+            for (int j=0; j<8; j++)
+                if (check[i][j] == 1)
+                    movable[i][j] = 0;
 
     if (chessPos[x][y] == "BK1")
     {
@@ -1494,30 +1923,50 @@ void blackKing(int x, int y)
     }
 }
 
-void whitePawn(int x, int y)
+
+void WhiteQueen(int x, int y)
 {
-    if (chessPos[x][y][2] == '1')   //í•œë²ˆë„ ì•ˆ ì›€ì§ì˜€ìœ¼ë©´
+    WhiteRook(x, y);
+    WhiteBishop(x, y);
+}
+
+
+void BlackQueen(int x, int y)
+{
+    BlackRook(x, y);
+    BlackBishop(x, y);
+}
+
+
+void WhitePawn(int x, int y)
+{
+    if (chessPos[x][y][2] == '1')   //ÇÑ¹øµµ ¾È ¿òÁ÷¿´À¸¸é
     {
         if (chessPos[x-2][y] == chessPiece[0])
-            movable[x-2][y] = 2;    //ì•™íŒŒìƒ
+            movable[x-2][y] = 2;    //¾ÓÆÄ»ó
     }
 
     if(x>0)
     {
         if (chessPos[x-1][y]==chessPiece[0])
             movable[x-1][y]=1;
+
         if (chessPos[x-1][y-1][0]==BLACK)
             movable[x-1][y-1]=1;
+
         if (chessPos[x-1][y+1][0]==BLACK)
             movable[x-1][y+1]=1;
+
         if (chessPos[x][y-1][2] == '2')
             movable[x-1][y-1]=3;
+
         if (chessPos[x][y+1][2] == '2')
             movable[x-1][y+1]=3;
     }
 }
 
-void blackPawn(int x, int y)
+
+void BlackPawn(int x, int y)
 {
     if (chessPos[x][y][2] == '1')
     {
@@ -1529,30 +1978,48 @@ void blackPawn(int x, int y)
     {
         if(chessPos[x+1][y]==chessPiece[0])
             movable[x+1][y]=1;
+
         if(chessPos[x+1][y+1][0]==WHITE)
             movable[x+1][y+1]=1;
+
         if(chessPos[x+1][y-1][0]==WHITE)
             movable[x+1][y-1]=1;
+
         if (chessPos[x][y-1][2] == '2')
             movable[x+1][y-1]=3;
+
         if (chessPos[x][y+1][2] == '2')
             movable[x+1][y+1]=3;
     }
 }
-void whiteNight(int x, int y)   // ë°±ìƒ‰ ë‚˜ì´íŠ¸
+
+
+void WhiteNight(int x, int y)   // ¹é»ö ³ªÀÌÆ®
 {
     if (x-2 >= 0)
     {
         if (y-1 >= 0)
         {
             if (chessPos[x-2][y-1] == chessPiece[0] || chessPos[x-2][y-1][0] == BLACK)
-                movable[x-2][y-1] = 1;
+            {
+                if (check_check == 1)
+                    check[x-2][y-1] = 1;
+
+                else
+                    movable[x-2][y-1] = 1;
+            }
         }
 
         if (y+1 <= 7)
         {
             if (chessPos[x-2][y+1] == chessPiece[0] || chessPos[x-2][y+1][0] == BLACK)
-                movable[x-2][y+1] = 1;
+            {
+                if (check_check == 1)
+                    check[x-2][y+1] = 1;
+
+                else
+                    movable[x-2][y+1] = 1;
+            }
         }
     }
 
@@ -1561,13 +2028,25 @@ void whiteNight(int x, int y)   // ë°±ìƒ‰ ë‚˜ì´íŠ¸
         if (y-2 >= 0)
         {
             if (chessPos[x-1][y-2] == chessPiece[0] || chessPos[x-1][y-2][0] == BLACK)
-                movable[x-1][y-2] = 1;
+            {
+                if (check_check == 1)
+                    check[x-1][y-2] = 1;
+
+                else
+                    movable[x-1][y-2] = 1;
+            }
         }
 
         if (y+2 <= 7)
         {
             if (chessPos[x-1][y+2] == chessPiece[0] || chessPos[x-1][y+2][0] == BLACK)
-                movable[x-1][y+2] = 1;
+            {
+                if (check_check == 1)
+                    check[x-1][y+2] = 1;
+
+                else
+                    movable[x-1][y+2] = 1;
+            }
         }
     }
 
@@ -1576,13 +2055,25 @@ void whiteNight(int x, int y)   // ë°±ìƒ‰ ë‚˜ì´íŠ¸
         if (y-2 >= 0)
         {
             if (chessPos[x+1][y-2] == chessPiece[0] || chessPos[x+1][y-2][0] == BLACK)
-                movable[x+1][y-2] = 1;
+            {
+                if (check_check == 1)
+                    check[x+1][y-2] = 1;
+
+                else
+                    movable[x+1][y-2] = 1;
+            }
         }
 
         if (y+2 <= 7)
         {
             if (chessPos[x+1][y+2] == chessPiece[0] || chessPos[x+1][y+2][0] == BLACK)
-                movable[x+1][y+2] = 1;
+            {
+                if (check_check == 1)
+                    check[x+1][y+2] = 1;
+
+                else
+                    movable[x+1][y+2] = 1;
+            }
         }
     }
 
@@ -1591,31 +2082,56 @@ void whiteNight(int x, int y)   // ë°±ìƒ‰ ë‚˜ì´íŠ¸
         if (y-1 >= 0)
         {
             if (chessPos[x+2][y-1] == chessPiece[0] || chessPos[x+2][y-1][0] == BLACK)
-                movable[x+2][y-1] = 1;
+            {
+                if (check_check == 1)
+                    check[x+2][y-1] = 1;
+
+                else
+                    movable[x+2][y-1] = 1;
+            }
         }
 
         if (y+1 <= 7)
         {
             if (chessPos[x+2][y+1] == chessPiece[0] || chessPos[x+2][y+1][0] == BLACK)
-                movable[x+2][y+1] = 1;
+            {
+                if (check_check == 1)
+                    check[x+2][y+1] = 1;
+
+                else
+                    movable[x+2][y+1] = 1;
+            }
         }
     }
 }
 
-void blackNight(int x, int y)
+
+void BlackNight(int x, int y)
 {
     if (x-2 >= 0)
     {
         if (y-1 >= 0)
         {
             if (chessPos[x-2][y-1] == chessPiece[0] || chessPos[x-2][y-1][0] == WHITE)
-                movable[x-2][y-1] = 1;
+            {
+                if (check_check == 1)
+                    check[x-2][y-1] = 1;
+
+                else
+                    movable[x-2][y-1] = 1;
+            }
         }
 
         if (y+1 <= 7)
         {
             if (chessPos[x-2][y+1] == chessPiece[0] || chessPos[x-2][y+1][0] == WHITE)
-                movable[x-2][y+1] = 1;
+            {
+                if (check_check == 1)
+                    check[x-2][y+1] = 1;
+
+                else
+                    movable[x-2][y+1] = 1;
+            }
         }
     }
 
@@ -1624,13 +2140,25 @@ void blackNight(int x, int y)
         if (y-2 >= 0)
         {
             if (chessPos[x-1][y-2] == chessPiece[0] || chessPos[x-1][y-2][0] == WHITE)
-                movable[x-1][y-2] = 1;
+            {
+                if (check_check == 1)
+                    check[x-1][y-2] = 1;
+
+                else
+                    movable[x-1][y-2] = 1;
+            }
         }
 
         if (y+2 <= 7)
         {
             if (chessPos[x-1][y+2] == chessPiece[0] || chessPos[x-1][y+2][0] == WHITE)
-                movable[x-1][y+2] = 1;
+            {
+                if (check_check == 1)
+                    check[x-1][y+2] = 1;
+
+                else
+                    movable[x-1][y+2] = 1;
+            }
         }
     }
 
@@ -1639,13 +2167,25 @@ void blackNight(int x, int y)
         if (y-2 >= 0)
         {
             if (chessPos[x+1][y-2] == chessPiece[0] || chessPos[x+1][y-2][0] == WHITE)
-                movable[x+1][y-2] = 1;
+            {
+                if (check_check == 1)
+                    check[x+1][y-2] = 1;
+
+                else
+                    movable[x+1][y-2] = 1;
+            }
         }
 
         if (y+2 <= 7)
         {
             if (chessPos[x+1][y+2] == chessPiece[0] || chessPos[x+1][y+2][0] == WHITE)
-                movable[x+1][y+2] = 1;
+            {
+                if (check_check == 1)
+                    check[x+1][y+2] = 1;
+
+                else
+                    movable[x+1][y+2] = 1;
+            }
         }
     }
 
@@ -1654,111 +2194,163 @@ void blackNight(int x, int y)
         if (y-1 >= 0)
         {
             if (chessPos[x+2][y-1] == chessPiece[0] || chessPos[x+2][y-1][0] == WHITE)
-                movable[x+2][y-1] = 1;
+            {
+                if (check_check == 1)
+                    check[x+2][y-1] = 1;
+
+                else
+                    movable[x+2][y-1] = 1;
+            }
         }
 
         if (y+1 <= 7)
         {
             if (chessPos[x+2][y+1] == chessPiece[0] || chessPos[x+2][y+1][0] == WHITE)
-                movable[x+2][y+1] = 1;
+            {
+                if (check_check == 1)
+                    check[x+2][y+1] = 1;
+
+                else
+                    movable[x+2][y+1] = 1;
+            }
         }
     }
 }
-void whiteRook(int x, int y){
 
-    if(x!=0){
-        for(int i=1;i<=x;i++){
-            if(chessPos[x-i][y][0] == WHITE){
+
+void WhiteRook(int x, int y){
+
+    if(x != 0)
+    {
+        for(int i = 1; i <= x; i++)
+        {
+            if(chessPos[x-i][y][0] == WHITE)
                 break;
-            }
-            if(chessPos[x-i][y] == chessPiece[0]||chessPos[x-i][y][0] == BLACK){
+
+            if(chessPos[x-i][y] == chessPiece[0] || chessPos[x-i][y][0] == BLACK)
+            {
                 movable[x-i][y]=1;
                 if(chessPos[x-i][y][0] == BLACK)
                     break;
             }
         }
     }
-    if(x!=7){
-        for(int i=1;i<8-x;i++){
-            if(chessPos[x+i][y][0] == WHITE){
+
+    if(x != 7)
+    {
+        for(int i = 1; i < 8-x; i++)
+        {
+            if(chessPos[x+i][y][0] == WHITE)
                 break;
-            }
-            if(chessPos[x+i][y] == chessPiece[0]||chessPos[x+i][y][0] == BLACK){
+
+            if(chessPos[x+i][y] == chessPiece[0] || chessPos[x+i][y][0] == BLACK)
+            {
                 movable[x+i][y]=1;
-            if(chessPos[x+i][y][0] == BLACK)
-                break;
+
+                if(chessPos[x+i][y][0] == BLACK)
+                    break;
             }
         }
     }
-    if(y!=0){
-        for(int i=1;i<=y;i++){
-            if(chessPos[x][y-i][0] == WHITE){
+
+    if(y != 0)
+    {
+        for(int i = 1; i <= y; i++)
+        {
+            if(chessPos[x][y-i][0] == WHITE)
                 break;
-            }
-            if(chessPos[x][y-i] == chessPiece[0]||chessPos[x][y-i][0] == BLACK){
+
+            if(chessPos[x][y-i] == chessPiece[0] || chessPos[x][y-i][0] == BLACK)
+            {
                 movable[x][y-i]=1;
-            if(chessPos[x][y-i][0] == BLACK)
-                break;
+
+                if(chessPos[x][y-i][0] == BLACK)
+                    break;
             }
         }
     }
-    if(y!=7){
-        for(int i=1;i<8-y;i++){
-            if(chessPos[x][y+i][0] == WHITE){
+
+    if(y != 7)
+    {
+        for(int i = 1; i < 8-y; i++)
+        {
+            if(chessPos[x][y+i][0] == WHITE)
                 break;
-            }
-            if(chessPos[x][y+i] == chessPiece[0]||chessPos[x][y+i][0] == BLACK){
+
+            if(chessPos[x][y+i] == chessPiece[0] || chessPos[x][y+i][0] == BLACK)
+            {
                 movable[x][y+i]=1;
+
                 if(chessPos[x][y+i][0] == BLACK)
                     break;
             }
         }
     }
 }
-void blackRook(int x, int y){
 
-    if(x!=0){
-        for(int i=1;i<=x;i++){
-            if(chessPos[x-i][y][0] == BLACK){
+
+void BlackRook(int x, int y)
+{
+
+    if(x != 0)
+    {
+        for(int i = 1; i <= x; i++)
+        {
+            if(chessPos[x-i][y][0] == BLACK)
                 break;
-            }
-            if(chessPos[x-i][y] == chessPiece[0]||chessPos[x-i][y][0] == WHITE){
+
+            if(chessPos[x-i][y] == chessPiece[0] || chessPos[x-i][y][0] == WHITE)
+            {
                 movable[x-i][y]=1;
+
                 if(chessPos[x-i][y][0] == WHITE)
                     break;
             }
         }
     }
-    if(x!=7){
-        for(int i=1;i<8-x;i++){
-            if(chessPos[x+i][y][0] == BLACK){
+
+    if(x != 7)
+    {
+        for(int i = 1; i < 8-x; i++)
+        {
+            if(chessPos[x+i][y][0] == BLACK)
                 break;
-            }
-            if(chessPos[x+i][y] == chessPiece[0]||chessPos[x+i][y][0] == WHITE){
+
+            if(chessPos[x+i][y] == chessPiece[0] || chessPos[x+i][y][0] == WHITE)
+            {
                 movable[x+i][y]=1;
-            if(chessPos[x+i][y][0] == WHITE)
-                break;
+                if(chessPos[x+i][y][0] == WHITE)
+                    break;
             }
         }
     }
-    if(y!=0){
-        for(int i=1;i<=y;i++){
-            if(chessPos[x][y-i][0] == BLACK){
+
+    if(y != 0)
+    {
+        for(int i = 1;i <= y; i++)
+        {
+            if(chessPos[x][y-i][0] == BLACK)
                 break;
-            }
-            if(chessPos[x][y-i] == chessPiece[0]||chessPos[x][y-i][0] == WHITE){
+
+            if(chessPos[x][y-i] == chessPiece[0] || chessPos[x][y-i][0] == WHITE)
+            {
                 movable[x][y-i]=1;
-            if(chessPos[x][y-i][0] == WHITE)
-                break;
+
+                if(chessPos[x][y-i][0] == WHITE)
+                    break;
             }
         }
     }
-    if(y!=7){
-        for(int i=1;i<8-y;i++){
-            if(chessPos[x][y+i][0] == BLACK){
+
+    if(y != 7)
+    {
+        for(int i = 1; i < 8-y ; i++)
+        {
+            if(chessPos[x][y+i][0] == BLACK)
                 break;
-            }
-            if(chessPos[x][y+i] == chessPiece[0]||chessPos[x][y+i][0] == WHITE){
+
+            if(chessPos[x][y+i] == chessPiece[0]||chessPos[x][y+i][0] == WHITE)
+            {
                 movable[x][y+i]=1;
                 if(chessPos[x][y+i][0] == WHITE)
                     break;
@@ -1767,80 +2359,131 @@ void blackRook(int x, int y){
     }
 }
 
-void blackBishop(int x,int y){
+
+void BlackBishop(int x,int y)
+{
     int i;
-    for(i=1;i<8;i++){
-        if((x-i)<0||(y-i)<0) break;
-        else if(chessPos[x-i][y-i][0]==BLACK)
-            break;
-        movable[x-i][y-i]=1;
-        if(chessPos[x-i][y-i][0]==WHITE)
+
+    for(i = 1; i < 8; i++)
+    {
+        if((x-i) < 0 || (y-i) < 0)
             break;
 
-    }
-    for(i=1;i<8;i++){
-        if((x-i)<0||(y+i)>7) break;
-        else if(chessPos[x-i][y+i][0]==BLACK)
+        else if(chessPos[x-i][y-i][0] == BLACK)
             break;
+
+        movable[x-i][y-i] = 1;
+        if(chessPos[x-i][y-i][0] == WHITE)
+            break;
+    }
+
+    for(i = 1; i < 8; i++)
+    {
+        if((x-i) < 0 || (y+i) > 7)
+            break;
+
+        else if(chessPos[x-i][y+i][0] == BLACK)
+            break;
+
         movable[x-i][y+i]=1;
+
         if(chessPos[x-i][y+i][0]==WHITE)
             break;
     }
-    for(i=1;i<8;i++){
-        if((x+i)>7||(y-i)<0) break;
-        else if(chessPos[x+i][y-i][0]==BLACK)
+
+    for(i = 1; i < 8; i++)
+    {
+        if((x+i) > 7 || (y-i) < 0)
             break;
+
+        else if(chessPos[x+i][y-i][0] == BLACK)
+            break;
+
         movable[x+i][y-i]=1;
-        if(chessPos[x+i][y-i][0]==WHITE)
+
+        if(chessPos[x+i][y-i][0] == WHITE)
             break;
     }
-    for(i=1;i<8;i++){
-        if((x+i)>7||(y+i)>7) break;
-        else if(chessPos[x+i][y+i][0]==BLACK)
+
+    for(i = 1; i < 8; i++)
+    {
+        if((x+i) > 7 || (y+i) > 7)
             break;
+
+        else if(chessPos[x+i][y+i][0] == BLACK)
+            break;
+
         movable[x+i][y+i]=1;
-        if(chessPos[x+i][y+i][0]==WHITE)
+
+        if(chessPos[x+i][y+i][0] == WHITE)
             break;
     }
 }
-void whiteBishop(int x,int y){
+
+
+void WhiteBishop(int x,int y)
+{
     int i;
-    for(i=1;i<8;i++){
-        if((x-i)<0||(y-i)<0) break;
-        else if(chessPos[x-i][y-i][0]==WHITE)
-            break;
-        movable[x-i][y-i]=1;
-        if(chessPos[x-i][y-i][0]==BLACK)
+
+    for(i = 1; i < 8; i++)
+    {
+        if((x-i) < 0 || (y-i) < 0)
             break;
 
-    }
-    for(i=1;i<8;i++){
-        if((x-i)<0||(y+i)>7) break;
-        else if(chessPos[x-i][y+i][0]==WHITE)
+        else if(chessPos[x-i][y-i][0] == WHITE)
             break;
+
+        movable[x-i][y-i]=1;
+
+        if(chessPos[x-i][y-i][0] == BLACK)
+            break;
+    }
+
+    for(i = 1; i < 8; i++)
+    {
+        if((x-i) < 0 || (y+i) > 7)
+            break;
+
+        else if(chessPos[x-i][y+i][0] == WHITE)
+            break;
+
         movable[x-i][y+i]=1;
-        if(chessPos[x-i][y+i][0]==BLACK)
+
+        if(chessPos[x-i][y+i][0] == BLACK)
             break;
     }
-    for(i=1;i<8;i++){
-        if((x+i)>7||(y-i)<0) break;
-        else if(chessPos[x+i][y-i][0]==WHITE)
+
+    for(i = 1; i < 8; i++)
+    {
+        if((x+i) > 7 || (y-i) < 0)
             break;
+
+        else if(chessPos[x+i][y-i][0] == WHITE)
+            break;
+
         movable[x+i][y-i]=1;
-        if(chessPos[x+i][y-i][0]==BLACK)
+
+        if(chessPos[x+i][y-i][0] == BLACK)
             break;
     }
-    for(i=1;i<8;i++){
-        if((x+i)>7||(y+i)>7) break;
-        else if(chessPos[x+i][y+i][0]==WHITE)
+
+    for(i = 1; i < 8; i++)
+    {
+        if((x+i) > 7 || (y+i) > 7)
             break;
+
+        else if(chessPos[x+i][y+i][0] == WHITE)
+            break;
+
         movable[x+i][y+i]=1;
-        if(chessPos[x+i][y+i][0]==BLACK)
+
+        if(chessPos[x+i][y+i][0] == BLACK)
             break;
     }
 }
 
-void gotoxy(int x, int y)
+
+void Gotoxy(int x, int y)
 {
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD pos;
@@ -1849,58 +2492,1048 @@ void gotoxy(int x, int y)
 	SetConsoleCursorPosition(consoleHandle, pos);
 }
 
-void erase(int x, int y)
+
+void Erase(int x, int y)
 {
-	gotoxy(x, y);
+	Gotoxy(x, y);
 	printf(" ");
 }
 
-char invert(int x)
+
+char Invert(int x)
 {
     switch(x)
     {
     case 0:
         return 'a';
+
     case 2:
         return 'b';
+
     case 4:
         return 'c';
+
     case 6:
         return 'd';
+
     case 8:
         return 'e';
+
     case 10:
         return 'f';
+
     case 12:
         return 'g';
+
     case 14:
         return 'h';
     }
 }
 
-void textcolor(int color_number)
+
+void TextColor(int color_number)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color_number);
 }
 
-void backcolor(int color_number)
+
+void BackColor(int color_number)
 {
 	HANDLE hC = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 	GetConsoleScreenBufferInfo(hC, &csbi);
-
-	SetConsoleTextAttribute(hC, color_number);
+    SetConsoleTextAttribute(hC, color_number);
 }
 
-void CursorView(char show)
+
+void ViewCursor(char show)
 {
 	HANDLE hConsole;
 	CONSOLE_CURSOR_INFO ConsoleCursor;
-
-	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
+    hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	ConsoleCursor.bVisible = show;
 	ConsoleCursor.dwSize = 1;
-
 	SetConsoleCursorInfo(hConsole, &ConsoleCursor);
+}
+
+
+void WhiteCheck()
+{
+    int i,j;
+
+    for (i = 0; i < 8; i++)
+        for (j = 0; j < 8; j++)
+            check[i][j] = 0;
+
+    for(i = 0; i < 8; i++)
+        for(j = 0; j < 8; j++)
+        {
+            if (chessPos[i][j][0] == WHITE)
+            {
+                if (chessPos[i][j][1] != 'K')
+                    check[i][j] = 1;
+            }
+
+            if (chessPos[i][j][0] == BLACK)
+            {
+                if (chessPos[i][j][1] == 'P')
+                    if (i < 7)
+                    {
+                        if (chessPos[i+1][j-1][0] == WHITE || chessPos[i+1][j-1] == chessPiece[0])
+                            check[i+1][j-1] = 1;
+
+                        if (chessPos[i+1][j+1][0] == WHITE || chessPos[i+1][j+1] == chessPiece[0])
+                            check[i+1][j+1] = 1;
+                    }
+
+                if (chessPos[i][j][1] == 'N')
+                    BlackNight(i, j);
+
+                if (chessPos[i][j][1] == 'R')
+                {
+                    if (i != 0)
+                    {
+                        for (int k = 0; k <= i; k++)
+                        {
+                            if (chessPos[i-k][j] == chessPiece[0])
+                                check[i-k][j] = 1;
+
+                            if (chessPos[i-k][j][0] == BLACK || chessPos[i-k][j][0] == WHITE)
+                            {
+                                if (chessPos[i-k][j][0] == WHITE && chessPos[i-k][j][1] == 'K')
+                                {
+                                    check[i-k][j] = 1;
+                                    if (chessPos[i-k-1][j] == chessPiece[0])
+                                        check[i-k-1][j] = 1;
+                                }
+                            break;
+                            }
+                        }
+                    }
+
+                    if (i != 7)
+                    {
+                        for (int k = 1; k < 8-i; k++)
+                        {
+                            if (chessPos[i+k][j] == chessPiece[0])
+                                check[i+k][j] = 1;
+
+                            if (chessPos[i+k][j][0] == BLACK || chessPos[i+k][j][0] == WHITE)
+                            {
+                                if (chessPos[i+k][j][0] == WHITE && chessPos[i+k][j][1] == 'K')
+                                {
+                                    check[i+k][j] = 1;
+
+                                    if (chessPos[i+k+1][j] == chessPiece[0])
+                                        check[i+k+1][j] = 1;
+                                }
+                            break;
+                            }
+                        }
+                    }
+
+                    if (j != 0)
+                    {
+                        for (int k = 1; k <= j; k++)
+                        {
+                            if (chessPos[i][j-k] == chessPiece[0])
+                                check[i][j-k] = 1;
+
+                            if (chessPos[i][j-k][0] == BLACK || chessPos[i][j-k][0] == WHITE)
+                            {
+                                if (chessPos[i][j-k][0] == WHITE && chessPos[i][j-k][1] == 'K')
+                                {
+                                    check[i][j-k] = 1;
+
+                                    if (chessPos[i][j-k-1] == chessPiece[0])
+                                        check[i][j-k-1] = 1;
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    if (j != 7)
+                    {
+                        for (int k = 1; k <= 8-j; k++)
+                        {
+                            if (chessPos[i][j+k] == chessPiece[0])
+                                check[i][j+k] = 1;
+
+                            if (chessPos[i][j+k][0] == BLACK || chessPos[i][j+k][0] == WHITE)
+                            {
+                                if (chessPos[i][j+k][0] == WHITE && chessPos[i][j+k][1] == 'K')
+                                {
+                                    check[i][j+k] = 1;
+
+                                    if (chessPos[i][j+k+1] == chessPiece[0])
+                                        check[i][j+k+1] = 1;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (chessPos[i][j][1] == 'B')
+                {
+                    for (int k = 1; k < 8; k++)
+                    {
+                        if ((i-k < 0) || (j-k < 0))
+                            break;
+
+                        if (chessPos[i-k][j-k][0] == BLACK)
+                            break;
+
+                        check[i-k][j-k] = 1;
+
+                        if (chessPos[i-k][j-k][0] == WHITE)
+                        {
+                            if (chessPos[i-k][j-k][1] == 'K')
+                            {
+                                check[i-k][j-k] = 1;
+
+                                if (chessPos[i-k-1][j-k-1] == chessPiece[0])
+                                    check[i-k-1][j-k-1] = 1;
+                            }
+                        break;
+                        }
+                    }
+
+                    for (int k = 1; k < 8; k++)
+                    {
+                        if ((i-k < 0) || (j+k < 0))
+                            break;
+
+                        if (chessPos[i-k][j+k][0] == BLACK)
+                            break;
+
+                        check[i-k][j+k] = 1;
+
+                        if (chessPos[i-k][j+k][0] == WHITE)
+                        {
+                            if (chessPos[i-k][j+k][1] == 'K')
+                            {
+                                check[i-k][j+k] = 1;
+
+                                if (chessPos[i-k-1][j+k+1] == chessPiece[0])
+                                    check[i-k-1][j+k+1] = 1;
+                            }
+                        break;
+                        }
+                    }
+
+                    for (int k = 1; k < 8; k++)
+                    {
+                        if ((i+k < 0) || (j-k < 0))
+                            break;
+
+                        if (chessPos[i+k][j-k][0] == BLACK)
+                            break;
+
+                        check[i+k][j-k] = 1;
+
+                        if (chessPos[i+k][j-k][0] == WHITE)
+                        {
+                            if (chessPos[i+k][j-k][1] == 'K')
+                            {
+                                check[i+k][j-k] = 1;
+
+                                if (chessPos[i+k+1][j-k-1] == chessPiece[0])
+                                    check[i+k+1][j-k-1] = 1;
+                            }
+                        break;
+                        }
+                    }
+
+                    for (int k = 1; k < 8; k++)
+                    {
+                        if ((i+k < 0) || (j+k < 0))
+                            break;
+
+                        if (chessPos[i+k][j+k][0] == BLACK)
+                            break;
+
+                        check[i+k][j+k] = 1;
+
+                        if (chessPos[i+k][j+k][0] == WHITE)
+                        {
+                            if (chessPos[i+k][j+k][1] == 'K')
+                            {
+                                check[i+k][j+k] = 1;
+
+                                if (chessPos[i+k+1][j+k+1] == chessPiece[0])
+                                    check[i+k+1][j+k+1] = 1;
+                            }
+                        break;
+                        }
+                    }
+                }
+
+                if (chessPos[i][j][1] == 'Q')
+                {
+                    if (i != 0)
+                    {
+                        for (int k = 0; k <= i; k++)
+                        {
+                            if (chessPos[i-k][j] == chessPiece[0])
+                                check[i-k][j] = 1;
+
+                            if (chessPos[i-k][j][0] == BLACK || chessPos[i-k][j][0] == WHITE)
+                            {
+                                if (chessPos[i-k][j][0] == WHITE && chessPos[i-k][j][1] == 'K')
+                                {
+                                    check[i-k][j] = 1;
+
+                                    if (chessPos[i-k-1][j] == chessPiece[0])
+                                        check[i-k-1][j] = 1;
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    if (i != 7)
+                    {
+                        for (int k = 1; k < 8-i; k++)
+                        {
+                            if (chessPos[i+k][j] == chessPiece[0])
+                                check[i+k][j] = 1;
+
+                            if (chessPos[i+k][j][0] == BLACK || chessPos[i+k][j][0] == WHITE)
+                            {
+                                if (chessPos[i+k][j][0] == WHITE && chessPos[i+k][j][1] == 'K')
+                                {
+                                    check[i+k][j] = 1;
+                                    if (chessPos[i+k+1][j] == chessPiece[0])
+                                        check[i+k+1][j] = 1;
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    if (j != 0)
+                    {
+                        for (int k = 1; k <= j; k++)
+                        {
+                            if (chessPos[i][j-k] == chessPiece[0])
+                                check[i][j-k] = 1;
+
+                            if (chessPos[i][j-k][0] == BLACK || chessPos[i][j-k][0] == WHITE)
+                            {
+                                if (chessPos[i][j-k][0] == WHITE && chessPos[i][j-k][1] == 'K')
+                                {
+                                    check[i][j-k] = 1;
+
+                                    if (chessPos[i][j-k-1] == chessPiece[0])
+                                        check[i][j-k-1] = 1;
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    if (j != 7)
+                    {
+                        for (int k = 1; k <= 8-j; k++)
+                        {
+                            if (chessPos[i][j+k] == chessPiece[0])
+                                check[i][j+k] = 1;
+
+                            if (chessPos[i][j+k][0] == BLACK || chessPos[i][j+k][0] == WHITE)
+                            {
+                                if (chessPos[i][j+k][0] == WHITE && chessPos[i][j+k][1] == 'K')
+                                {
+                                    check[i][j+k] = 1;
+                                    if (chessPos[i][j+k+1] == chessPiece[0])
+                                        check[i][j+k+1] = 1;
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    for (int k = 1; k < 8; k++)
+                    {
+                        if ((i-k < 0) || (j-k < 0))
+                            break;
+
+                        if (chessPos[i-k][j-k][0] == BLACK)
+                            break;
+
+                        check[i-k][j-k] = 1;
+
+                        if (chessPos[i-k][j-k][0] == WHITE)
+                        {
+                            if (chessPos[i-k][j-k][1] == 'K')
+                            {
+                                check[i-k][j-k] = 1;
+
+                                if (chessPos[i-k-1][j-k-1] == chessPiece[0])
+                                    check[i-k-1][j-k-1] = 1;
+                            }
+                        break;
+                        }
+                    }
+
+                    for (int k = 1; k < 8; k++)
+                    {
+                        if ((i-k < 0) || (j+k < 0))
+                            break;
+
+                        if (chessPos[i-k][j+k][0] == BLACK)
+                            break;
+
+                        check[i-k][j+k] = 1;
+
+                        if (chessPos[i-k][j+k][0] == WHITE)
+                        {
+                            if (chessPos[i-k][j+k][1] == 'K')
+                            {
+                                check[i-k][j+k] = 1;
+
+                                if (chessPos[i-k-1][j+k+1] == chessPiece[0])
+                                    check[i-k-1][j+k+1] = 1;
+                            }
+                            break;
+                        }
+                    }
+
+                    for (int k = 1; k < 8; k++)
+                    {
+                        if ((i+k < 0) || (j-k < 0))
+                            break;
+
+                        if (chessPos[i+k][j-k][0] == BLACK)
+                            break;
+
+                        check[i+k][j-k] = 1;
+
+                        if (chessPos[i+k][j-k][0] == WHITE)
+                        {
+                            if (chessPos[i+k][j-k][1] == 'K')
+                            {
+                                check[i+k][j-k] = 1;
+
+                                if (chessPos[i+k+1][j-k-1] == chessPiece[0])
+                                    check[i+k+1][j-k-1] = 1;
+                            }
+                        break;
+                        }
+                    }
+
+                    for (int k = 1; k < 8; k++)
+                    {
+                        if ((i+k < 0) || (j+k < 0))
+                            break;
+
+                        if (chessPos[i+k][j+k][0] == BLACK)
+                            break;
+
+                        check[i+k][j+k] = 1;
+
+                        if (chessPos[i+k][j+k][0] == WHITE)
+                        {
+                            if (chessPos[i+k][j+k][1] == 'K')
+                            {
+                                check[i+k][j+k] = 1;
+
+                                if (chessPos[i+k+1][j+k+1] == chessPiece[0])
+                                    check[i+k+1][j+k+1] = 1;
+                            }
+                        break;
+                        }
+                    }
+                }
+
+                if (chessPos[i][j][1] == 'K')
+                    BlackKing(i, j);
+        }
+    }
+}
+
+
+void BlackCheck()
+{
+    int i,j;
+
+    for (i = 0; i < 8; i++)
+        for (j = 0; j < 8; j++)
+            check[i][j] = 0;
+
+    for(i = 0; i < 8; i++)
+        for(j = 0; j < 8; j++)
+        {
+            if (chessPos[i][j][0] == BLACK)
+            {
+                if (chessPos[i][j][1] != 'K')
+                    check[i][j] = 1;
+            }
+
+            if (chessPos[i][j][0] == WHITE)
+            {
+                if (chessPos[i][j][1] == 'P')
+                    if (i > 0)
+                    {
+                        if (chessPos[i-1][j-1][0] == BLACK || chessPos[i-1][j-1] == chessPiece[0])
+                            check[i-1][j-1] = 1;
+
+                        if (chessPos[i-1][j+1][0] == BLACK || chessPos[i-1][j+1] == chessPiece[0])
+                            check[i-1][j+1] = 1;
+                    }
+
+                if (chessPos[i][j][1] == 'N')
+                    WhiteNight(i, j);
+
+                if (chessPos[i][j][1] == 'R')
+                {
+                    if (i != 0)
+                    {
+                        for (int k = 0; k <= i; k++)
+                        {
+                            if (chessPos[i-k][j] == chessPiece[0])
+                                check[i-k][j] = 1;
+
+                            if (chessPos[i-k][j][0] == BLACK || chessPos[i-k][j][0] == WHITE)
+                            {
+                                if (chessPos[i-k][j][0] == BLACK && chessPos[i-k][j][1] == 'K')
+                                {
+                                    check[i-k][j] = 1;
+                                    if (chessPos[i-k-1][j] == chessPiece[0])
+                                        check[i-k-1][j] = 1;
+                                }
+                            break;
+                            }
+                        }
+                    }
+
+                    if (i != 7)
+                    {
+                        for (int k = 1; k < 8-i; k++)
+                        {
+                            if (chessPos[i+k][j] == chessPiece[0])
+                                check[i+k][j] = 1;
+
+                            if (chessPos[i+k][j][0] == BLACK || chessPos[i+k][j][0] == WHITE)
+                            {
+                                if (chessPos[i+k][j][0] == BLACK && chessPos[i+k][j][1] == 'K')
+                                {
+                                    check[i+k][j] = 1;
+
+                                    if (chessPos[i+k+1][j] == chessPiece[0])
+                                        check[i+k+1][j] = 1;
+                                }
+                            break;
+                            }
+                        }
+                    }
+
+                    if (j != 0)
+                    {
+                        for (int k = 1; k <= j; k++)
+                        {
+                            if (chessPos[i][j-k] == chessPiece[0])
+                                check[i][j-k] = 1;
+
+                            if (chessPos[i][j-k][0] == BLACK || chessPos[i][j-k][0] == WHITE)
+                            {
+                                if (chessPos[i][j-k][0] == BLACK && chessPos[i][j-k][1] == 'K')
+                                {
+                                    check[i][j-k] = 1;
+
+                                    if (chessPos[i][j-k-1] == chessPiece[0])
+                                            check[i][j-k-1] = 1;
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    if (j != 7)
+                    {
+                        for (int k = 1; k <= 8-j; k++)
+                        {
+                            if (chessPos[i][j+k] == chessPiece[0])
+                                check[i][j+k] = 1;
+
+                            if (chessPos[i][j+k][0] == BLACK || chessPos[i][j+k][0] == WHITE)
+                            {
+                                if (chessPos[i][j+k][0] == BLACK && chessPos[i][j+k][1] == 'K')
+                                {
+                                    check[i][j+k] = 1;
+
+                                    if (chessPos[i][j+k+1] == chessPiece[0])
+                                        check[i][j+k+1] = 1;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (chessPos[i][j][1] == 'B')
+                {
+                    for (int k = 1; k < 8; k++)
+                    {
+                        if ((i-k < 0) || (j-k < 0))
+                            break;
+
+                        if (chessPos[i-k][j-k][0] == WHITE)
+                            break;
+
+                        check[i-k][j-k] = 1;
+
+                        if (chessPos[i-k][j-k][0] == BLACK)
+                        {
+                            if (chessPos[i-k][j-k][1] == 'K')
+                            {
+                                check[i-k][j-k] = 1;
+                                if (chessPos[i-k-1][j-k-1] == chessPiece[0])
+                                    check[i-k-1][j-k-1] = 1;
+                            }
+                        break;
+                        }
+                    }
+
+                    for (int k = 1; k < 8; k++)
+                    {
+                        if ((i-k < 0) || (j+k < 0))
+                            break;
+
+                        if (chessPos[i-k][j+k][0] == WHITE)
+                            break;
+
+                        check[i-k][j+k] = 1;
+
+                        if (chessPos[i-k][j+k][0] == BLACK)
+                        {
+                            if (chessPos[i-k][j+k][1] == 'K')
+                            {
+                                check[i-k][j+k] = 1;
+
+                                if (chessPos[i-k-1][j+k+1] == chessPiece[0])
+                                    check[i-k-1][j+k+1] = 1;
+                            }
+                        break;
+                        }
+                    }
+
+                    for (int k = 1; k < 8; k++)
+                    {
+                        if ((i+k < 0) || (j-k < 0))
+                            break;
+
+                        if (chessPos[i+k][j-k][0] == WHITE)
+                            break;
+
+                        check[i+k][j-k] = 1;
+
+                        if (chessPos[i+k][j-k][0] == BLACK)
+                        {
+                            if (chessPos[i+k][j-k][1] == 'K')
+                            {
+                                check[i+k][j-k] = 1;
+
+                                if (chessPos[i+k+1][j-k-1] == chessPiece[0])
+                                    check[i+k+1][j-k-1] = 1;
+                            }
+                        break;
+                        }
+                    }
+
+                    for (int k = 1; k < 8; k++)
+                    {
+                        if ((i+k < 0) || (j+k < 0))
+                            break;
+
+                        if (chessPos[i+k][j+k][0] == WHITE)
+                            break;
+
+                        check[i+k][j+k] = 1;
+
+                        if (chessPos[i+k][j+k][0] == BLACK)
+                        {
+                            if (chessPos[i+k][j+k][1] == 'K')
+                            {
+                                check[i+k][j+k] = 1;
+
+                                if (chessPos[i+k+1][j+k+1] == chessPiece[0])
+                                    check[i+k+1][j+k+1] = 1;
+                            }
+                        break;
+                        }
+                    }
+                }
+
+                if (chessPos[i][j][1] == 'Q')
+                {
+                    if (i != 0)
+                    {
+                        for (int k = 0; k <= i; k++)
+                        {
+                            if (chessPos[i-k][j] == chessPiece[0])
+                                check[i-k][j] = 1;
+
+                            if (chessPos[i-k][j][0] == BLACK || chessPos[i-k][j][0] == WHITE)
+                            {
+                                if (chessPos[i-k][j][0] == BLACK && chessPos[i-k][j][1] == 'K')
+                                {
+                                    check[i-k][j] = 1;
+
+                                    if (chessPos[i-k-1][j] == chessPiece[0])
+                                        check[i-k-1][j] = 1;
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    if (i != 7)
+                    {
+                        for (int k = 1; k < 8-i; k++)
+                        {
+                            if (chessPos[i+k][j] == chessPiece[0])
+                                check[i+k][j] = 1;
+
+                            if (chessPos[i+k][j][0] == BLACK || chessPos[i+k][j][0] == WHITE)
+                            {
+                                if (chessPos[i+k][j][0] == BLACK && chessPos[i+k][j][1] == 'K')
+                                {
+                                    check[i+k][j] = 1;
+                                    if (chessPos[i+k+1][j] == chessPiece[0])
+                                        check[i+k+1][j] = 1;
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    if (j != 0)
+                    {
+                        for (int k = 1; k <= j; k++)
+                        {
+                            if (chessPos[i][j-k] == chessPiece[0])
+                                check[i][j-k] = 1;
+
+                            if (chessPos[i][j-k][0] == BLACK || chessPos[i][j-k][0] == WHITE)
+                            {
+                                if (chessPos[i][j-k][0] == BLACK && chessPos[i][j-k][1] == 'K')
+                                {
+                                    check[i][j-k] = 1;
+                                    if (chessPos[i][j-k-1] == chessPiece[0])
+                                        check[i][j-k-1] = 1;
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    if (j != 7)
+                    {
+                        for (int k = 1; k <= 8-j; k++)
+                        {
+                            if (chessPos[i][j+k] == chessPiece[0])
+                                check[i][j+k] = 1;
+
+                            if (chessPos[i][j+k][0] == BLACK || chessPos[i][j+k][0] == WHITE)
+                            {
+                                if (chessPos[i][j+k][0] == BLACK && chessPos[i][j+k][1] == 'K')
+                                {
+                                    check[i][j+k] = 1;
+                                    if (chessPos[i][j+k+1] == chessPiece[0])
+                                        check[i][j+k+1] = 1;
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    for (int k = 1; k < 8; k++)
+                    {
+                        if ((i-k < 0) || (j-k < 0))
+                            break;
+
+                        if (chessPos[i-k][j-k][0] == WHITE)
+                            break;
+
+                        check[i-k][j-k] = 1;
+
+                        if (chessPos[i-k][j-k][0] == BLACK)
+                        {
+                            if (chessPos[i-k][j-k][1] == 'K')
+                            {
+                                check[i-k][j-k] = 1;
+
+                                if (chessPos[i-k-1][j-k-1] == chessPiece[0])
+                                    check[i-k-1][j-k-1] = 1;
+                            }
+                        break;
+                        }
+                    }
+
+                    for (int k = 1; k < 8; k++)
+                    {
+                        if ((i-k < 0) || (j+k < 0))
+                            break;
+
+                        if (chessPos[i-k][j+k][0] == WHITE)
+                            break;
+
+                        check[i-k][j+k] = 1;
+
+                        if (chessPos[i-k][j+k][0] == BLACK)
+                        {
+                            if (chessPos[i-k][j+k][1] == 'K')
+                            {
+                                check[i-k][j+k] = 1;
+
+                                if (chessPos[i-k-1][j+k+1] == chessPiece[0])
+                                    check[i-k-1][j+k+1] = 1;
+                            }
+                            break;
+                        }
+                    }
+
+                    for (int k = 1; k < 8; k++)
+                    {
+                        if ((i+k < 0) || (j-k < 0))
+                            break;
+
+                        if (chessPos[i+k][j-k][0] == WHITE)
+                            break;
+
+                        check[i+k][j-k] = 1;
+
+                        if (chessPos[i+k][j-k][0] == BLACK)
+                        {
+                            if (chessPos[i+k][j-k][1] == 'K')
+                            {
+                                check[i+k][j-k] = 1;
+                                if (chessPos[i+k+1][j-k-1] == chessPiece[0])
+                                    check[i+k+1][j-k-1] = 1;
+                            }
+                        break;
+                        }
+                    }
+
+                    for (int k = 1; k < 8; k++)
+                    {
+                        if ((i+k < 0) || (j+k < 0))
+                            break;
+
+                        if (chessPos[i+k][j+k][0] == WHITE)
+                            break;
+
+                        check[i+k][j+k] = 1;
+
+                        if (chessPos[i+k][j+k][0] == BLACK)
+                        {
+                            if (chessPos[i+k][j+k][1] == 'K')
+                            {
+                                check[i+k][j+k] = 1;
+
+                                if (chessPos[i+k+1][j+k+1] == chessPiece[0])
+                                    check[i+k+1][j+k+1] = 1;
+                            }
+                        break;
+                        }
+                    }
+                }
+
+                if (chessPos[i][j][1] == 'K')
+                    WhiteKing(i, j);
+        }
+    }
+}
+
+
+void CheckCheck()
+{
+    wking_check = 0;
+    bking_check = 0;
+
+    if (wk_x == 0)
+    {
+        if (wk_y == 0)
+            wking_check = 5;
+
+        if (wk_y > 0 && wk_y <8)
+            wking_check = 3;
+
+        if (wk_y == 7)
+            wking_check = 5;
+    }
+
+    else if (wk_x == 7)
+    {
+        if (wk_y == 0)
+            wking_check = 5;
+
+        if (wk_y > 0 && wk_y < 8)
+            wking_check = 3;
+
+        if (wk_y == 7)
+            wking_check = 5;
+    }
+
+    else if (wk_y == 0)
+    {
+        if (wk_x == 0)
+            wking_check = 5;
+
+        if (wk_x > 0 && wk_x <8)
+            wking_check = 3;
+
+        if (wk_x == 7)
+            wking_check = 5;
+    }
+
+    else if (wk_y == 7)
+    {
+        if (wk_x == 0)
+            wking_check = 5;
+
+        if (wk_x > 0 && wk_x < 8)
+            wking_check = 3;
+
+        if (wk_x == 7)
+            wking_check = 5;
+    }
+
+    else if (bk_x == 0)
+    {
+        if (bk_y == 0)
+            bking_check = 5;
+
+        if (bk_y > 0 && bk_y <8)
+            bking_check = 3;
+
+        if (bk_y == 7)
+            bking_check = 5;
+    }
+
+    else if (bk_x == 7)
+    {
+        if (bk_y == 0)
+            bking_check = 5;
+
+        if (bk_y > 0 && bk_y < 8)
+            bking_check = 3;
+
+        if (bk_y == 7)
+            bking_check = 5;
+    }
+
+    else if (bk_y == 0)
+    {
+        if (bk_x == 0)
+            bking_check = 5;
+
+        if (bk_x > 0 && bk_x <8)
+            bking_check = 3;
+
+        if (bk_x == 7)
+            bking_check = 5;
+    }
+
+    else if (bk_y == 7)
+    {
+        if (bk_x == 0)
+            bking_check = 5;
+
+        if (bk_x > 0 && bk_x < 8)
+            bking_check = 3;
+
+        if (bk_x == 7)
+            bking_check = 5;
+    }
+
+    if (check[wk_x][wk_y] == 1)
+    {
+        if (wk_x+1 <=7)
+        {
+            if (wk_y+1 <=7)
+                if (check[wk_x+1][wk_y+1] == 1)
+                    wking_check++;
+
+            if (wk_y-1 >= 0)
+                if (check[wk_x+1][wk_y-1] == 1)
+                    wking_check++;
+
+            if (check[wk_x+1][wk_y] == 1)
+                    wking_check++;
+        }
+
+        if (wk_x-1 >= 0)
+        {
+            if (wk_y+1 <= 7)
+                if (check[wk_x-1][wk_y+1] == 1)
+                    wking_check++;
+
+            if (wk_y-1 >= 0)
+                if (check[wk_x-1][wk_y-1] == 1)
+                    wking_check++;
+
+            if (check[wk_x-1][wk_y] == 1)
+                wking_check++;
+        }
+        if (wk_y+1 <= 7)
+            if (check[wk_x][wk_y+1] == 1)
+                wking_check++;
+
+        if (wk_y-1 >= 0)
+            if (check[wk_x][wk_y-1] == 1)
+                wking_check++;
+
+        if (wking_check == 8)
+            WhiteCheckmate_Alert();
+
+        else
+            WhiteCheck_Alert();
+    }
+
+    if (check[bk_x][bk_y] == 1)
+    {
+        if (bk_x+1 <= 7)
+        {
+            if (bk_y+1 <=7)
+                if (check[bk_x+1][bk_y+1] == 1)
+                    bking_check++;
+
+            if (bk_y-1 >= 0)
+                if (check[bk_x+1][bk_y-1] == 1)
+                    bking_check++;
+
+            if (check[bk_x+1][bk_y] == 1)
+                    bking_check++;
+        }
+
+        if (bk_x-1 >= 0)
+        {
+            if (bk_y+1 <= 7)
+                if (check[bk_x-1][bk_y+1] == 1)
+                    bking_check++;
+            if (bk_y-1 >= 0)
+                if (check[bk_x-1][bk_y-1] == 1)
+                    bking_check++;
+
+            if (check[bk_x-1][bk_y] == 1)
+                bking_check++;
+        }
+
+        if (bk_y+1 <=7)
+            if (check[bk_x][bk_y+1] == 1)
+                bking_check++;
+
+        if (bk_y-1 >= 0)
+            if (check[bk_x][bk_y-1] == 1)
+                bking_check++;
+
+        if (bking_check == 8)
+            BlackCheckmate_Alert();
+
+        else
+            BlackCheck_Alert();
+        }
 }
