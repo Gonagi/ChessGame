@@ -59,7 +59,7 @@ void WrongMove_Alert();             //잘못된 움직임 경고
 void WrongOrder_Alert();            //순서 경고
 void WhiteWin_Alert();              //백색 승 알림
 void BlackWin_Alert();              //흑색 승 알림
-void Draw_Alert();
+void Draw_Alert();                  //무승부 알림
 void Timer_Alert();                 //시간 초과 경고
 void WhiteSur_Alert();              //백색 기권 알림
 void BlackSur_Alert();              //흑색 기권 알림
@@ -67,8 +67,8 @@ void WhiteCheck_Alert();            //백팀 체크상황 경고
 void WhiteCheckmate_Alert();        //백팀 체크메이트 알림
 void BlackCheck_Alert();            //흑팀 체크상황 경고
 void BlackCheckmate_Alert();        //흑팀 체크메이트 알림
-void DrawSug_Alert();
-void Stalemate_Alert();
+void DrawSug_Alert();               //무승부 신청 알림
+void Stalemate_Alert();             //스테일메이트 알림
 
 void ViewCursor(char);              //커서 투명 함수
 void Gotoxy(int, int);              //콘솔내 좌표 이동
@@ -86,7 +86,7 @@ int order = 0;                      //짝수면 백, 홀수면 흑
 int soo = 1;                        //현재 몇 수
 int time = SET_TIME;                //타이머 시간 설정
 int check_error = 0;                //에러 발생 여부
-int check_winner = 0;               //1이면 백팀 승, 2면 흑팀 승 3이면 무승부
+int check_winner = 0;               //게임 승패로 인한 종료 체크 변수 (1이면 백팀 승, 2면 흑팀 승 3이면 무승부)
 int check_rule = 0;                 //게임 설명에서 뒤로가기 구현하기 위한 변수
 int temp;                           //매 시작 초기화
 int w_order;                        //앙파상 구현을 위한 순서 저장 변수
@@ -118,8 +118,8 @@ int wk_x, wk_y;                 //백색 킹 x y 좌표
 int bk_x, bk_y;                 //흑색 킹 x y 좌표
 int wking_check = 0;              //백색 킹 체크메이트 구현을 위한 변수 (8개 채워지면 체크메이트)
 int bking_check = 0;              //흑색 킹 체크메이트 구현을 위한 변수
-int wmv_cnt = 0;
-int bmv_cnt = 0;
+int wmv_cnt = 0;                  //스테일메이트 구현을 위한 백색 말 움직인 횟수 변수
+int bmv_cnt = 0;                  //스테일메이트 구현을 위한 흑색 말 움직인 횟수 변수
 
 enum color { red = 12, yellow = 14, white = 7, grey = 8 };      //TextColor에서 쓰일 enum 선언
 char *chessPos[8][8] = { {"BR1","BN1","BB1","BQ1","BK1","BB1","BN1","BR1"}, //1은 한번도 움직이지 않은 말, 0은 한번 이상 움직인 말
@@ -308,9 +308,9 @@ Main:       //메인화면
             break;
         }
 
-        else if (check_winner == 3)
+        else if (check_winner == 3)     //만약 무승부 상황이라면
         {
-            Draw_Alert();
+            Draw_Alert();               //무승부 알림
             Sleep(1000);
             break;
         }
@@ -352,12 +352,12 @@ Main:       //메인화면
             else
                 BlackSur_Alert();
 
-        case 'd':
-            if (soo >= 20)
-                DrawSug_Alert();
+        case 'd':       //무승부 신청 버튼 d
+            if (soo >= 20)          //만약 20 수 이상으로 진행됐다면
+                DrawSug_Alert();    //무승부 신청 알림
             else
                 continue;
-        case 'D':
+        case 'D':       //무승부 신청 버튼 D (대 소문자 고려)
             if (soo >= 20)
                 DrawSug_Alert();
             else
@@ -554,7 +554,7 @@ Main:       //메인화면
 }
 
 
-void DrawTitle()
+void DrawTitle()        //타이틀 불러오는 함수
 {
 	printf("\n\n\n");
 	printf("                ####  #  #  ####   ###   ###   \n");
@@ -570,7 +570,7 @@ void DrawTitle()
 }
 
 
-void DrawChess()
+void DrawChess()        //기물 표시하는 함수
 {
 	int i, j;
 	Gotoxy(0,0);
@@ -607,7 +607,7 @@ void DrawChess()
                 }
             }
 
-            else if (movable[i][j] == 3 && order%2 == 0)        //특수룰일 경우 파란색 배경으로 표시
+            else if (movable[i][j] == 3 && order%2 == 0)        //백팀 특수룰일 경우 파란색 배경으로 표시
             {
                 BackColor(144);
                 printf("\b\b");
@@ -615,7 +615,7 @@ void DrawChess()
                 TextColor(white);
             }
 
-            else if (movable[i][j] == 4 && order%2 != 0)
+            else if (movable[i][j] == 4 && order%2 != 0)        //흑팀 특수룰일 경우 파란색 배경으로 표시
             {
                 BackColor(144);
                 printf("\b\b");
@@ -714,7 +714,7 @@ void DrawNowPiece()
 }
 
 
-void DrawDeadPiece()
+void DrawDeadPiece()        //죽은 말 표시하는 함수
 {
 	int i;
 	Gotoxy(50, 0);
@@ -787,7 +787,7 @@ void DrawDeadPiece()
 }
 
 
-void DrawCursor(int x, int y)
+void DrawCursor(int x, int y)       //메인화면에서 커서 표시하는 함수
 {
 	Gotoxy(x, y);
 	printf(">");
@@ -837,7 +837,7 @@ void DrawPiece(int i, int j)
 }
 
 
-void DrawOrder()
+void DrawOrder()        //차례 표시하는 함수
 {
 	char *order_str;
 
@@ -853,7 +853,7 @@ void DrawOrder()
 }
 
 
-void DrawSoo()
+void DrawSoo()      //수 표시하는 함수
 {
 	Gotoxy(20, 4);
 	printf("제 %d수", soo);       //몇 수 인지 표시
@@ -861,7 +861,7 @@ void DrawSoo()
 }
 
 
-void ChessRule()
+void ChessRule()        //체스 규칙 표시하는 함수
 {
 	check_rule = 1;     //백스페이스 눌렀을 경우 이전 화면으로 이동시키기 위한 체크 변수
 	TextColor(white);
@@ -882,9 +882,9 @@ void ChessRule()
 }
 
 
-void ControlRule()
+void ControlRule()      //조작 규칙 표시하는 함수
 {
-	check_rule = 1;
+	check_rule = 1;     //백스페이스바 눌렀을 경우 다시 규칙 선택창으로 이동시키기 위한 체크 변수
 	TextColor(white);
 	printf("-------------------조작 방법------------------\n\n");
 	printf("1. 키보드 방향키를 조작하여 커서를 이동합니다.\n\n");
@@ -1289,18 +1289,27 @@ void CheckGame()        //게임 진행 중 체크해야 할 체크 변수 체�
         TextColor(white);
     }
 
-    else if (wk_live == 1 && bk_live == 1)
+    else if (wk_live == 1 && bk_live == 1)      //킹과 킹이 남거나 킹과 비숍이 남아 기물 부족 상황일 경우
         if (wb_live >= 0 && bb_live >= 0)
             if (wr_live == 0 && wn_live == 0 && wq_live == 0 && wp_live == 0)
                 if (br_live == 0 && bn_live == 0 && bq_live == 0 && bp_live == 0)
     {
-        Draw_Alert();
-        check_winner = 3;
+        Draw_Alert();       //무승부 알림
+        check_winner = 3;       //게임 종료 체크 변수 (3은 무승부)
+    }
+
+    else if (wk_live == 1 && bk_live == 1)      //킹과 킹이 남거나 킹과 나이트가 남아 기물 부족 상황일 경우
+        if (wn_live >= 0 && bn_live >= 0)
+            if (wr_live == 0 && wb_live == 0 && wq_live == 0 && wp_live == 0)
+                if (br_live == 0 && bb_live == 0 && bq_live == 0 && bp_live == 0)
+    {
+        Draw_Alert();       //무승부 알림
+        check_winner = 3;       //게임 종료 체크 변수 (3은 무승부)
     }
 }
 
 
-void TurnPiece(int x, int y)        //움직인 말을 0으로 설정해주는 함수
+void TurnPiece(int x, int y)        //움직인 말을 0으로 설정해주는 함수 (한 번 이상 움직인 말은 0)
 {
     if (sel_piece == chessPiece[1])     //만약 선택했던 말이 흑색 룩이라면
 		chessPos[x][y] = "BR0";     //흑색룩의 말 0으로 설정
@@ -1321,12 +1330,12 @@ void TurnPiece(int x, int y)        //움직인 말을 0으로 설정해주는 �
 	{
         if (check_blackAng == 1)        //만약 흑색 앙파상 상황 체크 변수가 켜졌다면
         {
-            chessPos[x][y] = "BP2";     //말 뒤에 숫자를 2로 설정
+            chessPos[x][y] = "BP2";     //말 뒤에 숫자를 2로 설정 (앙파상)
             check_blackAng = 0;     //앙파상 상황 종료
         }
 
         else
-            chessPos[x][y] = "BP0";
+            chessPos[x][y] = "BP0";     //움직였으므로 0으로 설정
     }
 
 	else if (sel_piece == chessPiece[7])
@@ -1346,7 +1355,7 @@ void TurnPiece(int x, int y)        //움직인 말을 0으로 설정해주는 �
 
 	else if (sel_piece == chessPiece[12])
     {
-        if (check_whiteAng == 1)
+        if (check_whiteAng == 1)        //만약 백색 앙파상 상황 체크 변수가 켜졌다면
         {
             chessPos[x][y] = "WP2";
             check_whiteAng = 0;
@@ -1465,7 +1474,7 @@ void BlackCheckmate_Alert()     //흑팀 체크메이트 알림 함수
     check_winner = 1;       //승리 체크 변수 1 (백팀 승)
 }
 
-void Stalemate_Alert()
+void Stalemate_Alert()      //스테일메이트 알림 함수
 {
     Gotoxy(1, 10);
     printf("                        ");
@@ -1474,7 +1483,7 @@ void Stalemate_Alert()
     printf("스테일메이트!");
     Sleep(2000);        //3초 기다림
     TextColor(white);
-    check_winner = 3;
+    check_winner = 3;       //승리 체크 변수 3 (무승부)
 }
 
 void Timer_Alert()      //타이머 알림
@@ -1610,7 +1619,7 @@ void BlackSur_Alert()       //흑팀 기권 알림 함수
     Gotoxy(cursor_x, cursor_y);
 }
 
-void Draw_Alert()
+void Draw_Alert()       //무승부 알림
 {
     Gotoxy(1, 10);
     printf("                        ");
@@ -1620,13 +1629,13 @@ void Draw_Alert()
     TextColor(white);
 }
 
-void DrawSug_Alert()
+void DrawSug_Alert()        //무승부 신청 알림
 {
-    int check = 1;
+    int check = 1;      //while문 시작 변수
 
     while(check)
     {
-        char answer;
+        char answer;        //응답을 받아들이는 문자형 변수
         Gotoxy(1, 10);
         printf("                        ");
         Gotoxy(1, 10);
@@ -1639,13 +1648,13 @@ void DrawSug_Alert()
 
         switch(answer)
         {
-        case 'y':
-            Draw_Alert();
-            check_winner = 3;       //백팀 승
+        case 'y':       //y를 눌러 승낙
+            Draw_Alert();           //무승부 알림
+            check_winner = 3;       //무승부
             check = 0;
             break;
 
-        case 'n':
+        case 'n':       //n을 눌러 거절
             check = 0;
             break;
 
@@ -1670,14 +1679,15 @@ void DrawSug_Alert()
     Gotoxy(1, 11);
     printf("                                 ");
 }
+
 void WhitePromotion(int x)      //백팀 프로모션 구현 및 알림 함수
 {
-    int check = 1;
-    char a = Invert(x*2);
+    int check = 1;      //while문 시작 변수
+    char a = Invert(x*2);       //숫자를 알파벳으로 변환하는 함수 호출
 
     while(check)
     {
-        int promotion = 0;
+        int promotion = 0;      //프로모션으로 바뀌는 말 체크 변수
         Gotoxy(1, 10);
         printf("                        ");
         Gotoxy(1, 10);
@@ -1690,15 +1700,15 @@ void WhitePromotion(int x)      //백팀 프로모션 구현 및 알림 함수
 
         switch(promotion)
         {
-        case 1:
+        case 1:         //백색 퀸으로 프로모션
             chessPos[0][x] = "WQ0";
-            check = 0;
-            check_WhitePromotion = 0;
-            check_wpPr++;
-            check_wqPr++;
+            check = 0;          //while문 벗어남
+            check_WhitePromotion = 0;       //프로모션 상황 체크 변수 꺼짐 0
+            check_wpPr++;           //죽은 말 표시에 프로모션된 말 반영하는 체크 변수 백색 폰
+            check_wqPr++;           //  "   백색 퀸
             break;
 
-        case 2:
+        case 2:         //백색 비숍으로 프로모션
             chessPos[0][x] = "WB0";
             check = 0;
             check_WhitePromotion = 0;
@@ -1706,7 +1716,7 @@ void WhitePromotion(int x)      //백팀 프로모션 구현 및 알림 함수
             check_wbPr++;
             break;
 
-        case 3:
+        case 3:         //백색 나이트로 프로모션
             chessPos[0][x] = "WN0";
             check = 0;
             check_WhitePromotion = 0;
@@ -1714,7 +1724,7 @@ void WhitePromotion(int x)      //백팀 프로모션 구현 및 알림 함수
             check_wnPr++;
             break;
 
-        case 4:
+        case 4:         //백색 룩으로 프로모션
             chessPos[0][x] = "WR0";
             check = 0;
             check_WhitePromotion = 0;
@@ -1722,7 +1732,7 @@ void WhitePromotion(int x)      //백팀 프로모션 구현 및 알림 함수
             check_wrPr++;
             break;
 
-        default:
+        default:        //그 외의 값
             Gotoxy(1, 11);
             printf("입력하세요 :             ");
             continue;
@@ -1737,8 +1747,7 @@ void WhitePromotion(int x)      //백팀 프로모션 구현 및 알림 함수
     Gotoxy(cursor_x, cursor_y);
 }
 
-
-void BlackPromotion(int x)
+void BlackPromotion(int x)      //흑팀 프로모션 구현 및 알림 함수
 {
     int check = 1;
     char a = Invert(x*2);
@@ -1758,7 +1767,7 @@ void BlackPromotion(int x)
 
         switch(promotion)
         {
-        case 1:
+        case 1:         //흑색 퀸으로 프로모션
             chessPos[7][x] = "BQ0";
             check = 0;
             check_BlackPromotion = 0;
@@ -1766,7 +1775,7 @@ void BlackPromotion(int x)
             check_bqPr++;
             break;
 
-        case 2:
+        case 2:         //흑색 비숍으로 프로모션
             chessPos[7][x] = "BB0";
             check = 0;
             check_BlackPromotion = 0;
@@ -1774,7 +1783,7 @@ void BlackPromotion(int x)
             check_bbPr++;
             break;
 
-        case 3:
+        case 3:         //흑색 나이트로 프로모션
             chessPos[7][x] = "BN0";
             check = 0;
             check_BlackPromotion = 0;
@@ -1782,7 +1791,7 @@ void BlackPromotion(int x)
             check_bnPr++;
             break;
 
-        case 4:
+        case 4:         //흑색 룩으로 프로모션
             chessPos[7][x] = "BR0";
             check = 0;
             check_BlackPromotion = 0;
@@ -1790,7 +1799,7 @@ void BlackPromotion(int x)
             check_brPr++;
             break;
 
-        default:
+        default:        //그 외의 값
             Gotoxy(1, 11);
             printf("입력하세요 :           ");
             continue;
@@ -1805,24 +1814,24 @@ void BlackPromotion(int x)
     Gotoxy(cursor_x, cursor_y);
 }
 
-
-void WhiteKing(int x, int y)
+//행마법
+void WhiteKing(int x, int y)        //백색 킹 움직임 함수 (x, y값은 행과 열의 개념이다)
 {
-    if (x-1 >= 0)
+    if (x-1 >= 0)       //만약 행 방향으로 앞으로 한 칸 갈 수 있다면
     {
-        if (y-1 >= 0)
+        if (y-1 >= 0)       //만약 열방향으로 왼쪽으로 한 칸 갈 수 있다면 (좌상향 대각선으로 이동)
         {
-            if (chessPos[x-1][y-1] == chessPiece[0] || chessPos[x-1][y-1][0] == BLACK)
+            if (chessPos[x-1][y-1] == chessPiece[0] || chessPos[x-1][y-1][0] == BLACK)      //만약 좌상향 대각선이 빈칸이거나 상대 팀 말일 경우
             {
-                if (check_check == 1)
-                    check[x-1][y-1] = 1;
+                if (check_check == 1)       //만약 체크 상황을 판별해야 하는 상황일 경우
+                    check[x-1][y-1] = 1;        //이동하려는 위치의 체크 배열을 1로 저장
 
-                else
-                    movable[x-1][y-1] = 1;
+                else                        //위의 상황이 아니라면 (그냥 이동해야 하는 상황)
+                    movable[x-1][y-1] = 1;      //이동하려는 위치의 movable 배열을 1로 저장
             }
         }
 
-        if (y+1 <= 7)
+        if (y+1 <= 7)       //만약 열방향으로 오른쪽으로 한 칸 갈 수 있다면 (우상향 대각선)
         {
             if (chessPos[x-1][y+1] == chessPiece[0] || chessPos[x-1][y+1][0] == BLACK)
             {
@@ -1834,7 +1843,7 @@ void WhiteKing(int x, int y)
             }
         }
 
-        if (chessPos[x-1][y] == chessPiece[0] || chessPos[x-1][y][0] == BLACK)
+        if (chessPos[x-1][y] == chessPiece[0] || chessPos[x-1][y][0] == BLACK)      //앞으로 한칸 이동
         {
                 if (check_check == 1)
                     check[x-1][y] = 1;
@@ -1844,9 +1853,9 @@ void WhiteKing(int x, int y)
             }
     }
 
-    if (x+1 <= 7)
+    if (x+1 <= 7)       //만약 행 방향으로 뒤로 한 칸 갈 수 있다면
     {
-        if (y-1 >= 0)
+        if (y-1 >= 0)       //좌하향 대각선
         {
             if (chessPos[x+1][y-1] == chessPiece[0] || chessPos[x+1][y-1][0] == BLACK)
             {
@@ -1858,7 +1867,7 @@ void WhiteKing(int x, int y)
             }
         }
 
-        if (y+1 <= 7)
+        if (y+1 <= 7)       //우하향 대각선
         {
             if (chessPos[x+1][y+1] == chessPiece[0] || chessPos[x+1][y+1][0] == BLACK)
             {
@@ -1870,7 +1879,7 @@ void WhiteKing(int x, int y)
             }
         }
 
-        if (chessPos[x+1][y] == chessPiece[0] || chessPos[x+1][y][0] == BLACK)
+        if (chessPos[x+1][y] == chessPiece[0] || chessPos[x+1][y][0] == BLACK)      //아래로 한 칸 이동
         {
             if (check_check == 1)
                 check[x+1][y] = 1;
@@ -1880,7 +1889,7 @@ void WhiteKing(int x, int y)
         }
     }
 
-    if (y-1 >= 0)
+    if (y-1 >= 0)       //왼쪽으로 이동
     {
         if (chessPos[x][y-1] == chessPiece[0] || chessPos[x][y-1][0] == BLACK)
         {
@@ -1892,7 +1901,7 @@ void WhiteKing(int x, int y)
         }
     }
 
-    if (y+1 <= 7)
+    if (y+1 <= 7)       //오른쪽으로 이동
     {
         if (chessPos[x][y+1] == chessPiece[0] || chessPos[x][y+1][0] == BLACK)
         {
@@ -1904,24 +1913,23 @@ void WhiteKing(int x, int y)
         }
     }
 
-    if (check_check == 0)
+    if (check_check == 0)       //만약 체크 판별 상황이 아니라면
         for (int i=0; i<8; i++)
             for (int j=0; j<8; j++)
-                if (check[i][j] == 1)
-                    movable[i][j] = 0;
+                if (check[i][j] == 1)       //좌표가 체크 1 이라면 (상대 말의 공격 범위)
+                    movable[i][j] = 0;      //movable 0 (킹은 상대 말의 공격 범위로 이동할 수 없음)
 
     if (chessPos[x][y] == "WK1")        //캐슬링
     {
-        if (chessPos[7][5] == chessPiece[0] && chessPos[7][6] == chessPiece[0] && chessPos[7][7] == "WR1")
+        if (chessPos[7][5] == chessPiece[0] && chessPos[7][6] == chessPiece[0] && chessPos[7][7] == "WR1")  //킹사이드 캐슬링
             movable[x][y+2] = 3;
 
-        if (chessPos[7][3] == chessPiece[0] && chessPos[7][2] == chessPiece[0] && chessPos[7][1] == chessPiece[0] && chessPos[7][0] == "WR1")
+        if (chessPos[7][3] == chessPiece[0] && chessPos[7][2] == chessPiece[0] && chessPos[7][1] == chessPiece[0] && chessPos[7][0] == "WR1")       //퀸사이드 캐슬링
             movable [x][y-2] = 3;
     }
 }
 
-
-void BlackKing(int x, int y)
+void BlackKing(int x, int y)        //흑색 킹 움직임 함수 (백색 킹과 동일)
 {
     if (x-1 >= 0)
     {
@@ -2035,45 +2043,42 @@ void BlackKing(int x, int y)
     }
 }
 
-
-void WhiteQueen(int x, int y)
+void WhiteQueen(int x, int y)       //백색 퀸 움직임 함수
 {
-    WhiteRook(x, y);
+    WhiteRook(x, y);        //백색 룩 움직임 + 백색 비숍 움직임
     WhiteBishop(x, y);
 }
 
-
-void BlackQueen(int x, int y)
+void BlackQueen(int x, int y)       //흑색 퀸 움직임 함수 (백색 퀸과 동일)
 {
     BlackRook(x, y);
     BlackBishop(x, y);
 }
 
-
-void WhitePawn(int x, int y)
+void WhitePawn(int x, int y)        //백색 폰 움직임 함수
 {
-    if (chessPos[x][y][2] == '1')   //한번도 안 움직였으면
+    if (chessPos[x][y][2] == '1')   //만약 한번도 안 움직였다면
     {
-        if (chessPos[x-2][y] == chessPiece[0])
-            movable[x-2][y] = 2;    //앙파상
+        if (chessPos[x-2][y] == chessPiece[0])      //두 칸 앞이 빈칸이면
+            movable[x-2][y] = 2;    //앙파상 판별 값으로 movable 배열 설정
     }
 
-    if(x>0)
+    if(x>0)     //만약 앞으로 전진 가능하다면
     {
-        if (chessPos[x-1][y]==chessPiece[0])
-            movable[x-1][y]=1;
+        if (chessPos[x-1][y]==chessPiece[0])    //만약 한 칸 앞이 빈칸이면
+            movable[x-1][y] = 1;        //움직일 수 있음
 
-        if (chessPos[x-1][y-1][0]==BLACK)
-            movable[x-1][y-1]=1;
+        if (chessPos[x-1][y-1][0]==BLACK)       //만약 좌상향 대각선 앞이 상대 말이면
+            movable[x-1][y-1] = 1;      //공격할 수 있음
 
-        if (chessPos[x-1][y+1][0]==BLACK)
-            movable[x-1][y+1]=1;
+        if (chessPos[x-1][y+1][0]==BLACK)       //만약 우상향 대각선 앞이 상대 말이면
+            movable[x-1][y+1] = 1;      //공격할 수 있음
 
-        if (chessPos[x][y-1][2] == '2')
-            movable[x-1][y-1]=3;
+        if (chessPos[x][y-1][2] == '2')     //만약
+            movable[x-1][y-1] = 3;
 
         if (chessPos[x][y+1][2] == '2')
-            movable[x-1][y+1]=3;
+            movable[x-1][y+1] = 3;
     }
 }
 
