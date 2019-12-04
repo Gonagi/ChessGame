@@ -2074,16 +2074,16 @@ void WhitePawn(int x, int y)        //백색 폰 움직임 함수
         if (chessPos[x-1][y+1][0]==BLACK)       //만약 우상향 대각선 앞이 상대 말이면
             movable[x-1][y+1] = 1;      //공격할 수 있음
 
-        if (chessPos[x][y-1][2] == '2')     //만약
-            movable[x-1][y-1] = 3;
+        if (chessPos[x][y-1][2] == '2')     //만약 옆에 있는 말이 두 칸 전진했다면 (앙파상 상황)
+            movable[x-1][y-1] = 3;      //좌상향 대각선으로 특수 이동 적용
 
         if (chessPos[x][y+1][2] == '2')
-            movable[x-1][y+1] = 3;
+            movable[x-1][y+1] = 3;      //우상향 대각선으로 특수 이동 적용
     }
 }
 
 
-void BlackPawn(int x, int y)
+void BlackPawn(int x, int y)        //흑색 폰 움직임 함수 (백색 폰과 동일)
 {
     if (chessPos[x][y][2] == '1')
         if (chessPos[x+2][y] == chessPiece[0])
@@ -2109,26 +2109,26 @@ void BlackPawn(int x, int y)
 }
 
 
-void WhiteNight(int x, int y)   // 백색 나이트
+void WhiteNight(int x, int y)   // 백색 나이트 움직임 함수
 {
-    if (x-2 >= 0)
+    if (x-2 >= 0)       //만약 앞으로 두 칸 이동 가능하면
     {
-        if (y-1 >= 0)
+        if (y-1 >= 0)   //만약 왼쪽으로 한 칸 이동 가능하면
         {
-            if (chessPos[x-2][y-1] == chessPiece[0] || chessPos[x-2][y-1][0] == BLACK)
+            if (chessPos[x-2][y-1] == chessPiece[0] || chessPos[x-2][y-1][0] == BLACK)      //만약 앞으로 두 칸, 왼쪽으로 한 칸이 비어있거나 적팀 기물이면
             {
-                if (check_check == 1)
+                if (check_check == 1)       //만약 체크 판별 상황이라면
                 {
-                    check[x-2][y-1] = 1;
-                    wmv_cnt++;
+                    check[x-2][y-1] = 1;    //체크 1
+                    wmv_cnt++;      //스테일메이트 판별 용 백색 이동 가능 변수 +1
                 }
 
                 else
-                    movable[x-2][y-1] = 1;
+                    movable[x-2][y-1] = 1;      //체크 판별 상황이 아니면 움직임 이동
             }
         }
 
-        if (y+1 <= 7)
+        if (y+1 <= 7)       //만약 오른쪽으로 한 칸 이동 가능하면
         {
             if (chessPos[x-2][y+1] == chessPiece[0] || chessPos[x-2][y+1][0] == BLACK)
             {
@@ -2144,9 +2144,9 @@ void WhiteNight(int x, int y)   // 백색 나이트
         }
     }
 
-    if (x-1 >= 0)
+    if (x-1 >= 0)       //만약 앞으로 한 칸 이동 가능하면
     {
-        if (y-2 >= 0)
+        if (y-2 >= 0)       //만약 왼쪽으로 두 칸 이동 가능하면
         {
             if (chessPos[x-1][y-2] == chessPiece[0] || chessPos[x-1][y-2][0] == BLACK)
             {
@@ -2161,7 +2161,7 @@ void WhiteNight(int x, int y)   // 백색 나이트
             }
         }
 
-        if (y+2 <= 7)
+        if (y+2 <= 7)       //만약 오른쪽으로 두 칸 이동 가능하면
         {
             if (chessPos[x-1][y+2] == chessPiece[0] || chessPos[x-1][y+2][0] == BLACK)
             {
@@ -2177,9 +2177,9 @@ void WhiteNight(int x, int y)   // 백색 나이트
         }
     }
 
-    if (x+1 <= 7)
+    if (x+1 <= 7)       //만약 뒤로 한 칸 이동 가능 하면
     {
-        if (y-2 >= 0)
+        if (y-2 >= 0)       //만약 왼쪽으로 두 칸 이동 가능 하면
         {
             if (chessPos[x+1][y-2] == chessPiece[0] || chessPos[x+1][y-2][0] == BLACK)
             {
@@ -2194,7 +2194,7 @@ void WhiteNight(int x, int y)   // 백색 나이트
             }
         }
 
-        if (y+2 <= 7)
+        if (y+2 <= 7)       //만약 오른쪽으로 두 칸 이동 가능 하면
         {
             if (chessPos[x+1][y+2] == chessPiece[0] || chessPos[x+1][y+2][0] == BLACK)
             {
@@ -2210,9 +2210,9 @@ void WhiteNight(int x, int y)   // 백색 나이트
         }
     }
 
-    if (x+2 <= 7)
+    if (x+2 <= 7)       //만약 뒤로 두 칸 이동 가능하면
     {
-        if (y-1 >= 0)
+        if (y-1 >= 0)       //만약 왼쪽으로 한 칸 이동 가능하면
         {
             if (chessPos[x+2][y-1] == chessPiece[0] || chessPos[x+2][y-1][0] == BLACK)
             {
@@ -2227,7 +2227,7 @@ void WhiteNight(int x, int y)   // 백색 나이트
             }
         }
 
-        if (y+1 <= 7)
+        if (y+1 <= 7)       //만약 오른쪽으로 한 칸 이동 가능 하면
         {
             if (chessPos[x+2][y+1] == chessPiece[0] || chessPos[x+2][y+1][0] == BLACK)
             {
@@ -2245,7 +2245,7 @@ void WhiteNight(int x, int y)   // 백색 나이트
 }
 
 
-void BlackNight(int x, int y)
+void BlackNight(int x, int y)       //흑색 나이트 움직임 함수 (백색 나이트와 동일)
 {
     if (x-2 >= 0)
     {
@@ -2380,9 +2380,9 @@ void BlackNight(int x, int y)
 }
 
 
-void WhiteRook(int x, int y){
+void WhiteRook(int x, int y){       //백색 룩 움직임 함수
 
-    if(x != 0)
+    if(x != 0) //위로 이동
     {
         for(int i = 1; i <= x; i++)
         {
@@ -2392,13 +2392,13 @@ void WhiteRook(int x, int y){
             if(chessPos[x-i][y] == chessPiece[0] || chessPos[x-i][y][0] == BLACK)
             {
                 movable[x-i][y]=1;
-                if(chessPos[x-i][y][0] == BLACK)
+                if(chessPos[x-i][y][0] == BLACK) // 만약 상대기물이 앞에 있다면 갈 수 없음
                     break;
             }
         }
     }
 
-    if(x != 7)
+    if(x != 7)// 밑으로 이동
     {
         for(int i = 1; i < 8-x; i++)
         {
@@ -2415,7 +2415,7 @@ void WhiteRook(int x, int y){
         }
     }
 
-    if(y != 0)
+    if(y != 0) // 왼쪽으로 이동
     {
         for(int i = 1; i <= y; i++)
         {
@@ -2432,7 +2432,7 @@ void WhiteRook(int x, int y){
         }
     }
 
-    if(y != 7)
+    if(y != 7) // 오른쪽으로 이동
     {
         for(int i = 1; i < 8-y; i++)
         {
@@ -2451,7 +2451,7 @@ void WhiteRook(int x, int y){
 }
 
 
-void BlackRook(int x, int y)
+void BlackRook(int x, int y) // 블랙룩 이동 함수
 {
 
     if(x != 0)
@@ -2524,25 +2524,25 @@ void BlackRook(int x, int y)
 }
 
 
-void BlackBishop(int x,int y)
+void BlackBishop(int x,int y)//블랙 비숍움직임
 {
     int i;
 
     for(i = 1; i < 8; i++)
     {
-        if((x-i) < 0 || (y-i) < 0)
+        if((x-i) < 0 || (y-i) < 0) //왼쪽 위 대각선 말이 막히면 이동 불가
             break;
 
         else if(chessPos[x-i][y-i][0] == BLACK)
             break;
 
-        movable[x-i][y-i] = 1;
+        movable[x-i][y-i] = 1; //비숍이 이동할 수 있는 곳을 1로 바꿔줌
 
         if(chessPos[x-i][y-i][0] == WHITE)
             break;
     }
 
-    for(i = 1; i < 8; i++)
+    for(i = 1; i < 8; i++) //오른쪽 위로 대각선 말이 막히면 이동 불가
     {
         if((x-i) < 0 || (y+i) > 7)
             break;
@@ -2556,7 +2556,7 @@ void BlackBishop(int x,int y)
             break;
     }
 
-    for(i = 1; i < 8; i++)
+    for(i = 1; i < 8; i++)//왼쪽 아래로 대각선 말이 막히면 이동 불가
     {
         if((x+i) > 7 || (y-i) < 0)
             break;
@@ -2570,7 +2570,7 @@ void BlackBishop(int x,int y)
             break;
     }
 
-    for(i = 1; i < 8; i++)
+    for(i = 1; i < 8; i++)// 오른쪽 아래로 대각선 말이 막히면 이동 불가
     {
         if((x+i) > 7 || (y+i) > 7)
             break;
@@ -2586,7 +2586,7 @@ void BlackBishop(int x,int y)
 }
 
 
-void WhiteBishop(int x,int y)
+void WhiteBishop(int x,int y)//화이트 비숍 움직임 블랙 비숍과 같음
 {
     int i;
 
@@ -2648,7 +2648,7 @@ void WhiteBishop(int x,int y)
 }
 
 
-void Gotoxy(int x, int y)
+void Gotoxy(int x, int y)       //좌표를 이동시키는 함수
 {
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD pos;
@@ -2658,14 +2658,14 @@ void Gotoxy(int x, int y)
 }
 
 
-void Erase(int x, int y)
+void Erase(int x, int y)        //좌표를 지우는 함수
 {
 	Gotoxy(x, y);
 	printf(" ");
 }
 
 
-char Invert(int x)
+char Invert(int x)      //숫자를 입력받아 알파벳으로 변환하는 함수
 {
     switch(x)
     {
@@ -2696,13 +2696,13 @@ char Invert(int x)
 }
 
 
-void TextColor(int color_number)
+void TextColor(int color_number)        //텍스트 색상을 바꾸는 함수
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color_number);
 }
 
 
-void BackColor(int color_number)
+void BackColor(int color_number)        //배경 색상을 바꾸는 함수
 {
 	HANDLE hC = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
@@ -2711,7 +2711,7 @@ void BackColor(int color_number)
 }
 
 
-void ViewCursor(char show)
+void ViewCursor(char show)      //커서 표시하는 함수
 {
 	HANDLE hConsole;
 	CONSOLE_CURSOR_INFO ConsoleCursor;
@@ -2722,38 +2722,38 @@ void ViewCursor(char show)
 }
 
 
-void WhiteCheck()
+void WhiteCheck()       //백팀 체크 상황 판별 함수
 {
     int i,j;
 
-    for (i = 0; i < 8; i++)
+    for (i = 0; i < 8; i++)     //체크 변수 초기화
         for (j = 0; j < 8; j++)
             check[i][j] = 0;
 
-    wmv_cnt = 0;
+    wmv_cnt = 0;        //백색 움직임 횟수 변수 초기화
 
-    for(i = 0; i < 8; i++)
+    for(i = 0; i < 8; i++)      //체스판 전체를 체크
         for(j = 0; j < 8; j++)
         {
-            if (chessPos[i][j][0] == WHITE)
+            if (chessPos[i][j][0] == WHITE)     //만약 백색 말이면
             {
-                if (chessPos[i][j][1] != 'K')
-                    check[i][j] = 1;
+                if (chessPos[i][j][1] != 'K')   //만약 킹이 아닌 다른 기물이면
+                    check[i][j] = 1;        //체크 변수 1
 
-                if (chessPos[i][j][1] == 'P')
+                if (chessPos[i][j][1] == 'P')       //만약 백색 폰이면 (스테일메이트 판별 함수)
                     if (i > 0)
                     {
                         if (chessPos[i-1][j-1][0] == BLACK || chessPos[i-1][j-1] == chessPiece[0])
-                            wmv_cnt++;
+                            wmv_cnt++;      //백색 움직임 횟수 변수 +1
 
                         if (chessPos[i-1][j+1][0] == BLACK || chessPos[i-1][j+1] == chessPiece[0])
                             wmv_cnt++;
                     }
 
-                if (chessPos[i][j][1] == 'N')
+                if (chessPos[i][j][1] == 'N')       //만약 백색 나이트면
                     WhiteNight(i, j);
 
-                if (chessPos[i][j][1] == 'R')
+                if (chessPos[i][j][1] == 'R')       //만약 백색 룩이면
                 {
                     if (i != 0)
                     {
@@ -2839,7 +2839,7 @@ void WhiteCheck()
                     }
                 }
 
-                if (chessPos[i][j][1] == 'B')
+                if (chessPos[i][j][1] == 'B')       //만약 백색 비숍이면
                 {
                     for (int k = 1; k < 8; k++)
                     {
@@ -2933,7 +2933,7 @@ void WhiteCheck()
                     }
                 }
 
-                if (chessPos[i][j][1] == 'Q')
+                if (chessPos[i][j][1] == 'Q')       //만약 백색 퀸이면
                 {
                     if (i != 0)
                     {
@@ -3109,9 +3109,9 @@ void WhiteCheck()
                 }
             }
 
-            if (chessPos[i][j][0] == BLACK)
+            if (chessPos[i][j][0] == BLACK)     //만약 흑색 말이면 (공격 범위 나타냄)
             {
-                if (chessPos[i][j][1] == 'P')
+                if (chessPos[i][j][1] == 'P')       //흑색 폰이면
                     if (i < 7)
                     {
                         if (chessPos[i+1][j-1][0] == WHITE || chessPos[i+1][j-1] == chessPiece[0])
@@ -3121,10 +3121,10 @@ void WhiteCheck()
                             check[i+1][j+1] = 1;
                     }
 
-                if (chessPos[i][j][1] == 'N')
+                if (chessPos[i][j][1] == 'N')       //흑색 나이트면
                     BlackNight(i, j);
 
-                if (chessPos[i][j][1] == 'R')
+                if (chessPos[i][j][1] == 'R')       //흑색 룩이면
                 {
                     if (i != 0)
                     {
@@ -3210,7 +3210,7 @@ void WhiteCheck()
                     }
                 }
 
-                if (chessPos[i][j][1] == 'B')
+                if (chessPos[i][j][1] == 'B')       //흑색 비숍이면
                 {
                     for (int k = 1; k < 8; k++)
                     {
@@ -3305,7 +3305,7 @@ void WhiteCheck()
                     }
                 }
 
-                if (chessPos[i][j][1] == 'Q')
+                if (chessPos[i][j][1] == 'Q')       //흑색 퀸이면
                 {
                     if (i != 0)
                     {
@@ -3482,32 +3482,32 @@ void WhiteCheck()
                     }
                 }
 
-                if (chessPos[i][j][1] == 'K')
+                if (chessPos[i][j][1] == 'K')       //흑색 킹이면
                     BlackKing(i, j);
         }
     }
 }
 
 
-void BlackCheck()
+void BlackCheck()       //흑팀 체크 상황 판별 함수
 {
     int i,j;
 
-    for (i = 0; i < 8; i++)
+    for (i = 0; i < 8; i++)     //체크 변수 초기화
         for (j = 0; j < 8; j++)
             check[i][j] = 0;
 
-    bmv_cnt = 0;
+    bmv_cnt = 0;     //흑색 움직임 횟수 변수 초기화
 
-    for(i = 0; i < 8; i++)
+    for(i = 0; i < 8; i++)      //체스판 전체를 체크
         for(j = 0; j < 8; j++)
         {
-            if (chessPos[i][j][0] == BLACK)
+            if (chessPos[i][j][0] == BLACK)     //만약 흑색 말이면
             {
-                if (chessPos[i][j][1] != 'K')
-                    check[i][j] = 1;
+                if (chessPos[i][j][1] != 'K')       //만약 킹이 아닌 다른 기물이면
+                    check[i][j] = 1;        //체크 변수 1
 
-                if (chessPos[i][j][1] == 'P')
+                if (chessPos[i][j][1] == 'P')   //만약 흑색 폰이면 (스테일메이트 판별 함수)
                     if (i < 7)
                     {
                         if (chessPos[i+1][j-1][0] == WHITE || chessPos[i+1][j-1] == chessPiece[0])
@@ -3517,10 +3517,10 @@ void BlackCheck()
                             bmv_cnt++;
                     }
 
-                if (chessPos[i][j][1] == 'N')
+                if (chessPos[i][j][1] == 'N')       //만약 흑색 나이트면
                     BlackNight(i, j);
 
-                if (chessPos[i][j][1] == 'R')
+                if (chessPos[i][j][1] == 'R')       //만약 흑색 룩이면
                 {
                     if (i != 0)
                     {
@@ -3606,7 +3606,7 @@ void BlackCheck()
                     }
                 }
 
-                if (chessPos[i][j][1] == 'B')
+                if (chessPos[i][j][1] == 'B')       //만약 흑색 비숍이면
                 {
                     for (int k = 1; k < 8; k++)
                     {
@@ -3701,7 +3701,7 @@ void BlackCheck()
                     }
                 }
 
-                if (chessPos[i][j][1] == 'Q')
+                if (chessPos[i][j][1] == 'Q')       //만약 흑색 퀸이면
                 {
                     if (i != 0)
                     {
@@ -3879,9 +3879,9 @@ void BlackCheck()
                 }
             }
 
-            if (chessPos[i][j][0] == WHITE)
+            if (chessPos[i][j][0] == WHITE)     //만약 백색 말이면
             {
-                if (chessPos[i][j][1] == 'P')
+                if (chessPos[i][j][1] == 'P')       //만약 백색 폰이면
                     if (i > 0)
                     {
                         if (chessPos[i-1][j-1][0] == BLACK || chessPos[i-1][j-1] == chessPiece[0])
@@ -3891,10 +3891,10 @@ void BlackCheck()
                             check[i-1][j+1] = 1;
                     }
 
-                if (chessPos[i][j][1] == 'N')
+                if (chessPos[i][j][1] == 'N')       //만약 백색 나이트면
                     WhiteNight(i, j);
 
-                if (chessPos[i][j][1] == 'R')
+                if (chessPos[i][j][1] == 'R')       //만약 백색 룩이면
                 {
                     if (i != 0)
                     {
@@ -3980,7 +3980,7 @@ void BlackCheck()
                     }
                 }
 
-                if (chessPos[i][j][1] == 'B')
+                if (chessPos[i][j][1] == 'B')       //만약 백색 비숍이면
                 {
                     for (int k = 1; k < 8; k++)
                     {
@@ -4074,7 +4074,7 @@ void BlackCheck()
                     }
                 }
 
-                if (chessPos[i][j][1] == 'Q')
+                if (chessPos[i][j][1] == 'Q')       //만약 백색 퀸이면
                 {
                     if (i != 0)
                     {
@@ -4249,67 +4249,67 @@ void BlackCheck()
                     }
                 }
 
-                if (chessPos[i][j][1] == 'K')
+                if (chessPos[i][j][1] == 'K')       //만약 백색 킹이면
                     WhiteKing(i, j);
         }
     }
 }
 
 
-void CheckCheck()
+void CheckCheck()       //체크 상황을 판별하는 함수
 {
-    wking_check = 0;
-    bking_check = 0;
+    wking_check = 0;        //체크메이트 상황을 판단하기 위한 변수
+    bking_check = 0;        //체크메이트 상황을 판단하기 위한 변수
 
-    if (wk_x == 0)
+    if (wk_x == 0)      //만약 백색 킹이 가장 위에 있다면 (위치에 따른 체크메이트 판단 변수 조정)
     {
-        if (wk_y == 0)
-            wking_check = 5;
+        if (wk_y == 0)      //만약 백색 킹이 가장 위에 왼쪽에 있다면 (왼쪽 상단 구석)
+            wking_check = 5;        //체크메이트 변수 5로 설정
 
-        if (wk_y > 0 && wk_y <8)
+        if (wk_y > 0 && wk_y <8)    //만약 백색 킹이 가장 위 구석을 제외한 자리에 있다면
             wking_check = 3;
 
-        if (wk_y == 7)
+        if (wk_y == 7)      //만약 백색 킹이 가장 위에 오른쪽에 있다면 (오른쪽 상단 구석)
             wking_check = 5;
     }
 
-    else if (wk_x == 7)
+    else if (wk_x == 7)     //만약 백색 킹이 가장 아래에 있다면
     {
-        if (wk_y == 0)
+        if (wk_y == 0)      //만약 백색 킹이 가장 아래에 왼쪽에 있다면 (왼쪽 하단 구석)
             wking_check = 5;
 
-        if (wk_y > 0 && wk_y < 8)
+        if (wk_y > 0 && wk_y < 8)       //만약 백색 킹이 가장 아래 구석을 제외한 자리에 있다면
             wking_check = 3;
 
-        if (wk_y == 7)
+        if (wk_y == 7)      //만약 백색 킹이 가장 아래에 오른쪽에 있다면 (오른쪽 하단 구석)
             wking_check = 5;
     }
 
-    else if (wk_y == 0)
+    else if (wk_y == 0)     //만약 백색 킹이 가장 왼쪽에 있다면
     {
-        if (wk_x == 0)
+        if (wk_x == 0)      //만약 백색 킹이 가장 왼쪽 위에 있다면 (왼쪽 상단 구석)
             wking_check = 5;
 
-        if (wk_x > 0 && wk_x <8)
+        if (wk_x > 0 && wk_x <8)        //만약 백색 킹이 구석을 제외한 가장 왼쪽에 있다면
             wking_check = 3;
 
-        if (wk_x == 7)
+        if (wk_x == 7)      //만약 백색 킹이 가장 왼쪽 아래에 있다면 (왼쪽 하단 구석)
             wking_check = 5;
     }
 
-    else if (wk_y == 7)
+    else if (wk_y == 7)     //만약 백색 킹이 가장 오른쪽에 있다면
     {
-        if (wk_x == 0)
+        if (wk_x == 0)      //만약 백색 킹이 가장 오른쪽에 위에 있다면
             wking_check = 5;
 
-        if (wk_x > 0 && wk_x < 8)
+        if (wk_x > 0 && wk_x < 8)       //만약 백색 킹이 구석을 제외한 가장 오른쪽에 있다면
             wking_check = 3;
 
-        if (wk_x == 7)
+        if (wk_x == 7)      //만약 백색 킹이 가장 오른쪽에 아래에 있다면
             wking_check = 5;
     }
 
-    else if (bk_x == 0)
+    else if (bk_x == 0)     //흑색 킹의 경우 (백색 킹과 동일)
     {
         if (bk_y == 0)
             bking_check = 5;
@@ -4357,53 +4357,53 @@ void CheckCheck()
             bking_check = 5;
     }
 
-    if (check[wk_x][wk_y] == 1 && order%2 == 0)
+    if (check[wk_x][wk_y] == 1 && order%2 == 0)     //만약 백의 차례이고 박색 킹이 공격받고 있다면 (wking_check변수를 증가시켜 킹의 8개 모든 방향이 1이면 체크메이트로 판단)
     {
-        if (wk_x+1 <=7)
+        if (wk_x+1 <= 7)     //만약 백색 킹의 뒤가
         {
-            if (wk_y+1 <=7)
-                if (check[wk_x+1][wk_y+1] == 1)
-                    wking_check++;
+            if (wk_y+1 <= 7)     //만약 백색 킹의 뒤에 오른쪽에
+                if (check[wk_x+1][wk_y+1] == 1)     //체크 변수가 1이라면
+                    wking_check++;      //체크 변수 켜짐
 
-            if (wk_y-1 >= 0)
+            if (wk_y-1 >= 0)    //만약 백색 킹의 뒤에 왼쪽에
                 if (check[wk_x+1][wk_y-1] == 1)
                     wking_check++;
 
-            if (check[wk_x+1][wk_y] == 1)
+            if (check[wk_x+1][wk_y] == 1)       //만약 백색 킹의 뒤가
                     wking_check++;
         }
 
-        if (wk_x-1 >= 0)
+        if (wk_x-1 >= 0)        //만약 백색 킹의 앞이
         {
-            if (wk_y+1 <= 7)
+            if (wk_y+1 <= 7)        //만약 백색 킹의 앞에 오른쪽이
                 if (check[wk_x-1][wk_y+1] == 1)
                     wking_check++;
 
-            if (wk_y-1 >= 0)
+            if (wk_y-1 >= 0)        //만약 백색 킹의 앞에 왼쪽이
                 if (check[wk_x-1][wk_y-1] == 1)
                     wking_check++;
 
-            if (check[wk_x-1][wk_y] == 1)
+            if (check[wk_x-1][wk_y] == 1)       //만약 백색 킹의 앞이
                 wking_check++;
         }
-        if (wk_y+1 <= 7)
+        if (wk_y+1 <= 7)        //만약 백색 킹의 오른쪽이
             if (check[wk_x][wk_y+1] == 1)
                 wking_check++;
 
-        if (wk_y-1 >= 0)
+        if (wk_y-1 >= 0)        //만약 백색 킹의 왼쪽이
             if (check[wk_x][wk_y-1] == 1)
                 wking_check++;
 
-        if (wking_check == 8)
-            WhiteCheckmate_Alert();
+        if (wking_check == 8)       //만약 백색 킹의 모든 방향이 차단되었으면 (8곳이 체크가 1이면)
+            WhiteCheckmate_Alert();     //백색 체크메이트 알림
 
         else
-            WhiteCheck_Alert();
+            WhiteCheck_Alert();     //아니면 백색 체크 알림 호출
     }
 
-    if (check[wk_x][wk_y] == 0 && wmv_cnt == 0)
+    if (check[wk_x][wk_y] == 0 && wmv_cnt == 0)     //만약 백색 킹이 공격받지 않고 나머지 기물들이 움직일 수 없는 상황이면 (스테일메이트)
     {
-        if (wk_x+1 <=7)
+        if (wk_x+1 <=7)     //체크메이트와 동일한 메커니즘
         {
             if (wk_y+1 <=7)
                 if (check[wk_x+1][wk_y+1] == 1)
@@ -4438,11 +4438,11 @@ void CheckCheck()
             if (check[wk_x][wk_y-1] == 1)
                 wking_check++;
 
-        if (wking_check == 8)
-            Stalemate_Alert();
+        if (wking_check == 8)       //만약 킹이 아무 곳도 움직일 수 없다면
+            Stalemate_Alert();      //스테일메이트 알림
     }
 
-    if (check[bk_x][bk_y] == 1 && order%2 != 0)
+    if (check[bk_x][bk_y] == 1 && order%2 != 0)     //만약 흑색 킹이 공격 받고 있고 흑의 차례라면 (백색 킹과 체크메이트 알고리즘 동일)
     {
         if (bk_x+1 <= 7)
         {
@@ -4486,9 +4486,9 @@ void CheckCheck()
             BlackCheck_Alert();
     }
 
-    if (check[bk_x][bk_y] == 0 && bmv_cnt == 0)
+    if (check[bk_x][bk_y] == 0 && bmv_cnt == 0)     //만약 흑색 킹이 공격받고 있지 않고 나머지 기물들이 움직일 수 없을 때
     {
-        if (bk_x+1 <= 7)
+        if (bk_x+1 <= 7)        //백색 킹의 스테일메이트와 알고리즘 동일
         {
             if (bk_y+1 <=7)
                 if (check[bk_x+1][bk_y+1] == 1)
@@ -4523,7 +4523,7 @@ void CheckCheck()
             if (check[bk_x][bk_y-1] == 1)
                 bking_check++;
 
-        if (bking_check == 8)
-            Stalemate_Alert();
+        if (bking_check == 8)       //만약 흑색 킹이 아무 곳도 움직일 수 없을 때
+            Stalemate_Alert();      //스테일메이트 알림
     }
 }
