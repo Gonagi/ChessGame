@@ -120,8 +120,8 @@ int wking_check = 0;              //백색 킹 체크메이트 구현을 위한 
 int bking_check = 0;              //흑색 킹 체크메이트 구현을 위한 변수
 int wmv_cnt = 0;                  //스테일메이트 구현을 위한 백색 말 움직인 횟수 변수
 int bmv_cnt = 0;                  //스테일메이트 구현을 위한 흑색 말 움직인 횟수 변수
-int wmv_check = 0;		  //스테일메이트 구현을 위한 백색 체크 변수
-int bmv_check = 0;		  //스테일메이트 구현을 위한 흑색 체크 변수
+int wmv_check = 0;
+int bmv_check = 0;
 
 enum color { red = 12, yellow = 14, white = 7, grey = 8 };      //TextColor에서 쓰일 enum 선언
 char *chessPos[8][8] = { {"BR1","BN1","BB1","BQ1","BK1","BB1","BN1","BR1"}, //1은 한번도 움직이지 않은 말, 0은 한번 이상 움직인 말
@@ -489,7 +489,9 @@ Main:       //메인화면
 
                     else if (sel_piece == "WK")         //캐슬링
                     {
-                        if (y_pos == 6)     //만약 캐슬링이 가능한 위치라면
+                        if (check[wk_x][wk_y] == 0)     //만약 백색 킹이 공격받지 않는 상황이라면
+                        {
+                            if (y_pos == 6)     //만약 캐슬링이 가능한 위치라면
                         {
                             chessPos[x_pos][y_pos-1] = "WR1";       //캐슬링 구현
                             chessPos[x_pos][y_pos+1] = chessPiece[0];
@@ -502,11 +504,14 @@ Main:       //메인화면
                             chessPos[x_pos][y_pos-2] = chessPiece[0];
                             MovePiece(x_pos, y_pos);
                         }
+                        }
                     }
 
                     else if (sel_piece == "BK")
                     {
-                        if (y_pos == 6)
+                        if (check[bk_x][bk_y] == 0)
+                        {
+                            if (y_pos == 6)
                         {
                             chessPos[x_pos][y_pos-1] = "BR1";
                             chessPos[x_pos][y_pos+1] = chessPiece[0];
@@ -518,6 +523,7 @@ Main:       //메인화면
                             chessPos[x_pos][y_pos+1] = "BR1";
                             chessPos[x_pos][y_pos-2] = chessPiece[0];
                             MovePiece(x_pos, y_pos);
+                        }
                         }
                     }
                 }
@@ -1923,11 +1929,15 @@ void WhiteKing(int x, int y)        //백색 킹 움직임 함수 (x, y값은 �
 
     if (chessPos[x][y] == "WK1")        //캐슬링
     {
-        if (chessPos[7][5] == chessPiece[0] && chessPos[7][6] == chessPiece[0] && chessPos[7][7] == "WR1")  //킹사이드 캐슬링
+        if (check[wk_x][wk_y] == 0)
+        {
+           if (chessPos[7][5] == chessPiece[0] && chessPos[7][6] == chessPiece[0] && chessPos[7][7] == "WR1")  //킹사이드 캐슬링
             movable[x][y+2] = 3;
 
-        if (chessPos[7][3] == chessPiece[0] && chessPos[7][2] == chessPiece[0] && chessPos[7][1] == chessPiece[0] && chessPos[7][0] == "WR1")       //퀸사이드 캐슬링
+            if (chessPos[7][3] == chessPiece[0] && chessPos[7][2] == chessPiece[0] && chessPos[7][1] == chessPiece[0] && chessPos[7][0] == "WR1")       //퀸사이드 캐슬링
             movable [x][y-2] = 3;
+        }
+
     }
 }
 
@@ -2037,11 +2047,14 @@ void BlackKing(int x, int y)        //흑색 킹 움직임 함수 (백색 킹과
 
     if (chessPos[x][y] == "BK1")
     {
-        if (chessPos[0][5] == chessPiece[0] && chessPos[0][6] == chessPiece[0] && chessPos[0][7] == "BR1")
+        if (check[bk_x][bk_y] == 0)
+        {
+            if (chessPos[0][5] == chessPiece[0] && chessPos[0][6] == chessPiece[0] && chessPos[0][7] == "BR1")
             movable[x][y+2] = 4;
 
-        if (chessPos[0][3] == chessPiece[0] && chessPos[0][2] == chessPiece[0] && chessPos[0][1] == chessPiece[0] && chessPos[0][0] == "BR1")
+            if (chessPos[0][3] == chessPiece[0] && chessPos[0][2] == chessPiece[0] && chessPos[0][1] == chessPiece[0] && chessPos[0][0] == "BR1")
             movable [x][y-2] = 4;
+        }
     }
 }
 
