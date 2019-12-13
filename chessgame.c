@@ -120,8 +120,8 @@ int wking_check = 0;              //백색 킹 체크메이트 구현을 위한 
 int bking_check = 0;              //흑색 킹 체크메이트 구현을 위한 변수
 int wmv_cnt = 0;                  //스테일메이트 구현을 위한 백색 말 움직인 횟수 변수
 int bmv_cnt = 0;                  //스테일메이트 구현을 위한 흑색 말 움직인 횟수 변수
-int wmv_check = 0;
-int bmv_check = 0;
+int wmv_check = 0;		  //스테일메이트 구현을 위한 백색 체크 변수
+int bmv_check = 0;		  //스테일메이트 구현을 위한 흑색 체크 변수
 
 enum color { red = 12, yellow = 14, white = 7, grey = 8 };      //TextColor에서 쓰일 enum 선언
 char *chessPos[8][8] = { {"BR1","BN1","BB1","BQ1","BK1","BB1","BN1","BR1"}, //1은 한번도 움직이지 않은 말, 0은 한번 이상 움직인 말
