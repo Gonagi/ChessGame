@@ -120,6 +120,8 @@ int wking_check = 0;              //백색 킹 체크메이트 구현을 위한 
 int bking_check = 0;              //흑색 킹 체크메이트 구현을 위한 변수
 int wmv_cnt = 0;                  //스테일메이트 구현을 위한 백색 말 움직인 횟수 변수
 int bmv_cnt = 0;                  //스테일메이트 구현을 위한 흑색 말 움직인 횟수 변수
+int wmv_check = 0;
+int bmv_check = 0;
 
 enum color { red = 12, yellow = 14, white = 7, grey = 8 };      //TextColor에서 쓰일 enum 선언
 char *chessPos[8][8] = { {"BR1","BN1","BB1","BQ1","BK1","BB1","BN1","BR1"}, //1은 한번도 움직이지 않은 말, 0은 한번 이상 움직인 말
@@ -321,6 +323,7 @@ Main:       //메인화면
         else if (check_BlackPromotion == 1)     //만약 흑색 폰이 프로모션 상황이면
             BlackPromotion(temp);               //프로모션 구현 함수 실행
 
+        DrawChess();            //체스판 출력하는 함수
         DrawDeadPiece();        //죽은 말 표시하는 함수
         DrawOrder();            //순서 표시하는 함수
         DrawSoo();              //몇 수 인지 표시하는 함수
@@ -543,7 +546,6 @@ Main:       //메인화면
                     sel_check = 0;
                 }
             }
-
         default:
             continue;
         }
@@ -2058,27 +2060,32 @@ void BlackQueen(int x, int y)       //흑색 퀸 움직임 함수 (백색 퀸과
 void WhitePawn(int x, int y)        //백색 폰 움직임 함수
 {
     if (chessPos[x][y][2] == '1')   //만약 한번도 안 움직였다면
-    {
-        if (chessPos[x-2][y] == chessPiece[0])      //두 칸 앞이 빈칸이면
-            movable[x-2][y] = 2;    //앙파상 판별 값으로 movable 배열 설정
-    }
+        if (chessPos[x-1][y] == chessPiece[0])          //한 칸 앞이 빈칸이면
+            if (chessPos[x-2][y] == chessPiece[0])      //두 칸 앞이 빈칸이면
+                movable[x-2][y] = 2;    //앙파상 판별 값으로 movable 배열 설정
 
-    if(x>0)     //만약 앞으로 전진 가능하다면
+    if(x > 0)     //만약 앞으로 전진 가능하다면
     {
+        if (y < 7)
+        {
+            if (chessPos[x-1][y+1][0]==BLACK)       //만약 우상향 대각선 앞이 상대 말이면
+                movable[x-1][y+1] = 1;      //공격할 수 있음
+
+            if (chessPos[x][y+1][2] == '2')
+                movable[x-1][y+1] = 3;      //우상향 대각선으로 특수 이동 적용
+        }
+
+        if (y > 0)
+        {
+            if (chessPos[x-1][y-1][0]==BLACK)       //만약 좌상향 대각선 앞이 상대 말이면
+                movable[x-1][y-1] = 1;      //공격할 수 있음
+
+            if (chessPos[x][y-1][2] == '2')     //만약 옆에 있는 말이 두 칸 전진했다면 (앙파상 상황)
+                movable[x-1][y-1] = 3;      //좌상향 대각선으로 특수 이동 적용
+        }
+
         if (chessPos[x-1][y]==chessPiece[0])    //만약 한 칸 앞이 빈칸이면
             movable[x-1][y] = 1;        //움직일 수 있음
-
-        if (chessPos[x-1][y-1][0]==BLACK)       //만약 좌상향 대각선 앞이 상대 말이면
-            movable[x-1][y-1] = 1;      //공격할 수 있음
-
-        if (chessPos[x-1][y+1][0]==BLACK)       //만약 우상향 대각선 앞이 상대 말이면
-            movable[x-1][y+1] = 1;      //공격할 수 있음
-
-        if (chessPos[x][y-1][2] == '2')     //만약 옆에 있는 말이 두 칸 전진했다면 (앙파상 상황)
-            movable[x-1][y-1] = 3;      //좌상향 대각선으로 특수 이동 적용
-
-        if (chessPos[x][y+1][2] == '2')
-            movable[x-1][y+1] = 3;      //우상향 대각선으로 특수 이동 적용
     }
 }
 
@@ -2086,25 +2093,32 @@ void WhitePawn(int x, int y)        //백색 폰 움직임 함수
 void BlackPawn(int x, int y)        //흑색 폰 움직임 함수 (백색 폰과 동일)
 {
     if (chessPos[x][y][2] == '1')
-        if (chessPos[x+2][y] == chessPiece[0])
-            movable[x+2][y] = 2;
+        if (chessPos[x+1][y] == chessPiece[0])
+            if (chessPos[x+2][y] == chessPiece[0])
+                movable[x+2][y] = 2;
 
-    if(x<7)
+    if(x < 7)
     {
+        if (y < 7)
+        {
+            if(chessPos[x+1][y+1][0]==WHITE)
+                movable[x+1][y+1]=1;
+
+            if (chessPos[x][y+1][2] == '2')
+                movable[x+1][y+1]=4;
+        }
+
+        if (y > 0)
+        {
+            if(chessPos[x+1][y-1][0]==WHITE)
+                movable[x+1][y-1]=1;
+
+            if (chessPos[x][y-1][2] == '2')
+                movable[x+1][y-1]=4;
+        }
+
         if(chessPos[x+1][y]==chessPiece[0])
             movable[x+1][y]=1;
-
-        if(chessPos[x+1][y+1][0]==WHITE)
-            movable[x+1][y+1]=1;
-
-        if(chessPos[x+1][y-1][0]==WHITE)
-            movable[x+1][y-1]=1;
-
-        if (chessPos[x][y-1][2] == '2')
-            movable[x+1][y-1]=4;
-
-        if (chessPos[x][y+1][2] == '2')
-            movable[x+1][y+1]=4;
     }
 }
 
@@ -2119,8 +2133,10 @@ void WhiteNight(int x, int y)   // 백색 나이트 움직임 함수
             {
                 if (check_check == 1)       //만약 체크 판별 상황이라면
                 {
-                    check[x-2][y-1] = 1;    //체크 1
-                    wmv_cnt++;      //스테일메이트 판별 용 백색 이동 가능 변수 +1
+                    if (wmv_check == 1)
+                        wmv_cnt++;      //스테일메이트 판별 용 백색 이동 가능 변수 +1
+                    else
+                        check[x-2][y-1] = 1;    //체크 1
                 }
 
                 else
@@ -2134,8 +2150,10 @@ void WhiteNight(int x, int y)   // 백색 나이트 움직임 함수
             {
                 if (check_check == 1)
                 {
-                    check[x-2][y+1] = 1;
-                    wmv_cnt++;
+                    if (wmv_check == 1)
+                        wmv_cnt++;
+                    else
+                        check[x-2][y+1] = 1;
                 }
 
                 else
@@ -2152,8 +2170,10 @@ void WhiteNight(int x, int y)   // 백색 나이트 움직임 함수
             {
                 if (check_check == 1)
                 {
-                    check[x-1][y-2] = 1;
-                    wmv_cnt++;
+                    if (wmv_check == 1)
+                        wmv_cnt++;
+                    else
+                        check[x-1][y-2] = 1;
                 }
 
                 else
@@ -2167,8 +2187,10 @@ void WhiteNight(int x, int y)   // 백색 나이트 움직임 함수
             {
                 if (check_check == 1)
                 {
-                    check[x-1][y+2] = 1;
-                    wmv_cnt++;
+                    if (wmv_check == 1)
+                        wmv_cnt++;
+                    else
+                        check[x-1][y+2] = 1;
                 }
 
                 else
@@ -2185,8 +2207,10 @@ void WhiteNight(int x, int y)   // 백색 나이트 움직임 함수
             {
                 if (check_check == 1)
                 {
-                    check[x+1][y-2] = 1;
-                    wmv_cnt++;
+                    if (wmv_check == 1)
+                        wmv_cnt++;
+                    else
+                        check[x+1][y-2] = 1;
                 }
 
                 else
@@ -2200,8 +2224,10 @@ void WhiteNight(int x, int y)   // 백색 나이트 움직임 함수
             {
                 if (check_check == 1)
                 {
-                    check[x+1][y+2] = 1;
-                    wmv_cnt++;
+                    if (wmv_check == 1)
+                        wmv_cnt++;
+                    else
+                        check[x+1][y+2] = 1;
                 }
 
                 else
@@ -2218,8 +2244,10 @@ void WhiteNight(int x, int y)   // 백색 나이트 움직임 함수
             {
                 if (check_check == 1)
                 {
-                    check[x+2][y-1] = 1;
-                    wmv_cnt++;
+                    if (wmv_check == 1)
+                        wmv_cnt++;
+                    else
+                        check[x+2][y-1] = 1;
                 }
 
                 else
@@ -2233,8 +2261,10 @@ void WhiteNight(int x, int y)   // 백색 나이트 움직임 함수
             {
                 if (check_check == 1)
                 {
-                    check[x+2][y+1] = 1;
-                    wmv_cnt++;
+                    if (wmv_check == 1)
+                        wmv_cnt++;
+                    else
+                        check[x+2][y+1] = 1;
                 }
 
                 else
@@ -2255,8 +2285,10 @@ void BlackNight(int x, int y)       //흑색 나이트 움직임 함수 (백색 
             {
                 if (check_check == 1)
                 {
-                    check[x-2][y-1] = 1;
-                    bmv_cnt++;
+                    if (bmv_check == 1)
+                        bmv_cnt++;
+                    else
+                        check[x-2][y-1] = 1;
                 }
 
                 else
@@ -2270,8 +2302,10 @@ void BlackNight(int x, int y)       //흑색 나이트 움직임 함수 (백색 
             {
                 if (check_check == 1)
                 {
-                    check[x-2][y+1] = 1;
-                    bmv_cnt++;
+                    if (bmv_check == 1)
+                        bmv_cnt++;
+                    else
+                        check[x-2][y+1] = 1;
                 }
 
                 else
@@ -2288,8 +2322,10 @@ void BlackNight(int x, int y)       //흑색 나이트 움직임 함수 (백색 
             {
                 if (check_check == 1)
                 {
-                    check[x-1][y-2] = 1;
-                    bmv_cnt++;
+                    if (bmv_check == 1)
+                        bmv_cnt++;
+                    else
+                        check[x-1][y-2] = 1;
                 }
 
                 else
@@ -2303,8 +2339,10 @@ void BlackNight(int x, int y)       //흑색 나이트 움직임 함수 (백색 
             {
                 if (check_check == 1)
                 {
-                    check[x-1][y+2] = 1;
-                    bmv_cnt++;
+                    if (bmv_check == 1)
+                        bmv_cnt++;
+                    else
+                        check[x-1][y+2] = 1;
                 }
 
                 else
@@ -2321,8 +2359,10 @@ void BlackNight(int x, int y)       //흑색 나이트 움직임 함수 (백색 
             {
                 if (check_check == 1)
                 {
-                    check[x+1][y-2] = 1;
-                    bmv_cnt++;
+                    if (bmv_check == 1)
+                        bmv_cnt++;
+                    else
+                        check[x+1][y-2] = 1;
                 }
 
                 else
@@ -2336,8 +2376,10 @@ void BlackNight(int x, int y)       //흑색 나이트 움직임 함수 (백색 
             {
                 if (check_check == 1)
                 {
-                    check[x+1][y+2] = 1;
-                    bmv_cnt++;
+                    if (bmv_check == 1)
+                        bmv_cnt++;
+                    else
+                        check[x+1][y+2] = 1;
                 }
 
                 else
@@ -2354,9 +2396,12 @@ void BlackNight(int x, int y)       //흑색 나이트 움직임 함수 (백색 
             {
                 if (check_check == 1)
                 {
-                    check[x+2][y-1] = 1;
-                    bmv_cnt++;
+                    if (bmv_check == 1)
+                        bmv_cnt++;
+                    else
+                        check[x+2][y-1] = 1;
                 }
+
                 else
                     movable[x+2][y-1] = 1;
             }
@@ -2368,8 +2413,10 @@ void BlackNight(int x, int y)       //흑색 나이트 움직임 함수 (백색 
             {
                 if (check_check == 1)
                 {
-                    check[x+2][y+1] = 1;
-                    bmv_cnt++;
+                    if (bmv_check == 1)
+                        bmv_cnt++;
+                    else
+                        check[x+2][y+1] = 1;
                 }
 
                 else
@@ -2743,15 +2790,20 @@ void WhiteCheck()       //백팀 체크 상황 판별 함수
                 if (chessPos[i][j][1] == 'P')       //만약 백색 폰이면 (스테일메이트 판별 함수)
                     if (i > 0)
                     {
-                        if (chessPos[i-1][j-1][0] == BLACK || chessPos[i-1][j-1] == chessPiece[0])
-                            wmv_cnt++;      //백색 움직임 횟수 변수 +1
-
-                        if (chessPos[i-1][j+1][0] == BLACK || chessPos[i-1][j+1] == chessPiece[0])
-                            wmv_cnt++;
+                        if (j > 0)
+                            if (chessPos[i-1][j-1][0] == BLACK || chessPos[i-1][j-1] == chessPiece[0])
+                                wmv_cnt++;      //백색 움직임 횟수 변수 +1
+                        if (j < 7)
+                            if (chessPos[i-1][j+1][0] == BLACK || chessPos[i-1][j+1] == chessPiece[0])
+                                wmv_cnt++;
                     }
 
                 if (chessPos[i][j][1] == 'N')       //만약 백색 나이트면
+                {
+                    wmv_check = 1;
                     WhiteNight(i, j);
+                    wmv_check = 0;
+                }
 
                 if (chessPos[i][j][1] == 'R')       //만약 백색 룩이면
                 {
@@ -3114,11 +3166,12 @@ void WhiteCheck()       //백팀 체크 상황 판별 함수
                 if (chessPos[i][j][1] == 'P')       //흑색 폰이면
                     if (i < 7)
                     {
-                        if (chessPos[i+1][j-1][0] == WHITE || chessPos[i+1][j-1] == chessPiece[0])
-                            check[i+1][j-1] = 1;
-
-                        if (chessPos[i+1][j+1][0] == WHITE || chessPos[i+1][j+1] == chessPiece[0])
-                            check[i+1][j+1] = 1;
+                        if (j > 0)
+                            if (chessPos[i+1][j-1][0] == WHITE || chessPos[i+1][j-1] == chessPiece[0])
+                                check[i+1][j-1] = 1;
+                        if (j < 7)
+                            if (chessPos[i+1][j+1][0] == WHITE || chessPos[i+1][j+1] == chessPiece[0])
+                                check[i+1][j+1] = 1;
                     }
 
                 if (chessPos[i][j][1] == 'N')       //흑색 나이트면
@@ -3510,15 +3563,20 @@ void BlackCheck()       //흑팀 체크 상황 판별 함수
                 if (chessPos[i][j][1] == 'P')   //만약 흑색 폰이면 (스테일메이트 판별 함수)
                     if (i < 7)
                     {
-                        if (chessPos[i+1][j-1][0] == WHITE || chessPos[i+1][j-1] == chessPiece[0])
-                            bmv_cnt++;
-
-                        if (chessPos[i+1][j+1][0] == WHITE || chessPos[i+1][j+1] == chessPiece[0])
-                            bmv_cnt++;
+                        if (j > 0)
+                            if (chessPos[i+1][j-1][0] == WHITE || chessPos[i+1][j-1] == chessPiece[0])
+                                bmv_cnt++;
+                        if (j < 7)
+                            if (chessPos[i+1][j+1][0] == WHITE || chessPos[i+1][j+1] == chessPiece[0])
+                                bmv_cnt++;
                     }
 
                 if (chessPos[i][j][1] == 'N')       //만약 흑색 나이트면
+                {
+                    bmv_check = 1;
                     BlackNight(i, j);
+                    bmv_check = 0;
+                }
 
                 if (chessPos[i][j][1] == 'R')       //만약 흑색 룩이면
                 {
@@ -3685,7 +3743,7 @@ void BlackCheck()       //흑팀 체크 상황 판별 함수
                         if (chessPos[i+k][j+k][0] == BLACK)
                             break;
 
-                        check[i+k][j+k] = 1;
+                        bmv_cnt++;
 
                         if (chessPos[i+k][j+k][0] == WHITE)
                         {
@@ -3884,11 +3942,12 @@ void BlackCheck()       //흑팀 체크 상황 판별 함수
                 if (chessPos[i][j][1] == 'P')       //만약 백색 폰이면
                     if (i > 0)
                     {
-                        if (chessPos[i-1][j-1][0] == BLACK || chessPos[i-1][j-1] == chessPiece[0])
-                            check[i-1][j-1] = 1;
-
-                        if (chessPos[i-1][j+1][0] == BLACK || chessPos[i-1][j+1] == chessPiece[0])
-                            check[i-1][j+1] = 1;
+                        if (j > 0)
+                            if (chessPos[i-1][j-1][0] == BLACK || chessPos[i-1][j-1] == chessPiece[0])
+                                check[i-1][j-1] = 1;
+                        if (j < 7)
+                            if (chessPos[i-1][j+1][0] == BLACK || chessPos[i-1][j+1] == chessPiece[0])
+                                check[i-1][j+1] = 1;
                     }
 
                 if (chessPos[i][j][1] == 'N')       //만약 백색 나이트면
